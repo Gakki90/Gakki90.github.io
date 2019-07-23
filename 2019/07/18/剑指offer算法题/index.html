@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="3.二维数组中查找目标值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer算法题">
+<meta property="og:url" content="http://yoursite.com/2019/07/18/剑指offer算法题/index.html">
+<meta property="og:site_name" content="The Weeknd Blog">
+<meta property="og:description" content="3.二维数组中查找目标值">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/1.png">
+<meta property="og:image" content="http://yoursite.com/images/2.png">
+<meta property="og:updated_time" content="2019-07-23T03:34:36.869Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer算法题">
+<meta name="twitter:description" content="3.二维数组中查找目标值">
+<meta name="twitter:image" content="http://yoursite.com/images/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/18/剑指offer算法题/">
+
+
+
+
+
+  <title>剑指offer算法题 | The Weeknd Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+<script type="text/javascript" src="/js/src/particle.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">The Weeknd Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/剑指offer算法题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mn Liu">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Weeknd Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">剑指offer算法题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-18T22:04:38+08:00">
+                2019-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="3-二维数组中查找目标值"><a href="#3-二维数组中查找目标值" class="headerlink" title="3.二维数组中查找目标值"></a>3.二维数组中查找目标值</h2><a id="more"></a>
+<p>题目描述：在一个二维数组中，每一行都按照从左到右递增的顺序排序，每<br>一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二<br>维数组和一个整数，判断数组中是否含有该整数。</p>
+<p>思路：从右上角或左下角开始找，逐行删除，或者用二分法查找</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">boolean find(int[][] array,int target)&#123;</span><br><span class="line">        if (array.length == 0) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        int row = 0;</span><br><span class="line">        int column = array[0].length-1;</span><br><span class="line">        while (row &lt; array.length &amp;&amp; column &gt;= 0) &#123;</span><br><span class="line">            if(array[row][column] == target) &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            if(array[row][column] &gt; target) &#123;</span><br><span class="line">                column--;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                row++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里 array.length 返回的是列的长度</p>
+<h2 id="4-替换字符串中的空格"><a href="#4-替换字符串中的空格" class="headerlink" title="4. 替换字符串中的空格"></a>4. 替换字符串中的空格</h2><p>题目描述：将一个字符串中的空格替换成“%20”<br>例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。<br>一般是要求在原来的字符串上进行替换</p>
+<p>思路：先遍历一次字符串，计算出替换后字符串的长度，然后从后向前复制,复杂度为O(n)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">String replaceSpace(StringBuffer str)&#123;</span><br><span class="line">        if(str==null)</span><br><span class="line">            return null;</span><br><span class="line">        int spaceNum=0;</span><br><span class="line">        for (int i = 0; i &lt;str.length() ; i++) &#123;</span><br><span class="line">            if(str.charAt(i)==&apos; &apos;)</span><br><span class="line">                spaceNum++;</span><br><span class="line">        &#125;</span><br><span class="line">        int length=str.length();</span><br><span class="line">        str.setLength(str.length()+spaceNum*2);</span><br><span class="line"></span><br><span class="line">        int index=str.length()-1;</span><br><span class="line">        for (int i=length-1;i&gt;0;i--)&#123;</span><br><span class="line">            if(&apos; &apos;== str.charAt(i)) &#123;</span><br><span class="line">                str.setCharAt(index--, &apos;0&apos;);</span><br><span class="line">                str.setCharAt(index--, &apos;2&apos;);</span><br><span class="line">                str.setCharAt(index--, &apos;%&apos;);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">                str.setCharAt(index--,str.charAt(i));</span><br><span class="line">        &#125;</span><br><span class="line">            return String.valueOf(str);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>字符串的比较要用equals，基本类型用==</p>
+<h2 id="7-根据前序和中序遍历重建二叉树"><a href="#7-根据前序和中序遍历重建二叉树" class="headerlink" title="7.根据前序和中序遍历重建二叉树"></a>7.根据前序和中序遍历重建二叉树</h2><p>题目描述：输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。</p>
+<p>思路：先找出根节点，然后利用递归方法构造二叉树<br>前序遍历的第一个节点就是根节点，然后找到中序遍历中根节点的位置，根节点左边的就是左子树，右边就是右子树，然后再到前序遍历中找到左子树的个数，和右子树的个数，然后递归方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public TreeNode buildTree(int[] pre, int[] in) &#123;</span><br><span class="line">        return makeTree(pre,in,0,pre.length-1,0,in.length-1);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"> TreeNode makeTree(int[] pre,int[] in,int preStart,int preEnd,int inStart,int inEnd)&#123;</span><br><span class="line">        if (preStart&gt;preEnd)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode root=new TreeNode(pre[preStart]);</span><br><span class="line">        for (int i = inStart; i &lt;inEnd ; i++) &#123;//这里是遍历中序，从起点开始</span><br><span class="line">            if(pre[preStart]==in[i])&#123;</span><br><span class="line">                root.left=makeTree(pre,in,preStart+1,preStart+i-inStart,inStart,i-1);</span><br><span class="line">                root.right=makeTree(pre,in,preStart+i-inStart +1,preEnd,i+1,inEnd);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        return root;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>尤其注意前序遍历中的左子树的end（prestart+1-instart）</p>
+<h2 id="8-二叉树的下一个节点"><a href="#8-二叉树的下一个节点" class="headerlink" title="8.二叉树的下一个节点"></a>8.二叉树的下一个节点</h2><p>题目描述：给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。</p>
+<p>思路：若节点右孩子存在，则设置一个指针从该节点的右孩子出发，一直沿着指向左子结点的指针找到的叶子节点即为下一个节点；若节点不是根节点。如果该节点是其父节点的左孩子，则返回父节点；否则继续向上遍历其父节点的父节点，重复之前的判断，返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public TreeNode getNext(TreeNode pNode) &#123;</span><br><span class="line">        if(pNode==null)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode pNext=null;</span><br><span class="line">        if(pNode.right!=null)&#123;</span><br><span class="line">            pNext=pNode.right;</span><br><span class="line">            while (pNext.left!=null)&#123;</span><br><span class="line">                pNext=pNext.left;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;else if (pNode.parent!=null)&#123;</span><br><span class="line">            TreeNode current=pNode;</span><br><span class="line">            TreeNode pParent=current.parent;</span><br><span class="line">            while (pParent!=null&amp;&amp;pParent.right==current)&#123;</span><br><span class="line">                current=current.parent;</span><br><span class="line">                pParent=current.parent;</span><br><span class="line">            &#125;</span><br><span class="line">            pNext=pParent;</span><br><span class="line">        &#125;</span><br><span class="line">            return pNext;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意pNode.parent!=null时，循环条件中的内容，current和pparent的迭代。</p>
+<h2 id="9-用两个栈实现队列"><a href="#9-用两个栈实现队列" class="headerlink" title="9. 用两个栈实现队列"></a>9. 用两个栈实现队列</h2><p>题目描述：用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
+<p>思路：（push）第一个栈用来压入元素，（pop）然后当第二个栈为空时，栈1的全部元素出栈到第二个栈，第二个栈最后一个元素直接出栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Queue &#123;</span><br><span class="line"></span><br><span class="line">    private Stack stack1;</span><br><span class="line">    private Stack stack2;</span><br><span class="line">    /** Initialize your data structure here. */</span><br><span class="line">    public Queue() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Push element x to the back of queue. */</span><br><span class="line">    public void push(int x) &#123;</span><br><span class="line">            stack1.push(x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /** Removes the element from in front of queue and returns that element. */</span><br><span class="line">    public int pop() throws Exception &#123;</span><br><span class="line">        if(stack1.isEmpty()&amp;&amp;stack2.isEmpty())&#123;</span><br><span class="line">            throw new Exception(&quot;empty&quot;);//因为返回值是int，用exception来表示栈为空的情况</span><br><span class="line">        &#125;</span><br><span class="line">        if(stack2.isEmpty())&#123;</span><br><span class="line">            while (!stack1.isEmpty()) &#123;//这里要讲栈1所有的元素压入栈2</span><br><span class="line">                stack2.push(stack1.pop());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (int) stack2.pop();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-斐波那契数列的应用"><a href="#10-斐波那契数列的应用" class="headerlink" title="10. 斐波那契数列的应用"></a>10. 斐波那契数列的应用</h2><h3 id="10-1-输出斐波那契数列的第n项"><a href="#10-1-输出斐波那契数列的第n项" class="headerlink" title="10.1 输出斐波那契数列的第n项"></a>10.1 输出斐波那契数列的第n项</h3><p>题目描述：现在要求输入一个整数n，请你输出斐波那契数列的第n项。<br>斐波那契数列：<br><img src="/images/1.png" alt><br>思路：递归的效率低，使用循环方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static long Fibonacci(long x)&#123;</span><br><span class="line">        if(x==0)&#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        if(x==1)&#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        long fibNMinusOne=1;</span><br><span class="line">        long fibNMinusTwo=0;</span><br><span class="line">        long fibN=0;</span><br><span class="line">        for (int i = 2; i &lt;=x ; ++i) &#123;</span><br><span class="line">            fibN=fibNMinusOne+fibNMinusTwo;</span><br><span class="line"></span><br><span class="line">            fibNMinusTwo=fibNMinusOne;</span><br><span class="line">            fibNMinusOne=fibN;//这里注意先赋值给fibNMiusTwo，再赋值给fibNMinusOne</span><br><span class="line">        &#125;</span><br><span class="line">        return fibN;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-2-青蛙跳台阶-1或2级"><a href="#10-2-青蛙跳台阶-1或2级" class="headerlink" title="10.2. 青蛙跳台阶(1或2级)"></a>10.2. 青蛙跳台阶(1或2级)</h3><p>题目描述：一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法。</p>
+<p>思路：斐波那契数列思想：当只有一级台阶时，只有一种跳法，两级台阶有两种跳法，当有n级台阶时，小青蛙第一步跳1级，那么剩下的就是n-1级台阶，第一步跳两级，就是n-2级台阶，依次求。</p>
+<p>算法与上一题一样，只是起点与输入的数字不同。</p>
+<h3 id="10-3-小矩形无重叠覆盖大矩形"><a href="#10-3-小矩形无重叠覆盖大矩形" class="headerlink" title="10.3 小矩形无重叠覆盖大矩形"></a>10.3 小矩形无重叠覆盖大矩形</h3><p>题目描述：我们可以用2x1的小矩形横着或者竖着去覆盖更大的矩形。请问用<br>n个2x1的小矩形无重叠地覆盖一个2xn的大矩形，总共有多少种方法？</p>
+<p>思路：斐波那契数列思想<br><img src="/images/2.png" alt><br>第一次竖着放，那么后边有2x（n-1)的区域；第一次横着放，那么底下就必须横着放，后边就有2x（n-2）的区域</p>
+<h3 id="10-4-青蛙跳台阶-n级"><a href="#10-4-青蛙跳台阶-n级" class="headerlink" title="10.4. 青蛙跳台阶(n级)"></a>10.4. 青蛙跳台阶(n级)</h3><p>题目描述：一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳<br>上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。<br>思路：2^(n-1)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/17/MarkDown-语法-1/" rel="next" title="MarkDown-语法">
+                <i class="fa fa-chevron-left"></i> MarkDown-语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/dragon.jpg" alt="Mn Liu">
+            
+              <p class="site-author-name" itemprop="name">Mn Liu</p>
+              <p class="site-description motion-element" itemprop="description">Welcome to My Blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-二维数组中查找目标值"><span class="nav-number">1.</span> <span class="nav-text">3.二维数组中查找目标值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-替换字符串中的空格"><span class="nav-number">2.</span> <span class="nav-text">4. 替换字符串中的空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-根据前序和中序遍历重建二叉树"><span class="nav-number">3.</span> <span class="nav-text">7.根据前序和中序遍历重建二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-二叉树的下一个节点"><span class="nav-number">4.</span> <span class="nav-text">8.二叉树的下一个节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-用两个栈实现队列"><span class="nav-number">5.</span> <span class="nav-text">9. 用两个栈实现队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-斐波那契数列的应用"><span class="nav-number">6.</span> <span class="nav-text">10. 斐波那契数列的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-输出斐波那契数列的第n项"><span class="nav-number">6.1.</span> <span class="nav-text">10.1 输出斐波那契数列的第n项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-青蛙跳台阶-1或2级"><span class="nav-number">6.2.</span> <span class="nav-text">10.2. 青蛙跳台阶(1或2级)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-小矩形无重叠覆盖大矩形"><span class="nav-number">6.3.</span> <span class="nav-text">10.3 小矩形无重叠覆盖大矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-青蛙跳台阶-n级"><span class="nav-number">6.4.</span> <span class="nav-text">10.4. 青蛙跳台阶(n级)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mn Liu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
