@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="Ubuntu 常用命令">
+<meta name="description" content="1.反射的概述：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu 常用命令（待补充）">
-<meta property="og:url" content="http://yoursite.com/2019/07/17/Ubuntu-Command/index.html">
+<meta property="og:title" content="java反射机制">
+<meta property="og:url" content="http://yoursite.com/2019/07/24/java反射机制/index.html">
 <meta property="og:site_name" content="The Weeknd Blog">
-<meta property="og:description" content="Ubuntu 常用命令">
+<meta property="og:description" content="1.反射的概述：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-17T07:13:34.139Z">
+<meta property="og:image" content="http://yoursite.com/2019/07/24/java反射机制/3.png">
+<meta property="og:updated_time" content="2019-07-25T06:13:41.450Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu 常用命令（待补充）">
-<meta name="twitter:description" content="Ubuntu 常用命令">
+<meta name="twitter:title" content="java反射机制">
+<meta name="twitter:description" content="1.反射的概述：">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/24/java反射机制/3.png">
 
 
 
@@ -119,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/17/Ubuntu-Command/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/24/java反射机制/">
 
 
 
 
 
-  <title>Ubuntu 常用命令（待补充） | The Weeknd Blog</title>
+  <title>java反射机制 | The Weeknd Blog</title>
   
 
 
@@ -263,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/17/Ubuntu-Command/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/24/java反射机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mn Liu">
@@ -280,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ubuntu 常用命令（待补充）</h1>
+          <h1 class="post-title" itemprop="name headline">java反射机制</h1>
         
 
         <div class="post-meta">
@@ -292,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-17T00:36:46+08:00">
-                2019-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T12:12:03+08:00">
+                2019-07-24
               </time>
             
 
@@ -330,25 +332,31 @@
       
 
       
-        <h2 id="Ubuntu-常用命令"><a href="#Ubuntu-常用命令" class="headerlink" title="Ubuntu 常用命令"></a>Ubuntu 常用命令</h2><a id="more"></a>
-<h3 id="简单命令一-严格区分大小写-："><a href="#简单命令一-严格区分大小写-：" class="headerlink" title="简单命令一(严格区分大小写)："></a>简单命令一(严格区分大小写)：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ①sudo dpkg -ilinuxqq_1.0-preview1_i386.deb</span><br><span class="line">//安装qq命令</span><br></pre></td></tr></table></figure>
+        <h2 id="1-反射的概述："><a href="#1-反射的概述：" class="headerlink" title="1.反射的概述："></a>1.反射的概述：</h2><a id="more"></a>
+<p>java反射机制是在运行状态中，对于任意一个类，都能知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性。要想剖解一个类，必须先获取到该类的字节码文件对象。</p>
+<p><strong>反射就是把java类中的各种成分映射到一个个的java对象</strong></p>
+<p>例如：一个类有：成员变量、方法、构造方法、包等等信息，利用反射技术可以对一个类进行解剖，把个个组成部分映射成一个个对象。<br>     （其实：一个类中这些成员方法、构造方法、在加入类中都有一个类来描述）<br>如图是类的正常加载过程：反射的原理在与class对象。<br>熟悉一下加载的时候：Class对象的由来是将class文件读入内存，并为之创建一个Class对象。</p>
+<img src="/2019/07/24/java反射机制/3.png" title="[类加载过程]">
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ②cd /                  ##打开系统根目录</span><br></pre></td></tr></table></figure>
+<h2 id="2-反射的使用"><a href="#2-反射的使用" class="headerlink" title="2.反射的使用"></a>2.反射的使用</h2><h3 id="获取class对象的三种方式："><a href="#获取class对象的三种方式：" class="headerlink" title="获取class对象的三种方式："></a>获取class对象的三种方式：</h3><ul>
+<li><ol>
+<li>Object——》getClass（）</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>任何数据类型（包括基本数据类型）都有一个静态的classs属性</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>通过class类的静态方法： forName（String className）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">package fanshe;</span><br><span class="line">/**</span><br><span class="line"> * 获取Class对象的三种方式</span><br><span class="line"> * 1 Object ——&gt; getClass();</span><br><span class="line"> * 2 任何数据类型（包括基本数据类型）都有一个“静态”的class属性</span><br><span class="line"> * 3 通过Class类的静态方法：forName（String  className）(常用)</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">public class Fanshe &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//第一种方式获取Class对象  </span><br><span class="line">		Student stu1 = new Student();//这一new 产生一个Student对象，一个Class对象。</span><br><span class="line">		Class stuClass = stu1.getClass();//获取Class对象</span><br><span class="line">		System.out.println(stuClass.getName());</span><br><span class="line">		</span><br><span class="line">		//第二种方式获取Class对象</span><br><span class="line">		Class stuClass2 = Student.class;</span><br><span class="line">		System.out.println(stuClass == stuClass2);//判断第一种方式获取的Class对象和第二种方式获取的是否是同一个</span><br><span class="line">		</span><br><span class="line">		//第三种方式获取Class对象</span><br><span class="line">		try &#123;</span><br><span class="line">			Class stuClass3 = Class.forName(&quot;fanshe.Student&quot;);//注意此字符串必须是真实路径，就是带包名的类路径，包名.类名</span><br><span class="line">			System.out.println(stuClass3 == stuClass2);//判断三种方式是否获取的是同一个Class对象</span><br><span class="line">		&#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ③ls                    ##列出文件和目录</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">④cd /home</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">⑤cd    和 cd  ../..和  cd ~类似     ##进入用户主目录</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">⑥cd /etc              ##该目录下存放着系统和软件的配置文件</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">⑦cat fstab            ##其中定义了各硬盘分区所挂在的目录路径</span><br></pre></td></tr></table></figure>
-
-<p>Tab键可以进行命令补全，只有一个时补全内容，（需要按两次键）多个时列出（命令，目录，文件等都适用）</p>
-<p>通配符 * ，？，_,[]。</p>
-<p>⑧pwd                     ##显示当前所在的目录</p>
-<p>⑨cd ..                   ##退到上一级目录</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>注意：在运行期间，一个类，只有一个Class对象产生</strong><br>三种方式常用第三种，第一种对象都有了还要反射干什么。第二种需要导入类的包，依赖太强，不导包就抛编译错误。一般都第三种，一个字符串可以传入也可写在配置文件中等多种方法。</p>
+<p>通过反射还可以获取构造方法，成员方法等，反射在实际开发中使用的不多，像c++，pascal等语言没有提供这样的特性。由于反射机制能够实现在运行时对类进行装载，因此能够增加程序的灵活性，但是不恰当的使用反射机制，也会严重影响系统的性能。</p>
+<p>若想深入了解反射特性，可参考这篇博客:<br><a href="https://blog.csdn.net/sinat_38259539/article/details/71799078" target="_blank" rel="noopener">https://blog.csdn.net/sinat_38259539/article/details/71799078</a></p>
 
       
     </div>
@@ -373,8 +381,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/12/实训结束感悟/" rel="next" title="实训结束感悟">
-                <i class="fa fa-chevron-left"></i> 实训结束感悟
+              <a href="/2019/07/18/剑指offer算法题/" rel="next" title="剑指offer算法题">
+                <i class="fa fa-chevron-left"></i> 剑指offer算法题
               </a>
             
           </div>
@@ -382,10 +390,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/17/MarkDown-语法-1/" rel="prev" title="MarkDown-语法">
-                MarkDown-语法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -501,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu-常用命令"><span class="nav-number">1.</span> <span class="nav-text">Ubuntu 常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单命令一-严格区分大小写-："><span class="nav-number">1.1.</span> <span class="nav-text">简单命令一(严格区分大小写)：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-反射的概述："><span class="nav-number">1.</span> <span class="nav-text">1.反射的概述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-反射的使用"><span class="nav-number">2.</span> <span class="nav-text">2.反射的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取class对象的三种方式："><span class="nav-number">2.1.</span> <span class="nav-text">获取class对象的三种方式：</span></a></li></ol></li></ol></div>
             
 
           </div>
