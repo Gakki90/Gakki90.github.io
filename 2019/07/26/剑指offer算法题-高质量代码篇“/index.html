@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="高质量代码篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer算法题">
+<meta property="og:url" content="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/index.html">
+<meta property="og:site_name" content="The Weeknd Blog">
+<meta property="og:description" content="高质量代码篇">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/2.PNG">
+<meta property="og:image" content="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/3.PNG">
+<meta property="og:updated_time" content="2019-08-04T03:09:36.307Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer算法题">
+<meta name="twitter:description" content="高质量代码篇">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/">
+
+
+
+
+
+  <title>剑指offer算法题 | The Weeknd Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+<script type="text/javascript" src="/js/src/particle.js"></script>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">The Weeknd Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/26/剑指offer算法题-高质量代码篇“/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liu Mn">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Weeknd Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">剑指offer算法题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T19:03:00+08:00">
+                2019-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="高质量代码篇"><a href="#高质量代码篇" class="headerlink" title="高质量代码篇"></a>高质量代码篇</h1><a id="more"></a>
+<h2 id="16-数值的整数次方"><a href="#16-数值的整数次方" class="headerlink" title="16.数值的整数次方"></a>16.数值的整数次方</h2><p>题目：<br>实现函数double Power(double base,int exponent),求base的exponent次方。不得使用库函数，同时不需要考虑大数问题</p>
+<p>思路：需要考虑特殊值的问题：</p>
+<ul>
+<li>1、底数为0，指数为负数的情况，无意义</li>
+<li>2、指数为0，返回1</li>
+<li>3、指数为负数，返回1.0/base,-exponent</li>
+<li>4、指数正数，base,exponent，<br>还有效率问题，如果使用连乘效率太低，整数的n次方公式<img src="/2019/07/26/剑指offer算法题-高质量代码篇“/1.jpg" title="[]">
+
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">double pow(double base,int exponent) throws Exception &#123;</span><br><span class="line">        if(equal(base,0.0)&amp;&amp;exponent&lt;0)&#123;</span><br><span class="line">            throw new Exception(&quot;invalid parameters&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if(equal(exponent,0.0))&#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        int absExponent=exponent;</span><br><span class="line">        if(exponent&lt;0)&#123;</span><br><span class="line">            absExponent=-exponent;</span><br><span class="line">        &#125;</span><br><span class="line">        double result=powerWithUnsignedExponent(base,absExponent);</span><br><span class="line">        if (exponent&lt;0)&#123;</span><br><span class="line">            result=1/result;</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">    double powerWithUnsignedExponent(double base,int exponent)&#123;</span><br><span class="line"></span><br><span class="line">        if(exponent==0)&#123;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        if(exponent==1)&#123;</span><br><span class="line">            return base;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        double result=powerWithUnsignedExponent(base,exponent&gt;&gt;1);//用右移代替除法</span><br><span class="line">        result*=result;</span><br><span class="line">        </span><br><span class="line">        if((exponent&amp;1) ==1)&#123;//这里当指数为奇数时，需要再乘以base</span><br><span class="line">                result*=base;</span><br><span class="line">        &#125;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">    boolean equal(double a,double b)&#123;</span><br><span class="line">        if(a-b&lt;0.0000001&amp;&amp;a-b&gt;-0.0000001)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于计算机表示小数（包括float和double型小数）都会有误差，我们不能直接用等号（==）判断两个小数是否相等。如果两个小数的差的绝对值很小，比如小于0.0000001，就可以认为他们相等。</p>
+<h2 id="17-打印从1到最大的n位数"><a href="#17-打印从1到最大的n位数" class="headerlink" title="17.打印从1到最大的n位数"></a>17.打印从1到最大的n位数</h2><p>题目：输入数字n，按顺序打印出从1到最大的n位十进制数。比如输入3，则打印出1、2、3一直到最大的3位数999。</p>
+<h3 id="思路1-考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。"><a href="#思路1-考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。" class="headerlink" title="思路1: 考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。"></a>思路1: 考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public void printToMaxOfNDigits(int n) &#123;</span><br><span class="line">        if (n &lt;= 0) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        char[] number = new char[n];</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            number[i] = &apos;0&apos;;</span><br><span class="line">        &#125;</span><br><span class="line">        while (!increment(number)) &#123;</span><br><span class="line">            printNumber(number);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean increment(char[] number) &#123;</span><br><span class="line">        boolean isOverflow = false;</span><br><span class="line">        int carryFlag = 0;</span><br><span class="line">        int length = number.length;</span><br><span class="line">        for (int i = length - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            int sum = number[i] - &apos;0&apos; + carryFlag;//注意ascall码的转换</span><br><span class="line">            if (i == length - 1) &#123;//每次都从最低位加1</span><br><span class="line">                sum++;</span><br><span class="line">            &#125;</span><br><span class="line">            if (sum &gt;= 10) &#123;</span><br><span class="line">                if (i == 0) &#123;</span><br><span class="line">                    isOverflow = true;</span><br><span class="line">                    break;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    sum -= 10;</span><br><span class="line">                    carryFlag = 1;</span><br><span class="line">                    number[i] = (char) (&apos;0&apos; + sum);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                number[i] = (char) (&apos;0&apos; + sum);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return isOverflow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void printNumber(char[] number) &#123;//如果单纯的剔除0位，会导致后面为0的位也会被剔除。</span><br><span class="line">        boolean isBeginning0 = true;</span><br><span class="line">        for (int i = 0; i &lt; number.length; i++) &#123;</span><br><span class="line">            if (number[i] != &apos;0&apos;) &#123;</span><br><span class="line">                isBeginning0 = false;</span><br><span class="line">            &#125;</span><br><span class="line">            if (!isBeginning0) &#123;</span><br><span class="line">                System.out.print(number[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路2：其实就是n个从0到9的全排列-用递归法求"><a href="#思路2：其实就是n个从0到9的全排列-用递归法求" class="headerlink" title="思路2：其实就是n个从0到9的全排列,用递归法求"></a>思路2：其实就是n个从0到9的全排列,用递归法求</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public void printToMaxOfNDigits(int n) &#123;</span><br><span class="line">        if (n &lt;= 0) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        char[] number = new char[n];</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt;10 ; i++) &#123;</span><br><span class="line">            number[0]= (char) (i+&apos;0&apos;);</span><br><span class="line">            printToMaxOfNDigitsRecruisively(number,n,0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">public void printToMaxOfNDigitsRecruisively(char[] number,int n,int index)&#123;</span><br><span class="line">        if(index==n-1)&#123;//递归终止条件，注意index的变化</span><br><span class="line">            printNumber(number);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 0; i &lt;10 ; i++) &#123;</span><br><span class="line">            number[index+1]= (char) (i+&apos;0&apos;);</span><br><span class="line">            printToMaxOfNDigitsRecruisively(number,n,index+1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="18-删除链表的节点"><a href="#18-删除链表的节点" class="headerlink" title="18.删除链表的节点"></a>18.删除链表的节点</h2><h3 id="题目1："><a href="#题目1：" class="headerlink" title="题目1："></a>题目1：</h3><p>给定单向链表的头节点和一个节点，定义一个函数在O（1）时间内删除该节点，该节点定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class ListNode &#123;</span><br><span class="line">    int value;</span><br><span class="line">    ListNode next;</span><br><span class="line">    public ListNode(int value)&#123;</span><br><span class="line">        this.value=value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>思路： 肯定不能用传统方法，用被删除节点的下一个节点的内容覆盖被删除节点，并把该节点的next指向该节点下一个节点的next。但要分三种情况</p>
+<img src="/2019/07/26/剑指offer算法题-高质量代码篇“/2.PNG" title="[]">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static void deleteNode(ListNode firstNode,ListNode toBeDeleted)&#123;</span><br><span class="line">        if(firstNode==null||toBeDeleted==null)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        if(toBeDeleted.next!=null)&#123;//有后续节点</span><br><span class="line">            ListNode nextNode=toBeDeleted.next;</span><br><span class="line">            toBeDeleted.value=nextNode.value;</span><br><span class="line">            toBeDeleted.next=nextNode.next;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(firstNode==toBeDeleted)&#123;//无后续节点，并且总共只有一个节点</span><br><span class="line">            firstNode=null;</span><br><span class="line"></span><br><span class="line">        &#125;else &#123;//被删节点是最后一个节点</span><br><span class="line">            ListNode currentNode=firstNode;</span><br><span class="line">            while(currentNode.next!=toBeDeleted)&#123;</span><br><span class="line">                currentNode=currentNode.next;</span><br><span class="line">            &#125;</span><br><span class="line">            currentNode.next=null;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意当被删节点时最后一个节点时，不能单纯的将它赋值为null，要找到他的上一个节点，否则它虽然是null，但还是会被引用。</p>
+<h3 id="题目二："><a href="#题目二：" class="headerlink" title="题目二："></a>题目二：</h3><p>在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5 处理后为 1-&gt;2-&gt;5</p>
+<p>思路：首先new一个新的节点，新的节点的next就是链表的头结点，用于处理头节点要被删除的情况，然后用两个指针，preNode和pNode。pNode用来寻找到重复元素的最后一个，preNode指向重复结点第一个的前一个，所以preNode永远在pNode的前面，然后preNode.next=pNode.next来删除节点、</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public static ListNode deleteDuolication(ListNode firstNode) &#123;</span><br><span class="line">        if (firstNode == null || firstNode.next == null) &#123;</span><br><span class="line">            return firstNode;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode headNode=new ListNode(0);//新建节点</span><br><span class="line">        headNode.next=firstNode;</span><br><span class="line">        ListNode preNode=headNode;</span><br><span class="line">        ListNode pNode=headNode.next;</span><br><span class="line">        while (pNode!=null)&#123;</span><br><span class="line">            if(pNode.next!=null&amp;&amp;pNode.value==pNode.next.value)&#123;//注意递归的循环。pNext</span><br><span class="line">                while (pNode.next!=null&amp;&amp;pNode.next.value==pNode.value)&#123;//这两个条件是一样的</span><br><span class="line">                    pNode=pNode.next;</span><br><span class="line">                &#125;</span><br><span class="line">                preNode.next=pNode.next;</span><br><span class="line">                pNode=pNode.next;</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">                preNode=preNode.next;</span><br><span class="line">                pNode=pNode.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return headNode.next;//返回的是head节点的后面一个节点</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="19-正则表达式的匹配"><a href="#19-正则表达式的匹配" class="headerlink" title="19.正则表达式的匹配"></a>19.正则表达式的匹配</h2><p>题目：请实现一个函数用来匹配包括’.’和’*‘的正则表达式。模式中的字符’.’表示任意一个字符，而’*‘表示它前面的字符可以出现任意次（包含0次）。 在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串”aaa”与模式”a.a”和”ab*ac*a”匹配，但是与”aa.a”和”ab*a”均不匹配</p>
+<p>思路：<br>当模式中当前字符的后面一个字符不是’*‘时：<br>直接判断他们是否相等，或模式中是否是’.’</p>
+<p>当模式中当前字符的后面一个字符是’*‘时：有两种情况<br>1：字符串字符与模式中的字符相等，他有两种选择：</p>
+<ul>
+<li>忽略当前模式的* 即模式下标+2（因为<em>可以匹配0个字符），比如abc与ab\</em>bc</li>
+<li>字符串下标+1，</li>
+</ul>
+<p>2：不相等，只有一种选择：</p>
+<ul>
+<li>忽略当前模式的* 即模式下标+2（因为*可以匹配0个字符）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public static boolean match(char[] str,char[] pattern)&#123;</span><br><span class="line">        if(str==null||pattern==null)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        int strIndex=0;</span><br><span class="line">        int patternIndex=0;</span><br><span class="line">        return  matchCore(str,pattern,strIndex,patternIndex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static boolean matchCore(char[] str,char[] pattern,int strIndex,int patternIndex)&#123;</span><br><span class="line">        //有效性检验，两个同时到达尾部，匹配成功</span><br><span class="line">        if(strIndex==str.length&amp;&amp;patternIndex==pattern.length)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        //pattern先到，匹配失败</span><br><span class="line">        if(str.length!=strIndex&amp;&amp;patternIndex==pattern.length)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        //模式第二个是*</span><br><span class="line">        if(patternIndex+1&lt;pattern.length&amp;&amp;pattern[patternIndex+1]==&apos;*&apos;)&#123;</span><br><span class="line">            if((strIndex!=str.length&amp;&amp;str[strIndex]==pattern[patternIndex])</span><br><span class="line">                    ||strIndex!=str.length&amp;&amp;pattern[patternIndex]==&apos;.&apos;)&#123;</span><br><span class="line">                return matchCore(str,pattern,strIndex,patternIndex+2)</span><br><span class="line">                        ||matchCore(str,pattern,strIndex+1,patternIndex);</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">                return matchCore(str,pattern,strIndex,patternIndex+2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //模式第二个不是*</span><br><span class="line">        if((strIndex!=str.length&amp;&amp;str[strIndex]==pattern[patternIndex])</span><br><span class="line">                ||strIndex!=str.length&amp;&amp;pattern[patternIndex]==&apos;.&apos;)&#123;</span><br><span class="line">            return matchCore(str,pattern,strIndex+1,patternIndex+1);</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>为什么下标pattern比str先到就匹配失败：<br>比如 abb与ab*<br>str下标比pattern先到，但还是匹配成功</p>
+<h2 id="20-表示数值的字符串"><a href="#20-表示数值的字符串" class="headerlink" title="20.表示数值的字符串"></a>20.表示数值的字符串</h2><p>题目：请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”,”5e2”,”-123”,”3.1416”和”-1E-16”都表示数值。 但是”12e”,”1a3.14”,”1.2.3”,”+-5”和”12e+4.3”都不是。</p>
+<p>本题考查对字符串的编程能力，我们需要从不同类型的数值中分析规律，要全面考虑数值整数，小数，指数部分的特点以及正负号出现的位置等等。</p>
+<p>思路：</p>
+<p>对字符串的每个字符进行判别分析，</p>
+<ol>
+<li>小数点和e/E都只能出现一次，并且e后面不能出现小数点，e是整数</li>
+<li>对于+号和-号，只能出现在第一个数字以及e的后一位</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">public boolean isNumber(char[] str) &#123;</span><br><span class="line">        if (str.length == 0 || str == null) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        int index = 0;</span><br><span class="line">        while (index &lt; str.length &amp;&amp; str[index] != &apos;.&apos; &amp;&amp; str[index] != &apos;e&apos; &amp;&amp; str[index] != &apos;E&apos;) &#123;//首先要判断index是否越界，不然会出现outofbound错误</span><br><span class="line">            if (scanInteger(str, index)) &#123;</span><br><span class="line">                index++;</span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (str[index] == &apos;.&apos;) &#123;</span><br><span class="line">            index++;//+1越过小数点</span><br><span class="line">            while (index &lt; str.length &amp;&amp; str[index] != &apos;e&apos; &amp;&amp; str[index] != &apos;E&apos;) &#123;</span><br><span class="line">                if (scanUnsignedInteger(str, index)) &#123;</span><br><span class="line">                    index++;</span><br><span class="line"></span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (str[index] == &apos;e&apos; || str[index] == &apos;E&apos;) &#123;</span><br><span class="line">            index++;//+1越过e</span><br><span class="line">            while (index &lt; str.length) &#123;</span><br><span class="line">                if (scanInteger(str, index)) &#123;</span><br><span class="line">                    index++;</span><br><span class="line"></span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (index == str.length) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    //无符号数判断</span><br><span class="line">    public boolean scanUnsignedInteger(char[] str, int index) &#123;</span><br><span class="line">        if (str[index] &gt;= &apos;0&apos; &amp;&amp; str[index] &lt;= &apos;9&apos;) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean scanInteger(char[] str, int index) &#123;</span><br><span class="line">        if (str[index] == &apos;+&apos; || str[index] == &apos;-&apos;) &#123;//若出现符号，+1越过后判断无符号数</span><br><span class="line">            index++;</span><br><span class="line">            if (index == str.length) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return scanUnsignedInteger(str, index);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="21-调整数组顺序使奇数位于偶数前面"><a href="#21-调整数组顺序使奇数位于偶数前面" class="headerlink" title="21.调整数组顺序使奇数位于偶数前面"></a>21.调整数组顺序使奇数位于偶数前面</h2><p>题目：输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
+<p>思路：类似于快排，此题主要考察对扩展性的理解，将一个单独的函数解耦，一部分是判断数组位于哪里的标准，另一部分是拆分数组的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public void reOrder(int[] nums)&#123;</span><br><span class="line">      if (nums.length &lt; 2 || nums == null) &#123;</span><br><span class="line">          return;</span><br><span class="line">      &#125;</span><br><span class="line">      int beginIndex=0;</span><br><span class="line">      int endIndex=nums.length-1;</span><br><span class="line">      while (beginIndex&lt;endIndex)&#123;</span><br><span class="line">          while (beginIndex&lt;endIndex&amp;&amp;isEven(nums[endIndex]))&#123;</span><br><span class="line">              endIndex--;</span><br><span class="line">          &#125;</span><br><span class="line">          while (beginIndex&lt;endIndex&amp;&amp;!isEven(nums[beginIndex]))&#123;</span><br><span class="line">              beginIndex++;</span><br><span class="line">          &#125;</span><br><span class="line">          if(beginIndex&lt;endIndex)&#123;</span><br><span class="line">              int temp=nums[beginIndex];</span><br><span class="line">              nums[beginIndex]=nums[endIndex];</span><br><span class="line">              nums[endIndex]=temp;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  public boolean isEven(int n)&#123;</span><br><span class="line">      return (n&amp;1)==0;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="鲁棒性"><a href="#鲁棒性" class="headerlink" title="鲁棒性"></a>鲁棒性</h2><p>鲁棒是英文Robust的音译。有时也成为健壮性。所谓的鲁棒性是指程序能够判断输入是否合乎要求，并对不合乎要求的输入予以正确的处理</p>
+<h2 id="22-链表的倒数第k个节点"><a href="#22-链表的倒数第k个节点" class="headerlink" title="22.链表的倒数第k个节点"></a>22.链表的倒数第k个节点</h2><p>题目:输入一个链表，输出该链表中倒数第k个结点,单向链表，从1开始计数</p>
+<p>思路：用两个指针，第一个指针指向头结点，开始向后遍历，遍历k-1步后，第二个指针指向头结点，然后两个指针一起向后遍历，这里第一个指针和第二指针之间就永远相差k-1个节点。当第一个指针到达最后的节点，那么第二个指针就是所求，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public ListNode findKthToTail(ListNode firstNode,int k)&#123;</span><br><span class="line">           if(firstNode==null||k==0)&#123;</span><br><span class="line">               return null;</span><br><span class="line">           &#125;</span><br><span class="line">           ListNode pAhead=firstNode;</span><br><span class="line">           ListNode pBehind=null;</span><br><span class="line">           for (int i = 0; i &lt;k-1 ; i++) &#123;</span><br><span class="line">               if(pAhead.next!=null)&#123;</span><br><span class="line">                   pAhead=pAhead.next;</span><br><span class="line">               &#125;else &#123;</span><br><span class="line">                   return null;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           pBehind=firstNode;</span><br><span class="line">           while (pAhead.next!=null)&#123;</span><br><span class="line">               pAhead=pAhead.next;</span><br><span class="line">               pBehind=pBehind.next;</span><br><span class="line">           &#125;</span><br><span class="line">           return pBehind;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>程序的鲁棒性要注意三点：</strong><br>输入的firstNode是否为null，链表是否有k个节点<br>如果是在c++中，还要注意k是否为无符号整数，因为k=0，k-1就变成了0xFFFFFFFF,在java中不存在无符号整数。</p>
+<h2 id="23-链表中环的入口节点"><a href="#23-链表中环的入口节点" class="headerlink" title="23.链表中环的入口节点"></a>23.链表中环的入口节点</h2><p>题目：给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。</p>
+<img src="/2019/07/26/剑指offer算法题-高质量代码篇“/3.PNG">
+<p>图中所示链表应返回2.</p>
+<p>思路：</p>
+<ol>
+<li>首先要判断链表是否有环，用两个指针，一个指针一次走一步，另一个指针一次走两步，当他们相遇时就有环，不相遇则无环。</li>
+<li>接下来要求出环中的节点数（n个），因为当定义两个指针指向头结点，一个指针先走n步，然后两个指针再同时走，当他们再次相遇时就是入口节点。</li>
+<li>求节点数就是用1中相遇时的节点，因为这个节点必然在环中，从它开始遍历，当它回到它自身时，计算出节点数。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public ListNode findEntryNodeOfLoop(ListNode pHead) &#123;</span><br><span class="line">       ListNode meetingNode = findMeetingNode(pHead);</span><br><span class="line">       if (meetingNode == null) &#123;</span><br><span class="line">           return null;</span><br><span class="line">       &#125;</span><br><span class="line">       int nodesInLoop = 1;</span><br><span class="line">       ListNode pNode = meetingNode;</span><br><span class="line">       while (pNode.next != meetingNode) &#123;</span><br><span class="line">           pNode = pNode.next;</span><br><span class="line">           nodesInLoop++;</span><br><span class="line">       &#125;</span><br><span class="line">       ListNode pNode1 = pHead;</span><br><span class="line">       ListNode pNode2 = pHead;</span><br><span class="line">       for (int i = 0; i &lt; nodesInLoop; i++) &#123;</span><br><span class="line">           pNode1 = pNode1.next;</span><br><span class="line">       &#125;</span><br><span class="line">       while (pNode1 != pNode2) &#123;</span><br><span class="line">           pNode1 = pNode1.next;</span><br><span class="line">           pNode2 = pNode2.next;</span><br><span class="line">       &#125;</span><br><span class="line">       return pNode1;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public ListNode findMeetingNode(ListNode pHead) &#123;</span><br><span class="line">       if (pHead == null) &#123;</span><br><span class="line">           return null;</span><br><span class="line">       &#125;</span><br><span class="line">       ListNode pSlow = pHead;</span><br><span class="line">       ListNode pFast = pHead;</span><br><span class="line">       while (pSlow != null &amp;&amp; pFast != null) &#123;</span><br><span class="line"></span><br><span class="line">           pSlow = pSlow.next;</span><br><span class="line">           pFast = pFast.next;</span><br><span class="line">           if (pFast!= null) &#123;//不能一次走两步，要判断第一步是否是空，才能走第二步</span><br><span class="line">               pFast = pFast.next;</span><br><span class="line">           &#125;</span><br><span class="line">           if (pSlow == pFast) &#123;</span><br><span class="line">               return pFast;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       return null;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/25/hexo博客部署时遇到的问题/" rel="next" title="hexo博客部署时遇到的问题">
+                <i class="fa fa-chevron-left"></i> hexo博客部署时遇到的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/02/深入理解JVM/" rel="prev" title="深入理解JVM">
+                深入理解JVM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/dragon.jpg" alt="Liu Mn">
+            
+              <p class="site-author-name" itemprop="name">Liu Mn</p>
+              <p class="site-description motion-element" itemprop="description">悟已往之不谏，知来者之可追</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#高质量代码篇"><span class="nav-number">1.</span> <span class="nav-text">高质量代码篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#16-数值的整数次方"><span class="nav-number">1.1.</span> <span class="nav-text">16.数值的整数次方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-打印从1到最大的n位数"><span class="nav-number">1.2.</span> <span class="nav-text">17.打印从1到最大的n位数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路1-考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。"><span class="nav-number">1.2.1.</span> <span class="nav-text">思路1: 考虑到int和long只能表示32或64位的二进制数，这里用字符串表示就不会出现溢出问题，首先创造一个字符数组（全部初始化为0），然后对它的最低位，也就n-1的下标位进行加1，其中要考虑进位问题以及到达循环结束，也就是到达最大的n位数，打印时也要对开始的0位进行剔除。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路2：其实就是n个从0到9的全排列-用递归法求"><span class="nav-number">1.2.2.</span> <span class="nav-text">思路2：其实就是n个从0到9的全排列,用递归法求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-删除链表的节点"><span class="nav-number">1.3.</span> <span class="nav-text">18.删除链表的节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目1："><span class="nav-number">1.3.1.</span> <span class="nav-text">题目1：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目二："><span class="nav-number">1.3.2.</span> <span class="nav-text">题目二：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-正则表达式的匹配"><span class="nav-number">1.4.</span> <span class="nav-text">19.正则表达式的匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-表示数值的字符串"><span class="nav-number">1.5.</span> <span class="nav-text">20.表示数值的字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-调整数组顺序使奇数位于偶数前面"><span class="nav-number">1.6.</span> <span class="nav-text">21.调整数组顺序使奇数位于偶数前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#鲁棒性"><span class="nav-number">1.7.</span> <span class="nav-text">鲁棒性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-链表的倒数第k个节点"><span class="nav-number">1.8.</span> <span class="nav-text">22.链表的倒数第k个节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-链表中环的入口节点"><span class="nav-number">1.9.</span> <span class="nav-text">23.链表中环的入口节点</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liu Mn</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
