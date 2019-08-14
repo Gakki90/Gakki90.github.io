@@ -88,7 +88,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/02/深入理解JVM/1.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/08/02/深入理解JVM/2.png">
-<meta property="og:updated_time" content="2019-08-02T10:24:09.394Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/02/深入理解JVM/3.PNG">
+<meta property="og:updated_time" content="2019-08-10T09:39:49.505Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解JVM">
 <meta name="twitter:description" content="《深入理解java虚拟机》精华总结">
@@ -408,7 +409,79 @@
 <li>弱引用<br>用于描述非必需对象，当垃圾收集器开始工作时，无论内存是否溢出，都会回收这类对象</li>
 <li>虚引用<br>唯一目的就是这个对象在被垃圾收集器回收时会收到一个通知。</li>
 </ol>
-<h3 id="4-3"><a href="#4-3" class="headerlink" title="4.3"></a>4.3</h3>
+<h3 id="4-3-finalize方法"><a href="#4-3-finalize方法" class="headerlink" title="4.3 finalize方法"></a>4.3 finalize方法</h3><p>即便是在可达性分析算法中不可达的对象，也并非”非死不可”，真正宣告一个对象的死亡，需要经过两次标记过程。</p>
+<ul>
+<li>第一次标记：对象进行可达性分析后，没有与GC root的引用链相连的对象，将会被第一次标记并进行一次筛选，来判断他是否有必要执行finalize方法<br>筛选条件：如果对象没有覆盖finalize方法或者虚拟机已经调用了它的finalize方法，它就没必要执行下一步。</li>
+<li>第二次标记：这时对象被判定为需要执行finalize方法，并被放置在一个叫 F-Queue的队列中，finalize方法是对象逃脱死亡的最好一次方法，稍后Gc会对队列中的对象进行第二次标记，如果对象此时重新与GC引用链连接上，那么它就会被移出“即将回收”的集合。</li>
+</ul>
+<h3 id="4-4-回收方法区"><a href="#4-4-回收方法区" class="headerlink" title="4.4 回收方法区"></a>4.4 回收方法区</h3><p>方法区（HotSpot虚拟机中的永久代），java虚拟机规范并不要去在方法区中实现垃圾收集，因为性价比很低，。<br>主要回收两部分内容：</p>
+<ul>
+<li>常量：与java对象非常类似，如果它没有被引用，就会被回收</li>
+<li>无用的类：判断一个类是否无用比较复杂：<ol>
+<li>该类的所有实例已被回收</li>
+<li>加载该类的classloder已经被回收</li>
+<li>该类对应的java.lang.class没有在任何地方被引用，无法在任何地方通过反射来访问该类的方法。</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-4-垃圾收集算法"><a href="#4-4-垃圾收集算法" class="headerlink" title="4.4 垃圾收集算法"></a>4.4 垃圾收集算法</h3><ol>
+<li><p>标记-清除算法：<br>算法分为标记和清除两个阶段:首先标记所有需要回收的对象，在标记 完成后统一回收所有对象<br>主要不足有两个：</p>
+<ul>
+<li>效率低：标记和清除两个效率都不高</li>
+<li>空间问题：标记清除后产生大量不连续的内存碎片，导致在分配较大对象时，无法找到足够连续内存而引起又一次的垃圾收集</li>
+</ul>
+</li>
+<li><p>复制算法<br>为了解决标记清除算法的效率问题，他将可用内存按照容量划分为大小相等的两块，每次只使用其中的一块。当这块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉。这样使得每次都是对整个半区进行内存回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存即可<br>不足：</p>
+<ul>
+<li>将内存缩小为了原来的一半<br>实际中我们并不需要按照1:1比例来划分内存空间，而是将内存分为一块较大的Eden空间和两块较小的Survivor空间，每次使用Eden和其中一块Survivor<br>当另一个Survivor空间没有足够空间存放上一次新生代收集下来的存活对象时，这些对象将直接通过分配担保机制进入老年代</li>
+</ul>
+</li>
+<li><p>标记-整理算法<br>复制收集算法在对象存活率较高时效率较低，还需要额外的空间进行分配担保。<br>标记整理算法的过程仍然和标记清除算法一样，只是在标记完成后，现将对象往一端移动，然后直接清理掉边界以外的内存</p>
+</li>
+<li><p>分代收集算法<br>新生代就用复制算法，因为他们“朝生夕死”，老年代就用标记整理或者标记清除算法。</p>
+</li>
+</ol>
+<h3 id="4-5-垃圾收集器"><a href="#4-5-垃圾收集器" class="headerlink" title="4.5 垃圾收集器"></a>4.5 垃圾收集器</h3><p>收集算法是对内存回收的方法论，垃圾收集器就是内存回收的具体实现</p>
+<img src="/2019/08/02/深入理解JVM/3.PNG">
+<ol>
+<li><p>Serial收集器<br>单线程收集器，不仅仅使用一个cpu和一个线程去完成垃圾收集工作，更重要的是他会暂停所有用户线程，知道它收集完成。</p>
+</li>
+<li><p>Parnew收集器<br>serial收集器的多线程版本，除了使用多线程进行垃圾收集，其它的和serial收集器一样</p>
+</li>
+<li><p>Paraller Scavenge收集器<br>它也是使用复制算法的收集器，，又是并行的多线程处理器，它与parnew收集器的关注点不同，CMS等收集器的关注点是尽可能的缩短垃圾收集时用户线程的停顿时间，而paraller scavenge目的是达到一个可控的吞吐量（throughput)</p>
+<ul>
+<li>吞吐量=（运行用户代码时间）/（运行用户代码时间+垃圾收集时间）</li>
+</ul>
+</li>
+<li><p>Serial Old收集器<br>serial收集器的老年代版本，同样是一个单线程收集器，使用标记-整理算法，</p>
+</li>
+<li><p>paraller old收集器<br>paraller scavenge收集器的老年代版本，使用多线程和标记-整理算法，</p>
+</li>
+<li><p>CMS收集器<br>是一种以获取最短回收停顿时间为目标的收集器，基于标记-清除算法实现的，它分为四个步骤：</p>
+<ol>
+<li>初始标记：标记一下GC root能关联到的对象</li>
+<li>并发标记： GC root tracing的过程</li>
+<li>重新标记： 修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录</li>
+<li>并发清理</li>
+</ol>
+<p>优点:并发收集，低停顿<br>缺点：</p>
+<ol>
+<li>CMS收集器对CPU资源非常敏感，CMS默认启动的回收线程数是（CPU数量+3）/4，</li>
+<li>CMS收集器无法处理浮动垃圾，可能出现Failure失败而导致一次Full GC的产生</li>
+<li>CMS是基于标记清除算法实现的</li>
+</ol>
+</li>
+<li><p>G1收集器<br>面向服务器应用的垃圾收集器</p>
+<ol>
+<li>并行与并发：使用多个cpu来缩短stop-the-world停顿的时间</li>
+<li>分代收集</li>
+<li>空间整合，不会产生内存碎片</li>
+<li>可预测的停顿：能让使用者明确指定在一个长度为M毫秒的时间片段上，消耗在垃圾收集上的时间不得超过n毫秒</li>
+</ol>
+<p>运行方式：初始标记，并发标记，最终标记，筛选标记</p>
+</li>
+</ol>
+
       
     </div>
     
@@ -523,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -560,7 +633,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#《深入理解java虚拟机》精华总结"><span class="nav-number">1.</span> <span class="nav-text">《深入理解java虚拟机》精华总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-java虚拟机运行时数据区域"><span class="nav-number">1.1.</span> <span class="nav-text">1.java虚拟机运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-程序计数器："><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 程序计数器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Java虚拟机栈"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 Java虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-本地方法栈"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Java堆"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 Java堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-方法区"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.5 方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-运行时常量池"><span class="nav-number">1.1.6.</span> <span class="nav-text">1.6 运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-直接内存"><span class="nav-number">1.1.7.</span> <span class="nav-text">1.7 直接内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HotSpot虚拟机对象探秘"><span class="nav-number">1.2.</span> <span class="nav-text">2.HotSpot虚拟机对象探秘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1对象的创建"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1对象的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2对象的内存布局"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">对象头：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例数据"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">实例数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对齐填充"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">对齐填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3对象的访问定位"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3对象的访问定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-OutOfMemory异常"><span class="nav-number">1.2.4.</span> <span class="nav-text">3.OutOfMemory异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Java堆溢出"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">3.1 Java堆溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-虚拟机栈和本地方法栈溢出"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">3.2 虚拟机栈和本地方法栈溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-方法区和运行时常量池溢出"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">3.3 方法区和运行时常量池溢出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-垃圾收集"><span class="nav-number">1.3.</span> <span class="nav-text">4.垃圾收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1如何确定对象的“存活”"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.1如何确定对象的“存活”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-引用"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.2 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3"><span class="nav-number">1.3.3.</span> <span class="nav-text">4.3</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#《深入理解java虚拟机》精华总结"><span class="nav-number">1.</span> <span class="nav-text">《深入理解java虚拟机》精华总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-java虚拟机运行时数据区域"><span class="nav-number">1.1.</span> <span class="nav-text">1.java虚拟机运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-程序计数器："><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 程序计数器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Java虚拟机栈"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 Java虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-本地方法栈"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Java堆"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 Java堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-方法区"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.5 方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-运行时常量池"><span class="nav-number">1.1.6.</span> <span class="nav-text">1.6 运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-直接内存"><span class="nav-number">1.1.7.</span> <span class="nav-text">1.7 直接内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HotSpot虚拟机对象探秘"><span class="nav-number">1.2.</span> <span class="nav-text">2.HotSpot虚拟机对象探秘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1对象的创建"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1对象的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2对象的内存布局"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">对象头：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例数据"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">实例数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对齐填充"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">对齐填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3对象的访问定位"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3对象的访问定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-OutOfMemory异常"><span class="nav-number">1.2.4.</span> <span class="nav-text">3.OutOfMemory异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Java堆溢出"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">3.1 Java堆溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-虚拟机栈和本地方法栈溢出"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">3.2 虚拟机栈和本地方法栈溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-方法区和运行时常量池溢出"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">3.3 方法区和运行时常量池溢出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-垃圾收集"><span class="nav-number">1.3.</span> <span class="nav-text">4.垃圾收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1如何确定对象的“存活”"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.1如何确定对象的“存活”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-引用"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.2 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-finalize方法"><span class="nav-number">1.3.3.</span> <span class="nav-text">4.3 finalize方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-回收方法区"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.4 回收方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-垃圾收集算法"><span class="nav-number">1.3.5.</span> <span class="nav-text">4.4 垃圾收集算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-垃圾收集器"><span class="nav-number">1.3.6.</span> <span class="nav-text">4.5 垃圾收集器</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
