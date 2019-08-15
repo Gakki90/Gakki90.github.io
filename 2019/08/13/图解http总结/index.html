@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="The Weeknd Blog">
 <meta property="og:description" content="《图解http》精华总结">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-14T02:12:56.389Z">
+<meta property="og:updated_time" content="2019-08-14T03:21:53.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图解http总结">
 <meta name="twitter:description" content="《图解http》精华总结">
@@ -348,7 +348,12 @@
 </ul>
 <h2 id="第三章-HTTP报文内的http信息"><a href="#第三章-HTTP报文内的http信息" class="headerlink" title="第三章 HTTP报文内的http信息"></a>第三章 HTTP报文内的http信息</h2><p>用于http协议交互的信息被称为http报文。请求端的称为请求报文，响应端称为响应报文。<br>http报文分为报文首部和报文主体，两者用空行（CR+LF）来划分。通常，并不一定要有报文主体。</p>
 <h3 id="3-1-结构"><a href="#3-1-结构" class="headerlink" title="3.1 结构"></a>3.1 结构</h3><p>报文首部分为请求行/状态行 ，以及首部字段<br>首部字段有四种：通用首部，请求首部，响应首部，实体首部。</p>
-<h3 id="3-2-编码"><a href="#3-2-编码" class="headerlink" title="3.2 编码"></a>3.2 编码</h3><p>在传输过程中通过编码提升速率。</p>
+<ol>
+<li>通用首部：请求和响应报文两方都会使用的首部</li>
+<li>请求首部： 请求方报文使用的首部，包括请求的附加内容，客户端信息，响应内容相关优先级等信息</li>
+<li>响应首部：响应报文中的</li>
+<li>实体首部：针对响应报文和请求报文中的实体部分使用的首部，与实体有关的信息<h3 id="3-2-编码"><a href="#3-2-编码" class="headerlink" title="3.2 编码"></a>3.2 编码</h3>在传输过程中通过编码提升速率。</li>
+</ol>
 <ul>
 <li>报文：http通信的基本单位，由8位组字节流组成</li>
 <li>实体：作为请求和响应的有效载荷数据被传输，由首部和主体组成<br>通常报文主体等于实体主体，只有当传输进行编码操作时，实体主体才会发生变化。</li>
@@ -367,13 +372,28 @@
 <li>302 Found<br>临时性重定向</li>
 <li>303 See Other<br>表示请求对应的资源存在着另一个URI，应使用GET方法定向获取请求的资源</li>
 <li>304 Not Modeified<br>表明资源已找到，但发生请求未满足条件的情况，直接返回304,304虽然划分在3xx中，但跟重定向没关系。</li>
-<li>307 Temporary Redirect<br>临时性重定向<h3 id="4xx"><a href="#4xx" class="headerlink" title="4xx"></a>4xx</h3>表明客户端是发生错误的原因所在</li>
+<li>307 Temporary Redirect<br>临时性重定向</li>
+</ol>
+<h3 id="4xx"><a href="#4xx" class="headerlink" title="4xx"></a>4xx</h3><p>表明客户端是发生错误的原因所在</p>
+<ol>
 <li>400 Bad Request<br>请求报文中发生语法错误</li>
 <li>401 Unauthrorized<br>表明发送的请求需要http认证，当浏览器初次接受到401时，会弹出认证的对话窗口</li>
 <li>403 Forbidden<br>表明请求的资源被服务器设置为拒绝访问</li>
-<li>404 Not Found<br>服务器无法找到请求的资源<h3 id="5xx"><a href="#5xx" class="headerlink" title="5xx"></a>5xx</h3></li>
+<li>404 Not Found<br>服务器无法找到请求的资源</li>
+</ol>
+<h3 id="5xx"><a href="#5xx" class="headerlink" title="5xx"></a>5xx</h3><ol>
 <li>500 Internal Server Error<br>服务器在执行请求时发生了故障</li>
 <li>503 Service Unvailable<br>服务器处于超负荷和停机维护状态</li>
+</ol>
+<h2 id="第五章-Web服务器"><a href="#第五章-Web服务器" class="headerlink" title="第五章 Web服务器"></a>第五章 Web服务器</h2><p>一台http服务器可以搭建多个web站点，里用虚拟主机（virtua host，又称虚拟服务器）的功能。<br>但因为一台主机的ip地址是相同的，所有在发送http请求时，必须在host首部内完整指定主机名或域名的URI</p>
+<h3 id="通信数据转发程序"><a href="#通信数据转发程序" class="headerlink" title="通信数据转发程序"></a>通信数据转发程序</h3><ol>
+<li>代理<br>代理服务器的基本行为就接收客户端发送的请求然后传给服务器。<ul>
+<li>缓存代理：缓存代理会预先将资源的副本保存在代理服务器上，当代理接收到相同资源的请求，会直接将缓存的副本串给客户端，而不去访问源服务器。缓存有时间期限，客户端也可以有缓存。</li>
+<li>透明代理： 转发请求或响应时，会对报文进行加工</li>
+</ul>
+</li>
+<li>网关<br>网关的工作机制和代理相似，但网关能使通信线路上的服务器提供非http协议服务。利用网关的加密特性能提高通信的安全性。</li>
+<li>隧道<br>隧道通常在相隔甚远的服务器和客户端之间进行中转，他的目的是让他们之间进行安全的通信，使用SSL等加密手段。</li>
 </ol>
 
       
@@ -435,6 +455,10 @@
 
 
           
+
+  
+     <div id="gitalk-container">
+</div>
 
   
 
@@ -523,7 +547,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-Web网络基础"><span class="nav-number">1.</span> <span class="nav-text">第一章 Web网络基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URI-与-URL"><span class="nav-number">1.1.</span> <span class="nav-text">URI 与 URL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-简单的http协议"><span class="nav-number">2.</span> <span class="nav-text">第二章 简单的http协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1无状态协议"><span class="nav-number">2.1.</span> <span class="nav-text">2.1无状态协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-http-1-1-中的方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 http/1.1 中的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-http的持久性连接"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 http的持久性连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-HTTP报文内的http信息"><span class="nav-number">3.</span> <span class="nav-text">第三章 HTTP报文内的http信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-结构"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-编码"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-状态码"><span class="nav-number">4.</span> <span class="nav-text">第四章 状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1xx"><span class="nav-number">4.1.</span> <span class="nav-text">1xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2xx"><span class="nav-number">4.2.</span> <span class="nav-text">2xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3xx"><span class="nav-number">4.3.</span> <span class="nav-text">3xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4xx"><span class="nav-number">4.4.</span> <span class="nav-text">4xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5xx"><span class="nav-number">4.5.</span> <span class="nav-text">5xx</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-Web网络基础"><span class="nav-number">1.</span> <span class="nav-text">第一章 Web网络基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URI-与-URL"><span class="nav-number">1.1.</span> <span class="nav-text">URI 与 URL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-简单的http协议"><span class="nav-number">2.</span> <span class="nav-text">第二章 简单的http协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1无状态协议"><span class="nav-number">2.1.</span> <span class="nav-text">2.1无状态协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-http-1-1-中的方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 http/1.1 中的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-http的持久性连接"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 http的持久性连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-HTTP报文内的http信息"><span class="nav-number">3.</span> <span class="nav-text">第三章 HTTP报文内的http信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-结构"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-编码"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-状态码"><span class="nav-number">4.</span> <span class="nav-text">第四章 状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1xx"><span class="nav-number">4.1.</span> <span class="nav-text">1xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2xx"><span class="nav-number">4.2.</span> <span class="nav-text">2xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3xx"><span class="nav-number">4.3.</span> <span class="nav-text">3xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4xx"><span class="nav-number">4.4.</span> <span class="nav-text">4xx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5xx"><span class="nav-number">4.5.</span> <span class="nav-text">5xx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章-Web服务器"><span class="nav-number">5.</span> <span class="nav-text">第五章 Web服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通信数据转发程序"><span class="nav-number">5.1.</span> <span class="nav-text">通信数据转发程序</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -712,6 +736,22 @@
 
 
 
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'Iv1.e9ea4cb76e08a890',
+          clientSecret: '29529947cea959e7cc2ca0cdf5d6bab52920a61c',
+          repo: 'https://github.com/Gakki90/Gakki90.github.io',
+          owner: 'Gakki90',
+          admin: ['Gakki90'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
