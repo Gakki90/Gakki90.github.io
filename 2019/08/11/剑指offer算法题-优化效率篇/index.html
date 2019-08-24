@@ -590,124 +590,169 @@
           return (double)minHeap.peek();
       }
   }
-}
+}</code></pre></li>
+</ul>
+<h2 id="42-连续子数组的最大和"><a href="#42-连续子数组的最大和" class="headerlink" title="42.连续子数组的最大和"></a>42.连续子数组的最大和</h2><p>题目：给定一个数组arr，数组中的元素有整数也有负数，数组中的一个或者连续多个数组成一个子数组。</p>
+<p>求所有子数组里面的最大和。例如现在有数组 {1 ， -2 ， 3 ， 10 ， -4 ， 7 ， 2 ， -5 }。<br>要求时间复杂度为O（n）<br>思路：暴力法不可行，</p>
+<ul>
+<li>动态规划  <img src="/2019/08/11/剑指offer算法题-优化效率篇/2.PNG">
+  当前面的数加起来等于负数，那么就抛弃前面的数的和，sum=当前的数，如果加起来的等于正，sum=sum+当前的数，</li>
+</ul>
+<pre><code>  public int findGreatestSumOfSubArray(int[] arr){
+        if(arr==null||arr.length&lt;0){
+            return 0;
+        }
+        int currentSum=0;
+        int nGreatestSum=0;
+        for (int i = 1; i &lt;arr.length; i++) {
+            if(currentSum&lt;=0){
+
+                currentSum=arr[i];
+            }else {
+                currentSum+=arr[i];
+            }
+
+            if(currentSum&gt;nGreatestSum){
+                nGreatestSum=currentSum;
+            }
+
+        }
+        return nGreatestSum;
+    }</code></pre><p><strong>下面两题偏向于找规律</strong></p>
+<h2 id="43-1到n整数中1出现的个数"><a href="#43-1到n整数中1出现的个数" class="headerlink" title="43.1到n整数中1出现的个数"></a>43.1到n整数中1出现的个数</h2><p>题目:输入一个整数n，求从1到n这n个整数的十进制表示中1出现的次数。例如输入12，从1到12这些整数中包含1的数字有1，10，11和12，1一共出现了5次。</p>
+<p>思路：这里书上说的晦涩难懂，参考一篇博客<br><a href="https://blog.csdn.net/yi_afly/article/details/52012593" target="_blank" rel="noopener">https://blog.csdn.net/yi_afly/article/details/52012593</a><br>从个位分析，找出每位1出现的规律</p>
+<img src="/2019/08/11/剑指offer算法题-优化效率篇/3.PNG">
+<p>这里的former是指weight前面所有位的数，不单单指前面一个位</p>
+<pre><code>public int timesOf1(int n){
+      int base=1;
+      int round=n;
+      int weight=0;
+      int former=0;
+      int sum=0;
+      while (round&gt;0){
+          weight=round%10;
+          round=round/10;
+          if(weight==0){
+              sum+=round*base;
+          }else if(weight==1){
+              sum+=round*base+former+1;
+          }else {
+              sum+=round*base+base;
+          }
+          base*=10;
+          former=n%base;
+      }
+      return sum;
+  }</code></pre><p>复杂度：O（logn）</p>
+<h2 id="43-数字序列中某一位的数字"><a href="#43-数字序列中某一位的数字" class="headerlink" title="43.数字序列中某一位的数字"></a>43.数字序列中某一位的数字</h2><p>数字按照0123456789101112131415161718192021…的顺序排列。第5位（从0开始计数）为5，第13位为1，第19位为4…… 求任意第n位对应的数字。</p>
+<p>思路：找规律，分三步找：</p>
+<ol>
+<li>找出该数是几位数，1位数有10个，2位数有90个所有当index大于10+90*2时，那么他的位数肯定大于2。</li>
+<li>找出这个数的数值，可以从他位于n位数的第几个开始着手，比如输入218，219&gt;190，所以他是三位数，三位数从100开始，219-190=29,29=3*9+2，所以他为了三位数的第9个数，等于109（这里从100开始数，数到108后还有两位，所以是第9个数）</li>
+<li>那么它就位于109的第二位（从高位数）</li>
+</ol>
+<pre><code>public int digitAtIndex(int index) {
+        if (index &lt; 0) {
+            return -1;
+        }
+        if (index &lt; 10) {
+            return index;
+        }
+        int length = lengthOfNum(index);//这个数的位数
+        int number = numberBeforeLength(length);//数的长度前面有多少个，比如输入3，前面有90*2+10=190个数字
+        int indexOfNum = (index - number) % length;//在这个数的第几个，
+        int countOfNumber = (index - number - indexOfNum) / length;//在n位数的中的第几位
+        int thisNum = (int) (Math.pow(10, length - 1) + countOfNumber);//index所对应的数字
+        int digit= digitAtIndexOfNum(thisNum,length-1-indexOfNum);//因为indexOfNum是从前面数的，要从低位数
+        return digit;
+
+    }
+    int digitAtIndexOfNum(int num,int indexOfThisNum){
+        int n=0;
+        int digit=0;
+        while (n&lt;=indexOfThisNum){
+            digit=num%10;
+            num/=10;
+            n++;
+        }
+        return digit;
+    }
+    public int lengthOfNum(int index) {
+        int n = 2;
+        int sum = 10;
+        int base = 10;
+        while (sum &lt; index) {
+            sum += n * base * 9;
+            n++;
+            base *= 10;
+        }
+        return n - 1;
+    }
+
+    public int numberBeforeLength(int length) {
+        int n = 2;
+        int base = 10;
+        int sum = 10;
+        while (n &lt; length) {
+            sum += n * base * 9;
+            n++;
+            base *= 10;
+        }
+        return sum;
+    }</code></pre><h2 id="45-把数组排成最小的数"><a href="#45-把数组排成最小的数" class="headerlink" title="45.把数组排成最小的数"></a>45.把数组排成最小的数</h2><p>题目：输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。</p>
+<p>思路：引入一个新的排序规则，两个数n和m，如果nm&gt;mn，那么n&gt;m，这nm指的是字符串相加，如：1和2，那么nm=12.<br>现将所有数按照这种规则排列，排列后的顺序就是最小数字的排列顺序。</p>
+<pre><code>  public String printMinNumber(int[] numbers){
+       if(numbers==null||numbers.length&lt;=0){
+           return null;
+       }
+       List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+       for (int n: numbers
+            ) {
+           list.add(n);
+
+       }
+       Collections.sort(list, new Comparator&lt;Integer&gt;() {
+           @Override
+           public int compare(Integer o1, Integer o2) {
+               String s1 = String.valueOf(o1);
+               String s2 = String.valueOf(o2);
+               String str1 = s1+s2;
+               String str2 = s2+s1;
+               return str1.compareTo(str2);
+           }
+       }) ;
+
+       StringBuilder str=new StringBuilder();
+       for (int n:list
+            ) {
+           str.append(n);
+       }
+       return str.toString();
+   }</code></pre><h2 id="46-把数组排成最小的数"><a href="#46-把数组排成最小的数" class="headerlink" title="46.把数组排成最小的数"></a>46.把数组排成最小的数</h2><p>题目：给定一个数字，按照如下规则翻译成字符串：0翻译成“a”，1翻译成“b”…25翻译成“z”。一个数字有多种翻译可能，例如12258一共有5种，分别是bccfi，bwfi，bczi，mcfi，mzi。实现一个函数，用来计算一个数字有多少种不同的翻译方法。</p>
+<p>思路：自上而下，从最大的问题开始，递归 ：</p>
+<pre><code>                     12258
+                   /       \
+              b+2258       m+258
+              /   \         /   \
+          bc+258 bw+58  mc+58  mz+8
+          /  \      \        \     \
+      bcc+58 bcz+8   bwf+8   mcf+8  mzi
+        /        \       \     \
+   bccf+8        bczi    bwfi   mcfi
+     /
+ bccfi</code></pre><p>有很多子问题被多次计算，比如258被翻译成几种这个子问题就被计算了两次</p>
+<ul>
+<li>递归<pre><code>public int getTranslationCount(int number){
+   if(number&lt;0){
+       return 0;
+   }
+   String num=String.valueOf(number);
+   char[] numbers=num.toCharArray();
+   int length=numbers.length;
+   return getTranslationCountCore(numbers,length);
+
 </code></pre></li>
 </ul>
-<pre><code>
-## 42.连续子数组的最大和
-题目：给定一个数组arr，数组中的元素有整数也有负数，数组中的一个或者连续多个数组成一个子数组。
-
-求所有子数组里面的最大和。例如现在有数组 {1 ， -2 ， 3 ， 10 ， -4 ， 7 ， 2 ， -5 }。
-要求时间复杂度为O（n）
-思路：暴力法不可行，
-* 动态规划
-    {% asset_img 2.PNG %}
-    当前面的数加起来等于负数，那么就抛弃前面的数的和，sum=当前的数，如果加起来的等于正，sum=sum+当前的数，
-</code></pre><p>  public int findGreatestSumOfSubArray(int[] arr){<br>        if(arr==null||arr.length&lt;0){<br>            return 0;<br>        }<br>        int currentSum=0;<br>        int nGreatestSum=0;<br>        for (int i = 1; i &lt;arr.length; i++) {<br>            if(currentSum&lt;=0){</p>
-<pre><code>            currentSum=arr[i];
-        }else {
-            currentSum+=arr[i];
-        }
-
-        if(currentSum&gt;nGreatestSum){
-            nGreatestSum=currentSum;
-        }
-
-    }
-    return nGreatestSum;
-}</code></pre><pre><code>
-**下面两题偏向于找规律**
-## 43.1到n整数中1出现的个数
-题目:输入一个整数n，求从1到n这n个整数的十进制表示中1出现的次数。例如输入12，从1到12这些整数中包含1的数字有1，10，11和12，1一共出现了5次。
-
-
-思路：这里书上说的晦涩难懂，参考一篇博客
-&lt;https://blog.csdn.net/yi_afly/article/details/52012593&gt;
-从个位分析，找出每位1出现的规律
-{% asset_img 3.PNG %}
-这里的former是指weight前面所有位的数，不单单指前面一个位</code></pre><p>public int timesOf1(int n){<br>      int base=1;<br>      int round=n;<br>      int weight=0;<br>      int former=0;<br>      int sum=0;<br>      while (round&gt;0){<br>          weight=round%10;<br>          round=round/10;<br>          if(weight==0){<br>              sum+=round<em>base;<br>          }else if(weight==1){<br>              sum+=round<em>base+former+1;<br>          }else {<br>              sum+=round</em>base+base;<br>          }<br>          base</em>=10;<br>          former=n%base;<br>      }<br>      return sum;<br>  }</p>
-<pre><code>复杂度：O（logn）
-
-## 43.数字序列中某一位的数字
-数字按照0123456789101112131415161718192021…的顺序排列。第5位（从0开始计数）为5，第13位为1，第19位为4…… 求任意第n位对应的数字。
-
-思路：找规律，分三步找：
-1. 找出该数是几位数，1位数有10个，2位数有90个所有当index大于10+90*2时，那么他的位数肯定大于2。
-2. 找出这个数的数值，可以从他位于n位数的第几个开始着手，比如输入218，219&gt;190，所以他是三位数，三位数从100开始，219-190=29,29=3*9+2，所以他为了三位数的第9个数，等于109（这里从100开始数，数到108后还有两位，所以是第9个数）
-3. 那么它就位于109的第二位（从高位数）
-</code></pre><p>public int digitAtIndex(int index) {<br>        if (index &lt; 0) {<br>            return -1;<br>        }<br>        if (index &lt; 10) {<br>            return index;<br>        }<br>        int length = lengthOfNum(index);//这个数的位数<br>        int number = numberBeforeLength(length);//数的长度前面有多少个，比如输入3，前面有90*2+10=190个数字<br>        int indexOfNum = (index - number) % length;//在这个数的第几个，<br>        int countOfNumber = (index - number - indexOfNum) / length;//在n位数的中的第几位<br>        int thisNum = (int) (Math.pow(10, length - 1) + countOfNumber);//index所对应的数字<br>        int digit= digitAtIndexOfNum(thisNum,length-1-indexOfNum);//因为indexOfNum是从前面数的，要从低位数<br>        return digit;</p>
-<pre><code>}
-int digitAtIndexOfNum(int num,int indexOfThisNum){
-    int n=0;
-    int digit=0;
-    while (n&lt;=indexOfThisNum){
-        digit=num%10;
-        num/=10;
-        n++;
-    }
-    return digit;
-}
-public int lengthOfNum(int index) {
-    int n = 2;
-    int sum = 10;
-    int base = 10;
-    while (sum &lt; index) {
-        sum += n * base * 9;
-        n++;
-        base *= 10;
-    }
-    return n - 1;
-}
-
-public int numberBeforeLength(int length) {
-    int n = 2;
-    int base = 10;
-    int sum = 10;
-    while (n &lt; length) {
-        sum += n * base * 9;
-        n++;
-        base *= 10;
-    }
-    return sum;
-}</code></pre><pre><code>
-## 45.把数组排成最小的数
-题目：输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
-
-思路：引入一个新的排序规则，两个数n和m，如果nm&gt;mn，那么n&gt;m，这nm指的是字符串相加，如：1和2，那么nm=12.
-现将所有数按照这种规则排列，排列后的顺序就是最小数字的排列顺序。</code></pre><p>  public String printMinNumber(int[] numbers){<br>       if(numbers==null||numbers.length&lt;=0){<br>           return null;<br>       }<br>       List<integer> list = new ArrayList<integer>();<br>       for (int n: numbers<br>            ) {<br>           list.add(n);</integer></integer></p>
-<pre><code>   }
-   Collections.sort(list, new Comparator&lt;Integer&gt;() {
-       @Override
-       public int compare(Integer o1, Integer o2) {
-           String s1 = String.valueOf(o1);
-           String s2 = String.valueOf(o2);
-           String str1 = s1+s2;
-           String str2 = s2+s1;
-           return str1.compareTo(str2);
-       }
-   }) ;
-
-   StringBuilder str=new StringBuilder();
-   for (int n:list
-        ) {
-       str.append(n);
-   }
-   return str.toString();</code></pre><p>   }</p>
-<pre><code>
-## 46.把数组排成最小的数
-题目：给定一个数字，按照如下规则翻译成字符串：0翻译成“a”，1翻译成“b”…25翻译成“z”。一个数字有多种翻译可能，例如12258一共有5种，分别是bccfi，bwfi，bczi，mcfi，mzi。实现一个函数，用来计算一个数字有多少种不同的翻译方法。
-
-思路：自上而下，从最大的问题开始，递归 ：</code></pre><pre><code>                 12258
-               /       \
-          b+2258       m+258
-          /   \         /   \
-      bc+258 bw+58  mc+58  mz+8
-      /  \      \        \     \
-  bcc+58 bcz+8   bwf+8   mcf+8  mzi
-    /        \       \     \</code></pre><p>   bccf+8        bczi    bwfi   mcfi<br>     /<br> bccfi</p>
-<pre><code>有很多子问题被多次计算，比如258被翻译成几种这个子问题就被计算了两次
-
-* 递归</code></pre><p>public int getTranslationCount(int number){<br>     if(number&lt;0){<br>         return 0;<br>     }<br>     String num=String.valueOf(number);<br>     char[] numbers=num.toCharArray();<br>     int length=numbers.length;<br>     return getTranslationCountCore(numbers,length);</p>
 <p> }<br> int getTranslationCountCore(char[] numbers,int length,int start,int count){<br>     if(start&gt;=length-1){<br>         return 1;<br>     }<br>     int digit1=numbers[start]-‘0’;<br>     int digit2=numbers[start+1]-‘0’;<br>     int converted=digit1*10+digit2;</p>
 <pre><code> if(converted&gt;=10&amp;&amp;converted&lt;=25){
      count=getTranslationCountCore(numbers,length,start+2,count)
