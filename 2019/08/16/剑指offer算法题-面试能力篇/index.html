@@ -791,8 +791,7 @@ public int max(){
     }
     return maximum.peekFirst().number;
 }</code></pre><p>}</p>
-<pre><code>
-## 60.n个骰子的点数
+<pre><code>## 60.n个骰子的点数
 题目:把n个骰子扔在地上，朝上一面加起来的和，计算各种和的可能的概率。
 
 思路：递归,自顶向下
@@ -834,33 +833,27 @@ void getProbability(int original,int current,int sum,int[] probabilities){
         double ratio=(double)probabilities[flag][i]/total;
         System.out.println(i+&quot; : &quot;+ratio);
     }
-}</code></pre><pre><code>
-## 61.扑克牌中的顺子
+}</code></pre><pre><code>## 61.扑克牌中的顺子
 题目：给定一个数组，判断他是否是连续的，其中0可以为任何数字。
 排序后统计0的个数和间隔的个数，相比较</code></pre><p> public boolean isContinuous(int[] nums){<br>       if(nums==null||nums.length==0){<br>           return false;<br>       }<br>       Arrays.sort(nums);<br>       int numberOfZero=0;<br>       int numberOfGap=0;<br>       int length=nums.length;<br>       for (int i = 0; i &lt; length&amp;&amp;nums[i]==0; i++) {<br>           numberOfZero++;<br>       }<br>       int small=numberOfZero;<br>       int big=small+1;<br>       while (big&lt;length){<br>           if(nums[big]==nums[small]){<br>               return false;<br>           }<br>           numberOfGap+=nums[big]-nums[small]-1;<br>           small=big;<br>           big=small+1;<br>       }<br>       return numberOfGap&gt;numberOfZero?false:true;<br>   }</p>
-<pre><code>
-## 62.约瑟夫环
+<pre><code>## 62.约瑟夫环
 题目：0, 1, … , n-1 这n个数字排成一个圈圈，从数字0开始每次从圆圏里删除第m个数字。求出这个圈圈里剩下的最后一个数字。删除数字后，从删除数字后的下一个数字开始计数。
 
 思路：常规解法，创造一个环形链表</code></pre><p> public int lastRemaining(int n,int m){<br>        if(n&lt;=0||m&lt;=0){<br>            return -1;<br>        }<br>        ListNode pNode=createCircleList(n);<br>        int count=1;<br>        int alive=5;<br>        while (alive&gt;1){<br>            while (count&lt;m){<br>                pNode=pNode.next;<br>                if(pNode.value!=-1){<br>                    count++;<br>                }<br>            }<br>            pNode.value=-1;<br>            count=0;<br>            alive–;<br>        }<br>        int result=-1;<br>        for (int i = 0; i &lt;n ; i++) {<br>            if(pNode.value!=-1){<br>               result=pNode.value;<br>            }<br>            pNode=pNode.next;<br>        }<br>       return result;<br>    }<br>  public ListNode createCircleList(int n){<br>      ListNode pHead=new ListNode(0);<br>      ListNode curNode=pHead;<br>      for (int i = 1; i &lt;n ; i++) {<br>          ListNode pNode=new ListNode(i);<br>          curNode.next=pNode;<br>          curNode=curNode.next;<br>      }<br>      curNode.next=pHead;<br>      return pHead;<br>  }</p>
 <pre><code>
 思路二：数学推导：具体我也没咋看懂，但代码很简洁，时间复杂度为O（n）.</code></pre><p>int lastRemainingByMath(int n,int m){<br>      if(n&lt;1||m&lt;1){<br>          return -1;<br>      }<br>      int last=0;<br>      for (int i = 2; i &lt;=n ; i++) {<br>          last=(last+m)%i;<br>      }<br>      return last;<br>  }</p>
-<pre><code>
-## 63.股票的最大利润
+<pre><code>## 63.股票的最大利润
 题目：给定一组按时间先后顺序的股票价格，求他们的最大利润</code></pre><p>输入：{9,8,5,7,12,16,14}<br>输出: 11 //16-5</p>
 <pre><code>思路：求数组中的最大差异，当然大数要在小数后边，这里用动态规划，每次放入一个数，就求这个数与前面的数中最小的值的差，那么就是求这个差的最大值。</code></pre><p>public int getMaxDiff(int[] nums){<br>        if(nums==null||nums.length==0){<br>            return -1;<br>        }<br>        int length=nums.length;<br>        int min=nums[0];<br>        int diff=nums[1]-nums[0];<br>        for (int i = 2; i &lt;length; i++) {<br>            if(nums[i-1]&lt;min){<br>                min=nums[i-1];<br>            }<br>            int curDiff=nums[i]-min;<br>            if(curDiff&gt;diff){<br>                diff=curDiff;<br>            }</p>
 <pre><code>    }
     return diff;
-}</code></pre><pre><code>
-## 64.求1+2+3+...+n
+}</code></pre><pre><code>## 64.求1+2+3+...+n
 题目：不同if for while else swich case等关键字求1加到n
 思路：递归，这里用一个短路运算符&amp;&amp;用于循环的终止条件。</code></pre><p> public int getSum(int n){<br>        int result=n;<br>        int a=0;<br>        boolean value=(n&gt;0)&amp;&amp;(a==(result+=getSum(n-1)));<br>        return result;<br>    }</p>
-<pre><code>
-## 65.不同加减乘除法做加法
+<pre><code>## 65.不同加减乘除法做加法
 题目：不同+-x÷实现加法
 思路：用位运算，分三步走，第一步先异或，不考虑进位，第二步用与，计算进位，然后左移一步，第三再将异或后的值与进位相异或，那么这时候也有可能继续产生进位，循环下去。</code></pre><p>public int add(int num1,int num2){<br>       int sum;<br>       int carry;<br>       while (num2!=0){<br>           sum=num1^num2;<br>           carry=(num1&amp;num2)&lt;&lt;1;<br>           num1=sum;<br>           num2=carry;<br>       }<br>       return num1;<br>   }</p>
-<pre><code>
-## 66.构建乘积数组
+<pre><code>## 66.构建乘积数组
 题目:给定长度为 n 的整数数组 A，其中 n &gt; 1，返回输出数组 output ，其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
 </code></pre><p>输入: [1,2,3,4]<br>输出: [24,12,8,6]</p>
 <pre><code>思路：这里不能用到除法，换个方向想，新建数组B，B[i]=A[0]+A[1]+A[2]+...+A[i-1]+A[i+1]+...+A[n-1],看成两部分，一一部分是A[0]+A[1]+A[2]+...+A[i-1],另一部分A[i+1]+...+A[n-1],那么分两部走，第一步从头开始A[0]+A[1]+A[2]+...+A[i-1]=B[i-1]*A[i-1],第二步从尾开始，不太好阐述，直接看代码</code></pre><p> public int[] multiply(int[] A){<br>       if(A==null||A.length==0) {<br>           return new int[0];<br>       }</p>
