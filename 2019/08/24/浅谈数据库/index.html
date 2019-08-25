@@ -4,13 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="java集合详解, Liu Mn">
-    <meta name="description" content="1.集合是什么
-
-
-java集合类存放于java.util包中，是用来存放对象的容器注意:
-
-集合只能存放对象。比如你存一个 int 型数据 1放入集合中，其实它是自动转换成 Integer 类后存入的，Java中每一种基本类型都有对应的引">
+    <meta name="keywords" content="浅谈数据库, Liu Mn">
+    <meta name="description" content="
+乐观锁与悲观锁在单实例jvm中，处理并发问题，可以用synchronized，volatile，ReentrantLock等关键字。但是在分布式的环境中，上述方法却不能再跨jvm场景中处理并发问题，需要用其他方式。如数据库的锁机制丶缓存数">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +14,7 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>java集合详解 | Liu Mn</title>
+    <title>浅谈数据库 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -265,13 +261,13 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        java集合详解
+                        浅谈数据库
                     </div>
                 </div>
             </div>
@@ -380,12 +376,29 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/数据库/" target="_blank">
+                                <span class="chip bg-color">数据库</span>
+                            </a>
+                        
+                            <a href="/tags/锁/" target="_blank">
+                                <span class="chip bg-color">锁</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/数据库/" class="post-category" target="_blank">
+                                数据库
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -393,7 +406,7 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-08-11
+                    2019-08-24
                 </div>
 
                 
@@ -409,102 +422,23 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="1-集合是什么"><a href="#1-集合是什么" class="headerlink" title="1.集合是什么"></a>1.集合是什么</h2><a id="more"></a>
-
-
-<p>java集合类存放于java.util包中，是用来存放对象的容器<br>注意:</p>
-<ol>
-<li>集合只能存放对象。比如你存一个 int 型数据 1放入集合中，其实它是自动转换成 Integer 类后存入的，Java中每一种基本类型都有对应的引用类型</li>
-<li>集合存放的是多个对象的引用，对象本身还是在堆内存</li>
+                <a id="more"></a>
+<h2 id="乐观锁与悲观锁"><a href="#乐观锁与悲观锁" class="headerlink" title="乐观锁与悲观锁"></a>乐观锁与悲观锁</h2><p>在单实例jvm中，处理并发问题，可以用synchronized，volatile，ReentrantLock等关键字。但是在分布式的环境中，上述方法却不能再跨jvm场景中处理并发问题，需要用其他方式。如数据库的锁机制丶缓存数据库如redis以及Zookeeper分布式锁</p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>系统认为大多数情况下是不存在竞争问题，只在数据库更新操作时才对数据进行冲突检测，如果数据不一致，则会返回失败信息。</p>
+<h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式:"></a>实现方式:</h4><ol>
+<li>添加一个版本号字段version，每次更新时先取版本号，更新提交时将之前的版本号与当前版本号对比，如果相等就将版本号+1，并更新其他字段，如果不相等，那么本次操作就执行失败<br>例如：update table set columnA = 1,version=version+1 where id=#{id} and version = #{oldVersion}</li>
+<li>借助更新时间戳，添加一个更新时间戳字段，检测方法与1类似。</li>
+<li>前两种方式检测的时候只有数据有改变就会失败，而有些字段只关心字段是否满足某一区间并不关心他们是否有冲突，且不用借助其他字段，用本身为判定条件。例如：库存，只要保证库存更新后值大于0 就行：update product set rest = rest– #{deduct} where name = ‘abc’ and rest &gt;= #{deduct}</li>
 </ol>
-<h2 id="2-集合框架图"><a href="#2-集合框架图" class="headerlink" title="2.集合框架图"></a>2.集合框架图</h2><img src="/2019/08/11/java集合详解/1.png">
-
-<p>迭代器（iterator）是一个对象， 它的工作时遍历并选择序列中的对象，它提供了一中访问容器对象中的各个元素，而又不必暴露该对象内部细节的方法。通过迭代器，开发人员不需要了解容器底层的结构，就可以实现对容器的遍历。由于创建迭代器的代价小，因此迭代器通常被称为轻量级的容器。</p>
-<p>它的子接口listIterator在此基础上增加了三种方法，add，previous，hasPrevious，List集合实现的是这个接口，支持在迭代期间向List中添加或删除元素，并且可以在List中双向滚动。</p>
-<p>还有一个特点就是抽象类的使用。如果要自己实现一个集合类，去实现那些抽象的接口会非常麻烦，工作量很大。这个时候就可以使用抽象类，这些抽象类中给我们提供了许多现成的实现</p>
-<p>Iterator:迭代器，它是Java集合的顶层接口（不包括 map 系列的集合，Map接口 是 map 系列集合的顶层接口）<br>Collection:List和Set接口的父接口</p>
-<h2 id="3-集合详解"><a href="#3-集合详解" class="headerlink" title="3.集合详解"></a>3.集合详解</h2>
-<h3 id="3-1-Set的无序性问题"><a href="#3-1-Set的无序性问题" class="headerlink" title="3.1 Set的无序性问题"></a>3.1 Set的无序性问题</h3><p>顺序有两个概念：</p>
-<ol>
-<li>按照添加的顺序排列</li>
-<li>按照自然循序a-z，1-无穷，</li>
-</ol>
-<p>Set中HashSet它不能保证自然顺序，也不能保证自然顺序，而set的其他实现类是可以实现这两种顺序的<br>1，LinkedHashset : 保证元素添加的顺序</p>
-<p>2，TreeSet : 保证元素的自然顺序，treeset底层是红黑树</p>
-<pre><code>
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
-
-
-public class Prectice {
-
-    public static void main(String[] args) {
-        Set&lt;String&gt; set = new HashSet&lt;&gt;();
-        set.add(&quot;String1&quot;);
-        set.add(&quot;String4&quot;);
-        set.add(&quot;String3&quot;);
-        set.add(&quot;String2&quot;);
-        set.add(&quot;String5&quot;);
-        set.forEach(e-&gt; System.out.print(e+&quot; &quot;));
-        System.out.println();
-
-
-        //LinkedHashSet会保证元素的添加顺序
-        Set&lt;String&gt; set2 = new LinkedHashSet&lt;&gt;();
-        set2.add(&quot;String1&quot;);
-        set2.add(&quot;String5&quot;);
-        set2.add(&quot;String3&quot;);
-        set2.add(&quot;String4&quot;);
-        set2.add(&quot;String2&quot;);
-        set2.forEach(e-&gt; System.out.print(e+&quot; &quot;));
-        System.out.println();
-
-
-        //TreeSet保证元素自然顺序
-        Set&lt;String&gt; set3 = new TreeSet&lt;&gt;();
-        set3.add(&quot;String1&quot;);
-        set3.add(&quot;String5&quot;);
-        set3.add(&quot;String4&quot;);
-        set3.add(&quot;String2&quot;);
-        set3.add(&quot;String3&quot;);
-        set3.forEach(e-&gt; System.out.print(e+&quot; &quot;));
-
-    }
-
-}
-</code></pre><p>输出结果：</p>
-<p>String5 String4 String3 String2 String1       HashSet元素乱序,这里因为他是<br>String1 String5 String3 String4 String2       LinkedHashSet保证元素添加顺序</p>
-<p>String1 String2 String3 String4 String5       TreeSet元素按自然顺序排序</p>
-<h3 id="3-2-Hashset中输出元素为什么是“有序的”？"><a href="#3-2-Hashset中输出元素为什么是“有序的”？" class="headerlink" title="3.2 Hashset中输出元素为什么是“有序的”？"></a>3.2 Hashset中输出元素为什么是“有序的”？</h3><p>JDK1.8中hashset的实现变了，又因为插入的是Integer，其hashcode返回就是其自身，所以在对象hashCode这一步引入了巧合的“按大小排序”。然后HashMap.hash(Object)获取了对象的hashCode()之后会尝试进一步混淆，JDK8版java.util.HashMap内的hash算法比JDK7版的混淆程度低；在[0, 2^32-1]范围内经过HashMap.hash()之后还是得到自己。 </p>
-<h3 id="3-3-HashMap详解"><a href="#3-3-HashMap详解" class="headerlink" title="3.3 HashMap详解"></a>3.3 HashMap详解</h3><ul>
-<li>内存存储结构（JDK1.8以上）：数组+链表+红黑树</li>
-<li>默认容量为16，默认装载因子0.75，扩容后是原来的两倍</li>
-<li>key和value都要求是泛型</li>
-<li>key可以为null，装到table[0]的位置，value可以为null</li>
-<li>hashcode：计算键的hashcode作为存储信息的数组的下标，用于查找值对象的位置</li>
-<li>equals：HashMap用equals方法判断两个键是否相等。</li>
-<li>HashMap会先用hashcode找到位置，由于杂凑算法，两个不同地址的对象的hashcode可能相同，这时候就用equals再来判断他们的值是否相等。<h4 id="3-3-1-HashMap，Hashtable-LinkedHashMap-TreeMap"><a href="#3-3-1-HashMap，Hashtable-LinkedHashMap-TreeMap" class="headerlink" title="3.3.1 HashMap，Hashtable,LinkedHashMap,TreeMap"></a>3.3.1 HashMap，Hashtable,LinkedHashMap,TreeMap</h4></li>
-<li>Hashtable是遗留类，功能与hashmap相似，key和value都不允许有null。但它是线程安全的，并发性不如concurrentHashMap（下面会讲）</li>
-<li>LinkedHashMap：保留了记录的插入顺序，用iterator遍历时，会按照插入顺序。</li>
-<li>TreeMap：对插入的记录按键进行了排序，默认升序。<h4 id="3-3-2-hash算法"><a href="#3-3-2-hash算法" class="headerlink" title="3.3.2 hash算法"></a>3.3.2 hash算法</h4><pre><code>方法一：
-static final int hash(Object key) {   //jdk1.8 &amp; jdk1.7
-   int h;
-   // h = key.hashCode() 为第一步 取hashCode值
-   // h ^ (h &gt;&gt;&gt; 16)  为第二步 高位参与运算
-   return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
-}
-方法二：
-static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个方法，但是实现原理一样的
-   return h &amp; (length-1);  //第三步 取模运算
-}</code></pre>这里用&amp;代替%取模运算，加快效率，而第二步，防止高位参与不了取模运算，将自身与高位相异或。</li>
-</ul>
-<h4 id="3-3-3-hashtable与concurrentHashMap的线程安全比较"><a href="#3-3-3-hashtable与concurrentHashMap的线程安全比较" class="headerlink" title="3.3.3 hashtable与concurrentHashMap的线程安全比较"></a>3.3.3 hashtable与concurrentHashMap的线程安全比较</h4><p>hashmap不存在线程安全</p>
-<ul>
-<li>hashtable:使用synchronized，锁住整张表</li>
-<li>concurrentHashmap ：使用锁分段技术，将map分为n的segment，每次进行写操作时，只锁住一个segement，也就是一个桶。</li>
-</ul>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><p>检测数据冲突时并不依赖数据库的锁机制，不会影响请求的性能，当产生并发切竞争较小时只有少部分请求会失败。</p>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><p>需要对表加额外的字段，增加了数据库的冗余，另外，如果单行数据竞争很大，version值不断变化，导致请求失败，影响系统的可用性。</p>
+<p>综上，乐观锁适合于并发量高，但冲突（竞争率）较低，写操作不频繁，失败成本不高的场景</p>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>系统每次对数据操作时，必须加锁不然会发生问题，这样的悲观保守的态度</p>
+<h4 id="实现方式："><a href="#实现方式：" class="headerlink" title="实现方式："></a>实现方式：</h4><p>通过数据库锁机制实现，即对查询语句添加forupdate关键字。</p>
+<p>如下sql语句 select * from table where id = 1 for update 当一个请求A开启事务并执行此sql同时未提交事务时，另一个线程B发起请求，此时B将阻塞在加了锁的查询语句上，直到A请求的事务提交或者回滚，B才会继续执行，保证了访问的隔离性。</p>
+<h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><p>可以严格保证数据访问的安全</p>
+<h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><p>每次请求都会额外产生锁的开销，未获取的锁的请求则会被阻塞，容易造成性能问题，还可能产生死锁情况。<br>当A操作执行其update操作时需要用到B操作的锁,而B操作这时也要用到A操作的锁，出现死锁时系统会自动回滚一个事务。可以考虑用乐观锁或者按照顺序去获得锁。</p>
+<p>综上，悲观锁适合于并发量较小、失败成本高丶又需要独占读取结果并依赖读取的结果进行判断的业务场景比较适合使用悲观锁。</p>
 
             </div>
             <hr/>
@@ -663,9 +597,9 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《java集合详解》
+                    《浅谈数据库》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/11/java集合详解/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/24/浅谈数据库/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liu Mn
             </a> is licensed under a
@@ -705,39 +639,55 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2019/08/13/图解http总结/">
+                <a href="/2019/08/24/浅谈数据库/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="图解http总结">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="浅谈数据库">
                         
-                        <span class="card-title">图解http总结</span>
+                        <span class="card-title">浅谈数据库</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            《图解http》精华总结
-
-注：鉴于大部分的笔记都在纸质笔记本上，这里只对《图解http》粗略记载一下重要的知识点，包括以后面试题中关于计算机网络的知识点都可以记载于此
-第一章 Web网络基础URI 与 URLURI用字符串表示某一网络资源
+                            
+乐观锁与悲观锁在单实例jvm中，处理并发问题，可以用synchronized，volatile，ReentrantLock等关键字。但是在分布式的环境中，上述方法却不能再跨jvm场景中处理并发问题，需要用其他方式。如数据库的锁机制丶缓存数
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-13
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-24
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/数据库/" class="post-category" target="_blank">
+                                    数据库
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/数据库/" target="_blank">
+                        <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                    <a href="/tags/锁/" target="_blank">
+                        <span class="chip bg-color">锁</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -749,7 +699,7 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/08/11/剑指offer算法题-优化效率篇/">
+                <a href="/2019/08/16/剑指offer算法题-面试能力篇/">
                     <div class="card-image">
                         
                         
@@ -761,15 +711,14 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            优化效率篇
-39.数组中出现次数超过一半的数字题目：输入一个数组，如果一个数字出现的次数超过一半，就输出它，没有则返回-1。
-思路：可以考虑先将数组排序，然后取中位数，时间复杂度是O（nlogn）下面介绍两种思路
-####1. 基于part
+                            面试能力篇
+53.在排序数组中查找数字题目一:统计一个数字在排序数组中出现的次数
+思路：找到数字在数组第一次出现的位置，和第二次出现的位置，使用二分法求，当数字在出现的位置前面一个数不等于他，那么它就是第一个数，同理当数字在出现的位置后面一
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-11
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-16
                             </span>
                         <span class="publish-author">
                             
