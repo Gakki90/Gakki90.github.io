@@ -380,12 +380,33 @@ java集合类存放于java.util包中，是用来存放对象的容器注意:
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Collections/" target="_blank">
+                                <span class="chip bg-color">Collections</span>
+                            </a>
+                        
+                            <a href="/tags/集合/" target="_blank">
+                                <span class="chip bg-color">集合</span>
+                            </a>
+                        
+                            <a href="/tags/容器/" target="_blank">
+                                <span class="chip bg-color">容器</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                java基础
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -477,7 +498,7 @@ public class Prectice {
 </code></pre><p>输出结果：</p>
 <p>String5 String4 String3 String2 String1       HashSet元素乱序,这里因为他是<br>String1 String5 String3 String4 String2       LinkedHashSet保证元素添加顺序</p>
 <p>String1 String2 String3 String4 String5       TreeSet元素按自然顺序排序</p>
-<h3 id="3-2-Hashset中输出元素为什么是“有序的”？"><a href="#3-2-Hashset中输出元素为什么是“有序的”？" class="headerlink" title="3.2 Hashset中输出元素为什么是“有序的”？"></a>3.2 Hashset中输出元素为什么是“有序的”？</h3><p>JDK1.8中hashset的实现变了，又因为插入的是Integer，其hashcode返回就是其自身，所以在对象hashCode这一步引入了巧合的“按大小排序”。然后HashMap.hash(Object)获取了对象的hashCode()之后会尝试进一步混淆，JDK8版java.util.HashMap内的hash算法比JDK7版的混淆程度低；在[0, 2^32-1]范围内经过HashMap.hash()之后还是得到自己。 </p>
+<h3 id="3-2-Hashset中输出元素为什么是“有序的”？"><a href="#3-2-Hashset中输出元素为什么是“有序的”？" class="headerlink" title="3.2 Hashset中输出元素为什么是“有序的”？"></a>3.2 Hashset中输出元素为什么是“有序的”？</h3><p>JDK1.8中hashset的实现变了，又因为插入的是Integer，其hashcode返回就是其自身，所以在对象hashCode这一步引入了巧合的“按大小排序”。然后HashMap.hash(Object)获取了对象的hashCode()之后会尝试进一步混淆，JDK8版java.util.HashMap内的hash算法比JDK7版的混淆程度低；在[0, 2^32-1]范围内经过HashMap.hash()之后还是得到自己。</p>
 <h3 id="3-3-HashMap详解"><a href="#3-3-HashMap详解" class="headerlink" title="3.3 HashMap详解"></a>3.3 HashMap详解</h3><ul>
 <li>内存存储结构（JDK1.8以上）：数组+链表+红黑树</li>
 <li>默认容量为16，默认装载因子0.75，扩容后是原来的两倍</li>
@@ -498,13 +519,14 @@ static final int hash(Object key) {   //jdk1.8 &amp; jdk1.7
 方法二：
 static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个方法，但是实现原理一样的
    return h &amp; (length-1);  //第三步 取模运算
-}</code></pre>这里用&amp;代替%取模运算，加快效率，而第二步，防止高位参与不了取模运算，将自身与高位相异或。</li>
-</ul>
-<h4 id="3-3-3-hashtable与concurrentHashMap的线程安全比较"><a href="#3-3-3-hashtable与concurrentHashMap的线程安全比较" class="headerlink" title="3.3.3 hashtable与concurrentHashMap的线程安全比较"></a>3.3.3 hashtable与concurrentHashMap的线程安全比较</h4><p>hashmap不存在线程安全</p>
-<ul>
+}</code></pre>这里用&amp;代替%取模运算，加快效率，而第二步，防止高位参与不了取模运算，将自身与高位相异或。<h4 id="3-3-3-hashtable与concurrentHashMap的线程安全比较"><a href="#3-3-3-hashtable与concurrentHashMap的线程安全比较" class="headerlink" title="3.3.3 hashtable与concurrentHashMap的线程安全比较"></a>3.3.3 hashtable与concurrentHashMap的线程安全比较</h4>hashmap不存在线程安全</li>
 <li>hashtable:使用synchronized，锁住整张表</li>
-<li>concurrentHashmap ：使用锁分段技术，将map分为n的segment，每次进行写操作时，只锁住一个segement，也就是一个桶。</li>
+<li>concurrentHashmap ：使用锁分段技术，将map分为n的segment，每次进行写操作时，只锁住一个segement，也就是一个桶。再到jdk1.8以后，逐渐抛弃segment的概念，转而锁住桶的第一个节点。采用CAS和synchronized来保证并发安全。不允许键值出现null<h4 id="3-3-4-为什么重写了equals方法后必须重写hashcode方法"><a href="#3-3-4-为什么重写了equals方法后必须重写hashcode方法" class="headerlink" title="3.3.4 为什么重写了equals方法后必须重写hashcode方法"></a>3.3.4 为什么重写了equals方法后必须重写hashcode方法</h4><blockquote>
+<p>hashcode的规定:<br>(1)当obj1.equals(obj2)为true时，obj1.hashCode() == obj2.hashCode()必须为true<br>(2)当obj1.hashCode() == obj2.hashCode()为false时，obj1.equals(obj2)必须为false</p>
+</blockquote>
+</li>
 </ul>
+<p>Object类的equals默认是比较两个对象的地址，hashcode也是根据对象地址生成一个数值，如果不重写，两个对象的equals是不可能相等的，重写了之后，如果在重写后，两个值一样的对象那么equals就等于true，然而他们的hashcode却不一样。自然违背额hashcode的规定。以hashset为例，当放入一个值时，先计算他的hashcode与set集合里面的值相比较，如果没有相同，则放进去，如果相同，再比较他们的equals方法是否相等。</p>
 
             </div>
             <hr/>
@@ -733,11 +755,27 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/计算机网络/" class="post-category" target="_blank">
+                                    计算机网络
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/http/" target="_blank">
+                        <span class="chip bg-color">http</span>
+                    </a>
+                    
+                    <a href="/tags/计算机网络/" target="_blank">
+                        <span class="chip bg-color">计算机网络</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -773,11 +811,23 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/算法/" class="post-category" target="_blank">
+                                    算法
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/算法/" target="_blank">
+                        <span class="chip bg-color">算法</span>
+                    </a>
+                    
                 </div>
                 
             </div>

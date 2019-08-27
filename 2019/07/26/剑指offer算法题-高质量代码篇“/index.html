@@ -379,12 +379,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/算法/" target="_blank">
+                                <span class="chip bg-color">算法</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/算法/" class="post-category" target="_blank">
+                                算法
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -865,33 +878,33 @@ public void printToMaxOfNDigitsRecruisively(char[] number,int n,int index){
   / \
  1   2
 返回 false。</code></pre><p>思路：用递归，从根节点开始，分别判断左右节点的值是否相同</p>
-<pre><code> public boolean hasSubTree(TreeNode root1, TreeNode root2) {
+<pre><code> public boolean isSubtree(TreeNode root1, TreeNode root2) {
         boolean result=false;
         if(root1!=null&amp;&amp;root2!=null){
-            if(root1.value==root2.value){
+            if(root1.val==root2.val){
                 result=doesTree1HasTree2(root1,root2);
             }
             if(!result){
-               result=hasSubTree(root1.left,root2);
+               result=isSubtree(root1.left,root2);
             }
             if(!result){
-                result=hasSubTree(root1.rigth,root2);
+                result=isSubtree(root1.right,root2);
             }
         }
         return result;
     }
 
     public boolean doesTree1HasTree2(TreeNode root1,TreeNode root2){
-        if(root2==null){
+        if(root2==null&amp;&amp;root1==null){
             return true;
         }
-        if(root1==null){
+        if(root1==null||root2==null){
             return false;
         }
-        if(root1.value!=root2.value){
+        if(root1.val!=root2.val){
             return false;
         }
-        return doesTree1HasTree2(root1.left,root2.left)&amp;&amp;doesTree1HasTree2(root1.rigth,root2.rigth);
+        return doesTree1HasTree2(root1.left,root2.left)&amp;&amp;doesTree1HasTree2(root1.right,root2.right);
 }</code></pre><h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>高质量的代码具有规范性，完整性，鲁棒性。</p>
 <img src="/2019/07/26/剑指offer算法题-高质量代码篇“/5.PNG">
             </div>
@@ -1122,11 +1135,23 @@ public void printToMaxOfNDigitsRecruisively(char[] number,int n,int index){
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JVM/" class="post-category" target="_blank">
+                                    JVM
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JVM/" target="_blank">
+                        <span class="chip bg-color">JVM</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1161,11 +1186,27 @@ YAMLException: end of the stream or a document separator is expected at line 19,
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/教程/" class="post-category" target="_blank">
+                                    教程
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/bug/" target="_blank">
+                        <span class="chip bg-color">bug</span>
+                    </a>
+                    
+                    <a href="/tags/教程/" target="_blank">
+                        <span class="chip bg-color">教程</span>
+                    </a>
+                    
                 </div>
                 
             </div>

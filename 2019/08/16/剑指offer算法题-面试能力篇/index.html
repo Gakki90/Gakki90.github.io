@@ -377,12 +377,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/算法/" target="_blank">
+                                <span class="chip bg-color">算法</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/算法/" class="post-category" target="_blank">
+                                算法
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -993,6 +1006,51 @@
 
        }
        return B;
+   }</code></pre><h2 id="67-之字形打印矩阵"><a href="#67-之字形打印矩阵" class="headerlink" title="67.之字形打印矩阵"></a>67.之字形打印矩阵</h2><p>题目描述：给你一个包含 m x n 个元素的矩阵 (m 行, n 列), 求该矩阵的之字型遍历。</p>
+<pre><code>样例：对于如下矩阵：
+
+[
+  [1, 2,  3,  4],
+  [5, 6,  7,  8],
+  [9,10, 11, 12]
+]
+返回 [1, 2, 5, 9, 6, 3, 4, 7, 10, 11, 8, 12]</code></pre><p>思路：注意边界条件，每次按斜上方，斜下方顺序遍历矩阵，内嵌循环的终止后，判断他们是否都超出了边界，怎样超出的，重置他们。</p>
+<pre><code> public int[] printZMatrix(int[][] matrix){
+       if(matrix==null||matrix.length==0){
+           return new int[0];
+       }
+       int rows=matrix.length;
+       int cols=matrix[0].length;
+       int size=rows*cols;
+       int[] result=new int[size];
+       int i=0;
+       int j=0;
+       int  count=0;//循环中止条件
+       while (count&lt;size){
+            while (count&lt;size&amp;&amp;i&gt;=0&amp;&amp;j&lt;cols){//向斜上方
+                result[count++]=matrix[i][j];
+                i-=1;
+                j+=1;
+            }
+            if(j&lt;cols){//这时候i已经越过了，重置i；
+                i+=1;
+            }else {//i和j都越过了，重置i，j
+                i+=2;
+                j-=1;
+            }
+            while (count&lt;size&amp;&amp;i&lt;rows&amp;&amp;j&gt;=0){//向斜下方
+                result[count++]=matrix[i][j];
+                i+=1;
+                j-=1;
+            }
+            if(i&gt;=rows){//重置
+                i-=1;
+                j+=2;
+            }else {//重置
+                j+=1;
+            }
+       }
+        return result;
    }</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本章主要讲了应聘者所要具有的综合素质，包括编程能力，学习能了，沟通能力，发散思维能力，抽象建模能力，知识迁移能力。</p>
 
             </div>
@@ -1211,7 +1269,7 @@
                     <div class="summary block-with-text">
                         
                             
-乐观锁与悲观锁在单实例jvm中，处理并发问题，可以用synchronized，volatile，ReentrantLock等关键字。但是在分布式的环境中，上述方法却不能再跨jvm场景中处理并发问题，需要用其他方式。如数据库的锁机制丶缓存数
+1.0 乐观锁与悲观锁在单实例jvm中，处理并发问题，可以用synchronized，volatile，ReentrantLock等关键字。但是在分布式的环境中，上述方法却不能再跨jvm场景中处理并发问题，需要用其他方式。如数据库的锁机制
                         
                     </div>
                     <div class="publish-info">
@@ -1276,11 +1334,27 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Liu Mn
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/计算机网络/" class="post-category" target="_blank">
+                                    计算机网络
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/http/" target="_blank">
+                        <span class="chip bg-color">http</span>
+                    </a>
+                    
+                    <a href="/tags/计算机网络/" target="_blank">
+                        <span class="chip bg-color">计算机网络</span>
+                    </a>
+                    
                 </div>
                 
             </div>
