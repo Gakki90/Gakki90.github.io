@@ -571,7 +571,7 @@
 <img src="/2019/08/11/剑指offer算法题-优化效率篇/1.PNG">
 <p>AVL树的实现过于复杂，这里使用两个堆来解决<br>一个是最大堆（最大的元素在堆顶），一个是最小堆</p>
 <ul>
-<li><p>当堆中的数（总共的数）是偶数时，要插入一个新的数，先将数插入最大堆，然后将最大堆的最大的数插入最小堆，这时总数为奇数，取最大堆堆顶元素为中位数</p>
+<li><p>当堆中的数（总共的数）是偶数时，要插入一个新的数，先将数插入最大堆，然后将最大堆的最大的数插入最小堆，这时总数为奇数，取最小堆堆顶元素为中位数</p>
 </li>
 <li><p>当堆中的数为奇数时，要插入一个新的数，先将数插入最小堆，在将最小堆堆顶元素插入最大堆，这时总数为偶数，取最小堆和最大堆的堆顶元素的平均值。</p>
 <pre><code>public class Solution {
@@ -676,7 +676,7 @@
         int indexOfNum = (index - number) % length;//在这个数的第几个，
         int countOfNumber = (index - number - indexOfNum) / length;//在n位数的中的第几位
         int thisNum = (int) (Math.pow(10, length - 1) + countOfNumber);//index所对应的数字
-        int digit= digitAtIndexOfNum(thisNum,length-1-indexOfNum);//因为indexOfNum是从前面数的，要从低位数
+        int digit= digitAtIndexOfNum(thisNum,length-indexOfNum);//因为indexOfNum是从前面数的，要从低位数
         return digit;
 
     }
@@ -853,10 +853,10 @@ int getTranslationCountCore(char[] numbers,int length,int start,int count){
                 int left=0;
                 int up=0;
                 if(i&gt;0){
-                    left=maxVaule[j];
+                    up=maxVaule[j];
                 }
                 if(j&gt;0){
-                    up=maxVaule[j-1];
+                    left=maxVaule[j-1];
                 }
                 maxVaule[j]=Math.max(left,up)+number[i][j];
             }
