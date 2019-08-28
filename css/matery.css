@@ -163,7 +163,7 @@ mark {
 }
 
 .bg-color {
-    background-image: url(/images/background.jpg);
+    background-image: linear-gradient(to right, #4cbf30 0%, #0f9d58 100%);
 }
 
 .text-color {
@@ -203,7 +203,7 @@ nav {
 
 header .nav-transparent {
     background-color: transparent !important;
-    background-image: none;
+    background-image: url(/images/background.jpg);
     box-shadow: none;
 }
 
