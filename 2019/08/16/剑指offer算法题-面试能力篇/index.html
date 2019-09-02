@@ -692,7 +692,7 @@
 
     }</code></pre><h2 id="58-翻转字符串"><a href="#58-翻转字符串" class="headerlink" title="58.翻转字符串"></a>58.翻转字符串</h2><p>题目一：翻转单词顺序，</p>
 <pre><code>输入： &quot;i am a student&quot;
-输出： &quot;student a am i&quot;</code></pre><p>这道题题目限制较松，不存在输入两边有空格的情况，中间的空格也不需要处理</p>
+输出： &quot;student a am i&quot;</code></pre><p>先全部翻转一遍，然后对每个单词单独翻转<br>这道题题目限制较松，不存在输入两边有空格的情况，中间的空格也不需要处理，</p>
 <pre><code> public String reverseWords(String s) {
         if (s == null) {
             return &quot;&quot;;
@@ -968,13 +968,13 @@
         }
         return diff;
     }
-</code></pre><h2 id="64-求1-2-3-…-n"><a href="#64-求1-2-3-…-n" class="headerlink" title="64.求1+2+3+…+n"></a>64.求1+2+3+…+n</h2><p>题目：不同if for while else swich case等关键字求1加到n<br>思路：递归，这里用一个短路运算符&amp;&amp;用于循环的终止条件。</p>
+</code></pre><h2 id="64-求1-2-3-…-n"><a href="#64-求1-2-3-…-n" class="headerlink" title="64.求1+2+3+…+n"></a>64.求1+2+3+…+n</h2><p>题目：不用if for while else swich case等关键字求1加到n<br>思路：递归，这里用一个短路运算符&amp;&amp;用于循环的终止条件。</p>
 <pre><code> public int getSum(int n){
         int result=n;
         int a=0;
         boolean value=(n&gt;0)&amp;&amp;(a==(result+=getSum(n-1)));
         return result;
-    }</code></pre><h2 id="65-不同加减乘除法做加法"><a href="#65-不同加减乘除法做加法" class="headerlink" title="65.不同加减乘除法做加法"></a>65.不同加减乘除法做加法</h2><p>题目：不同+-x÷实现加法<br>思路：用位运算，分三步走，第一步先异或，不考虑进位，第二步用与，计算进位，然后左移一步，第三再将异或后的值与进位相异或，那么这时候也有可能继续产生进位，循环下去。</p>
+    }</code></pre><h2 id="65-不同加减乘除法做加法"><a href="#65-不同加减乘除法做加法" class="headerlink" title="65.不同加减乘除法做加法"></a>65.不同加减乘除法做加法</h2><p>题目：不用+-x÷实现加法<br>思路：用位运算，分三步走，第一步先异或，不考虑进位，第二步用与，计算进位，然后左移一步，第三再将异或后的值与进位相异或，那么这时候也有可能继续产生进位，循环下去。</p>
 <pre><code>public int add(int num1,int num2){
        int sum;
        int carry;
