@@ -435,7 +435,92 @@
         }
         return new int[0];
 
-    }</code></pre>
+    }</code></pre><h2 id="2-生产者与消费者"><a href="#2-生产者与消费者" class="headerlink" title="2.生产者与消费者"></a>2.生产者与消费者</h2><pre><code>producer{
+    while(true){
+        wait(space)//等待缓冲区有空闲位置
+        wait(mutex)//获得锁，放置其他线程对缓冲区进行操作
+
+        buffer.push(item,in)//将item放置in的位置
+        in=(in+1)%10
+
+        signal(mutex)
+        signal(items)//通知消费者有可消费空间
+    }
+}
+comsumer{
+    while(true){
+        wait(items)
+        wait(mutex)
+
+        buffer.pop(out)
+        out=(out+1)%10
+
+        signal(mutex)
+        signal(space)
+    }
+}</code></pre><h2 id="3-读者-写者"><a href="#3-读者-写者" class="headerlink" title="3.读者-写者"></a>3.读者-写者</h2><p>可以有多个读者，但只能有一个写者,有人读的时候不能写</p>
+<pre><code>writer{
+    while(true){
+        wait(wrt)
+        write()
+        signal(wrt)
+    }
+}
+reader{
+    while(true){
+        wait(mutex)
+        readcount++
+        if(readcount==1){
+            wait（wrt）
+        }
+        sinal(mutex)
+        ···
+        wait(mutex)
+        readcount--
+        if(readcount==0){
+            signal(wrt)
+        }
+        signal(mutex)
+
+    }
+}</code></pre><h2 id="4-最长的回文子串"><a href="#4-最长的回文子串" class="headerlink" title="4.最长的回文子串"></a>4.最长的回文子串</h2><p>题目；给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。<br>示例：</p>
+<pre><code>输入: &quot;babad&quot;
+输出: &quot;bab&quot;
+注意: &quot;aba&quot; 也是一个有效答案。</code></pre><p>思路:动态规划，用一个二维boolean数组A[i][j]记录从下标i到j是否是回文串，如果A[i][j]是回文串那么A[i+1][J-1]也是回文串。先单独计算相邻两个字符是否是相等的，也就是计算长度为2的回文串，然后以长度3的滑动窗口去扫描字符串，判断是否是回文串，依次增大滑动窗口的大小，直到=length；</p>
+<pre><code>public String longestPalindrome(String s) {
+        if(s==null||s.length()==0){
+            return &quot;&quot;;
+        }
+        int length=s.length();
+        boolean[][] isPalindrome=new boolean[length][length];
+        char[] chars=s.toCharArray();
+        int palindromeStart=0;
+        int palindromeEnd=0;
+        for (int i = 0; i &lt;length ; i++) {
+            isPalindrome[i][i]=true;
+            for (int j = i; j &lt;length-1 ; j++) {
+                if(chars[j]==chars[j+1]){
+                    isPalindrome[j][j+1]=true;
+                    palindromeStart=j;
+                    palindromeEnd=j+1;
+                }
+
+            }
+        }
+
+        for (int l = 3; l &lt;=length ; l++) {//长度为length结束
+            for (int start = 0; start+l-1 &lt;length ; start++) {
+                    int end=start+l-1;
+                    if(chars[start]==chars[end]&amp;&amp;isPalindrome[start+1][end-1]==true){
+                        isPalindrome[start][end]=true;
+                        palindromeStart=start;
+                        palindromeEnd=end;
+                    }
+            }
+        }
+        return s.substring(palindromeStart,palindromeEnd+1);
+    }</code></pre><p>为什么不一起计算：因为当长度为2，即j=i+1，isPalindrome[start+1][end-1]无效，会越过彼此。</p>
+
             </div>
             <hr/>
 
@@ -635,48 +720,55 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2019/09/02/LeetCode算法题/">
+                <a href="/2019/09/05/java并发编程/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="LeetCode算法题">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java并发编程">
                         
-                        <span class="card-title">LeetCode算法题</span>
+                        <span class="card-title">java并发编程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录一些leetcode上题目的解题思路
+                            锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
+线程间的协作线程状态：新建，就绪，运行，阻塞，
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-02
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-05
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/算法/" class="post-category" target="_blank">
-                                    算法
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                    java基础
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/算法/" target="_blank">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/锁/" target="_blank">
+                        <span class="chip bg-color">锁</span>
+                    </a>
+                    
+                    <a href="/tags/并发/" target="_blank">
+                        <span class="chip bg-color">并发</span>
+                    </a>
+                    
+                    <a href="/tags/线程/" target="_blank">
+                        <span class="chip bg-color">线程</span>
                     </a>
                     
                 </div>
