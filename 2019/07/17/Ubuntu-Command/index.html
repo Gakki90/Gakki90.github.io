@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="keywords" content="Ubuntu 常用命令（待补充）, Liu Mn">
     <meta name="description" content="Ubuntu 常用命令
-简单命令一(严格区分大小写)：$ ①sudo dpkg -ilinuxqq_1.0-preview1_i386.deb
-//安装qq命令$ ②cd /                  ##打开系统根目录$ ③ls ">
+1.0 文件，目录操作命令
+mkdir -p /u01/app/oraclemkdir 是linux的建立目录命令。如果是级联建立要用-p选项。比如要建立/u01/app/oracle目录要这样写mkdir -p /">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -420,11 +420,18 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="Ubuntu-常用命令"><a href="#Ubuntu-常用命令" class="headerlink" title="Ubuntu 常用命令"></a>Ubuntu 常用命令</h2><a id="more"></a>
-<h3 id="简单命令一-严格区分大小写-："><a href="#简单命令一-严格区分大小写-：" class="headerlink" title="简单命令一(严格区分大小写)："></a>简单命令一(严格区分大小写)：</h3><pre><code>$ ①sudo dpkg -ilinuxqq_1.0-preview1_i386.deb
-//安装qq命令</code></pre><pre><code>$ ②cd /                  ##打开系统根目录</code></pre><pre><code>$ ③ls                    ##列出文件和目录</code></pre><pre><code>④cd /home</code></pre><pre><code>⑤cd    和 cd  ../..和  cd ~类似     ##进入用户主目录</code></pre><pre><code>⑥cd /etc              ##该目录下存放着系统和软件的配置文件</code></pre><pre><code>⑦cat fstab            ##其中定义了各硬盘分区所挂在的目录路径</code></pre><p>Tab键可以进行命令补全，只有一个时补全内容，（需要按两次键）多个时列出（命令，目录，文件等都适用）</p>
-<p>通配符 * ，？，_,[]。</p>
-<p>⑧pwd                     ##显示当前所在的目录</p>
-<p>⑨cd ..                   ##退到上一级目录</p>
+<h3 id="1-0-文件，目录操作命令"><a href="#1-0-文件，目录操作命令" class="headerlink" title="1.0 文件，目录操作命令"></a>1.0 文件，目录操作命令</h3><blockquote>
+<p>mkdir -p /u01/app/oracle<br>mkdir 是linux的建立目录命令。如果是级联建立要用-p选项。<br>比如要建立/u01/app/oracle目录<br>要这样写mkdir -p /u01/app/oracle<br>要是没有-p 会出错</p>
+</blockquote>
+<h2 id="vim即shell命令常见问题"><a href="#vim即shell命令常见问题" class="headerlink" title="vim即shell命令常见问题"></a>vim即shell命令常见问题</h2><p>变量的定义用反引号`，波浪号对应的那么反引号</p>
+<p>数值的加法要用 sum=$(($x+$y))这种格式</p>
+<p>删除一块代码：</p>
+<ol>
+<li>设置行号 :set number</li>
+<li>转到多少行  11G</li>
+<li>删除从3行到当前行的代码 3,.d  .代表当前行</li>
+<li>如果只需要删除某一行，可以用dd就行</li>
+</ol>
 
             </div>
             <hr/>

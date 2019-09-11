@@ -4,9 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="java并发编程, Liu Mn">
-    <meta name="description" content="1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2. 线程间的协作线程状态：新建，就绪，">
+    <meta name="keywords" content="美团后端研发岗面经-第一面, Liu Mn">
+    <meta name="description" content="本来以为第一面肯定是算法面，结果一上来就是怼项目，然后是基础知识，最后是一道算法。
+首先是自我介绍，接下来就到项目了
+项目问了我关于项目的架构以及项目的难点亮点，关于我项目的两个难点
+图片回显客户端上传图片，然后保存到服务器，生成他的唯一i">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>java并发编程 | Liu Mn</title>
+    <title>美团后端研发岗面经-第一面 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -261,13 +263,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        java并发编程
+                        美团后端研发岗面经-第一面
                     </div>
                 </div>
             </div>
@@ -378,16 +380,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/锁/" target="_blank">
-                                <span class="chip bg-color">锁</span>
-                            </a>
-                        
-                            <a href="/tags/并发/" target="_blank">
-                                <span class="chip bg-color">并发</span>
-                            </a>
-                        
-                            <a href="/tags/线程/" target="_blank">
-                                <span class="chip bg-color">线程</span>
+                            <a href="/tags/面试/" target="_blank">
+                                <span class="chip bg-color">面试</span>
                             </a>
                         
                     </div>
@@ -398,8 +392,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/java基础/" class="post-category" target="_blank">
-                                java基础
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                面试
                             </a>
                         
                     </div>
@@ -410,7 +404,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-09-05
+                    2019-09-07
                 </div>
 
                 
@@ -426,100 +420,29 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="1-锁的种类"><a href="#1-锁的种类" class="headerlink" title="1. 锁的种类"></a>1. 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
-<h2 id="2-线程间的协作"><a href="#2-线程间的协作" class="headerlink" title="2. 线程间的协作"></a>2. 线程间的协作</h2><p>线程状态：新建，就绪，运行，阻塞，终止</p>
-<h3 id="wait-notify-notifyAll"><a href="#wait-notify-notifyAll" class="headerlink" title="wait/notify/notifyAll"></a>wait/notify/notifyAll</h3><p>wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法师傅Object类，而不是属于thread。</p>
-<h3 id="2-1-sleep-yield-join"><a href="#2-1-sleep-yield-join" class="headerlink" title="2.1 sleep/yield/join"></a>2.1 sleep/yield/join</h3><p>属于线程的三个方法，</p>
-<ul>
-<li>sleep():sleep与wait的区别在与：sleep只是暂停，腾出cpu的使用权，但不会释放锁。</li>
-<li>yield()：很少使用，暂停当前线程，以便别的线程可以执行，不能指定时间，也不保证当前线程立即停止。</li>
-<li>join():作用是让父进程等待子进程执行完后再执行，将异步的线程转换为同步的，join方法底层就是用wait()方法来实现的。</li>
+                <p>本来以为第一面肯定是算法面，结果一上来就是怼项目，然后是基础知识，最后是一道算法。</p>
+<p>首先是自我介绍，接下来就到项目了</p>
+<h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>问了我关于项目的架构以及项目的难点亮点，关于我项目的两个难点</p>
+<h3 id="图片回显"><a href="#图片回显" class="headerlink" title="图片回显"></a>图片回显</h3><p>客户端上传图片，然后保存到服务器，生成他的唯一id(hashcode+随机数)，然后回显，然后他说有更好的办法</p>
+<h3 id="数据新增字段"><a href="#数据新增字段" class="headerlink" title="数据新增字段"></a>数据新增字段</h3><p>在数据库新增字段时，先将mapper下的文件删除然后再用mybatis-generator生成一遍，否则会导致项目的崩溃，也有更好的办法</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><ul>
+<li>数据库引擎及其实现</li>
+<li>linux命令</li>
+<li>写一个shell脚本（完全不会）</li>
+<li>协程</li>
+<li>进程与线程</li>
+<li>TCP首部</li>
+<li>TCP流量控制</li>
+<li>http与https的区别</li>
 </ul>
-<p>参考博客<a href="https://www.cnblogs.com/paddix/p/5381958.html" target="_blank" rel="noopener">https://www.cnblogs.com/paddix/p/5381958.html</a></p>
-<h2 id="3-0-Synchronized原理"><a href="#3-0-Synchronized原理" class="headerlink" title="3.0 Synchronized原理"></a>3.0 Synchronized原理</h2><p>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
-<ol>
-<li>当monitor的进入数为0，代表空闲，则该线程可以进入，然后将进入数设置为1</li>
-<li>当该线程已经占有monitor，只是重新进入，则进入monitor的进入数加1</li>
-<li>其他线程想要尝试获得该对象，就会被阻塞，知道占有线程调用monitorexit退出，monitor进入数为0.<h2 id="4-0-CAS"><a href="#4-0-CAS" class="headerlink" title="4.0 CAS"></a>4.0 CAS</h2>compare and switch,用与代替互斥量实现轻量级锁，操作涉及三个操作数：内存位置，预期原值，新值。如果在内存位置的值与预期原值相匹配，那么处理器就会将他更新为新值，否则不会做任何操作。<h3 id="4-1-实现原理"><a href="#4-1-实现原理" class="headerlink" title="4.1 实现原理"></a>4.1 实现原理</h3>java不能直接访问操作系统底层，通过native(jni)来访问，Unsafe类实现原子性操作<h3 id="4-2-存在的问题：ABA"><a href="#4-2-存在的问题：ABA" class="headerlink" title="4.2 存在的问题：ABA"></a>4.2 存在的问题：ABA</h3>一个线程占有了一个变量(变量N，值为1），然后第二个线程用CAS同时去操作，第一个线程将N变为2，而此时又有 第三个线程来抢占了，将N变为1，然后第二个线程获取到的N是旧值，虽然与前面相等，但实际的N已经经历了1到2到1的改变。</li>
-</ol>
-<p>解决：给变量加一个版本号</p>
-<h2 id="5-0-ReentrantLock原理"><a href="#5-0-ReentrantLock原理" class="headerlink" title="5.0 ReentrantLock原理"></a>5.0 ReentrantLock原理</h2><p>synchronized与ReentrantLock都是可重入锁（当一个方法得到了锁，那么它里面的方法也同时占有锁)<br>不同点在于ReentrantLock多了三个特性：</p>
-<ol>
-<li>添加了公平锁：当一个线程释放锁，其他被阻塞的线程按序进行获取。</li>
-<li>可添加多个条件，synchronized要么唤醒全部线程，要么唤醒一个线程</li>
-<li>让在等待的线程可以去做别的事情。<h3 id="5-1-AQS"><a href="#5-1-AQS" class="headerlink" title="5.1 AQS"></a>5.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，用于表示线程重入锁的次数。用CAS操作实现线程获得锁的过程</li>
-</ol>
-<h2 id="6-0-实现线程的三种方式"><a href="#6-0-实现线程的三种方式" class="headerlink" title="6.0 实现线程的三种方式"></a>6.0 实现线程的三种方式</h2><ol>
-<li>继承Thread类：Thread类本身就实现了Runnable接口，<pre><code>public class MyThread extends Thread {  
-　　public void run() {  
-　　 System.out.println(&quot;MyThread.run()&quot;);  
-　　}  
-}  
-</code></pre></li>
-</ol>
-<p>MyThread myThread1 = new MyThread();<br>MyThread myThread2 = new MyThread();<br>myThread1.start();<br>myThread2.start();</p>
-<pre><code>
-2. 实现Runnable接口：继承Thread类因为单继承所以存在局限性。Runnable只有一个方法： </code></pre><p>public class MyThread extends OtherClass implements Runnable {<br>　　public void run() {<br>　　 System.out.println(“MyThread.run()”);<br>　　}<br>}<br>启动：<br>MyThread myThread = new MyThread();<br>Thread thread = new Thread(myThread);<br>thread.start();  </p>
-<pre><code>3. 实现Callable接口通过FutureTask包装器来创建线程
-Callable只有一个接口，但允许有返回值</code></pre><p>public class SomeCallable<v> extends OtherClass implements Callable<v> {</v></v></p>
-<pre><code>@Override
-public V call() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-}</code></pre><p>}<br>启动：<br>Callable<v> oneCallable = new SomeCallable<v>();<br>//由Callable<integer>创建一个FutureTask<integer>对象：<br>FutureTask<v> oneTask = new FutureTask<v>(oneCallable);<br>//注释：FutureTask<integer>是一个包装器，它通过接受Callable<integer>来创建，它同时实现了Future和Runnable接口。<br>  //由FutureTask<integer>创建一个Thread对象：<br>Thread oneThread = new Thread(oneTask);<br>oneThread.start();<br>//至此，一个线程就创建完成了。</integer></integer></integer></v></v></integer></integer></v></v></p>
-<pre><code>4. 使用ExecutorSerivice，Callable，Future实现有返回结果的线程
-这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，</code></pre><p>import java.util.concurrent.*;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;  </p>
-<p>/** </p>
-<ul>
-<li><p>有返回值的线程 </p>
-</li>
-<li><p>/<br>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>   InterruptedException {<br>  System.out.println(“—-程序开始运行—-“);<br>  Date date1 = new Date();  </p>
-<p>  int taskSize = 5;<br>  // 创建一个线程池<br>  ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>  // 创建多个有返回值的任务<br>  List<future> list = new ArrayList<future>();<br>  for (int i = 0; i &lt; taskSize; i++) {<br>   Callable c = new MyCallable(i + “ “);<br>   // 执行任务并获取Future对象<br>   Future f = pool.submit(c);<br>   // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   list.add(f);<br>  }<br>  // 关闭线程池<br>  pool.shutdown();  </future></future></p>
-<p>  // 获取所有并发任务的运行结果<br>  for (Future f : list) {<br>   // 从Future对象上获取任务的返回值，并输出到控制台<br>   System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>  }  </p>
-<p>  Date date2 = new Date();<br>  System.out.println(“—-程序结束运行—-，程序运行时间【”  </p>
-<pre><code>+ (date2.getTime() - date1.getTime()) + &quot;毫秒】&quot;);  </code></pre><p>}<br>}  </p>
-</li>
+<h2 id="java相关"><a href="#java相关" class="headerlink" title="java相关"></a>java相关</h2><ul>
+<li>hashmap，为什么扩容是二的倍数</li>
+<li>hashmap会导致什么样的线程不安全的结果</li>
+<li>JVM</li>
+<li>内存回收与GC</li>
+<li>分布式（不会）<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2>搜索引擎输入词的联想功能怎么实现<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2>两个大数相加<br>思路：用字符串表示，注意最高位的进位问题</li>
 </ul>
-<p>class MyCallable implements Callable<object> {<br>private String taskNum;  </object></p>
-<p>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}  </p>
-<p>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</p>
-<pre><code>## 7.0 线程池
-三种线程池：
-1、new SingleThreadExecutor()——创建一个单线程的线程池
-2、new FixedThreadPool(int n)——创建一个固定大小的线程池
-3、new CachedThreadPool()——创建一个可缓存的线程池
-### 7.1 excute与submit区别
-1. 接收参数不一样，excute()接收runnable类型参数，而submit接收callable类型参数
-2. excute方法没有返回值，submit方法会放回Future&lt;T&gt;类型返回值
-3. submit方法适合处理异常，在future.get抛出的异常
-### 7.2 使用线程池的好处
-1. 降低资源消耗，频繁的创建线程和销毁线程需要耗费资源
-2. 提高响应效率，任务到达就可以开始处理
-3. 提高线程可管理性
-4. 放置服务器过载
-### 7.3 线程池中的类与接口
-{% asset_img 1.png %}
-### 7.4 三种线程池实现原理
-三种线程最终都是通过构造不同参数的ThreadPoolExcutor来创建的
-{% asset_img 2.png %}
-1. corePoolSize：线程池中维持不会释放的线程数
-2. maximumPoolSize：池中最大的线程数，超出corePoolSize小于maximumPoolSize会在执行任务后释放
-3. keepAliveTime，会被释放的线程的缓存时间
 
-### 7.5 三种任务队列
-1. SynchronousQueue：直接提交策略适用于CachedThreadPool。，它将任务直接提交给线程而不保持它们。如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。
-2. LinkedBlockingQueue——无界队列，适用于FixedThreadPool与SingleThreadExcutor。基于链表的阻塞队列，创建的线程数不会超过corePoolSizes（maximumPoolSize值与其一致），当线程正忙时，任务进入队列等待。按照FIFO原则对元素进行排序，吞吐量高于ArrayBlockingQueue。
-3. ArrayListBlockingQueue——有界队列，有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。
-### 7.6 任务队列已满处理策略
-ThreadPoolExcutor.AbortPolicy()——直接抛出异常，默认操作
-ThreadPoolExcutor.CallerRunsPolicy()——只用调用者所在线程来运行任务
-ThreadPoolExcutor.DiscardOldersPolicy()——丢弃队列里最近的一个任务，并执行当前任务
-ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
-
-关于excute()方法，它的执行实际上分了三步：
-1、当少量的线程在运行，线程的数量还没有达到corePoolSize，那么启用新的线程来执行新任务。
-2、如果线程数量已经达到了corePoolSize，那么尝试把任务缓存起来，然后再次检查线程池的状态，看这个时候是否能添加一个额外的线程，来执行这个任务。如果这个检查到线程池关闭了，就拒绝任务。
-3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务。</code></pre>
             </div>
             <hr/>
 
@@ -677,9 +600,9 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《java并发编程》
+                    《美团后端研发岗面经-第一面》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/05/java并发编程/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/07/美团后端研发岗面经-第一面/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liu Mn
             </a> is licensed under a
@@ -719,9 +642,10 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2019/09/07/美团后端研发岗面经-第一面/">
                     <div class="card-image">
@@ -742,9 +666,9 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-07
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-07
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -757,6 +681,7 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -775,31 +700,32 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/09/02/LeetCode算法题/">
+                <a href="/2019/09/05/java并发编程/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="LeetCode算法题">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java并发编程">
                         
-                        <span class="card-title">LeetCode算法题</span>
+                        <span class="card-title">java并发编程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录一些leetcode上题目的解题思路
+                            1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
+2. 线程间的协作线程状态：新建，就绪，
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-02
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-05
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/算法/" class="post-category" target="_blank">
-                                    算法
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                    java基础
                                 </a>
                             
                             
@@ -809,8 +735,16 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/算法/" target="_blank">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/锁/" target="_blank">
+                        <span class="chip bg-color">锁</span>
+                    </a>
+                    
+                    <a href="/tags/并发/" target="_blank">
+                        <span class="chip bg-color">并发</span>
+                    </a>
+                    
+                    <a href="/tags/线程/" target="_blank">
+                        <span class="chip bg-color">线程</span>
                     </a>
                     
                 </div>

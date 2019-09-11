@@ -519,7 +519,11 @@ static final int hash(Object key) {   //jdk1.8 &amp; jdk1.7
 方法二：
 static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个方法，但是实现原理一样的
    return h &amp; (length-1);  //第三步 取模运算
-}</code></pre>这里用&amp;代替%取模运算，加快效率，而第二步，防止高位参与不了取模运算，将自身与高位相异或。<h4 id="3-3-3-hashtable与concurrentHashMap的线程安全比较"><a href="#3-3-3-hashtable与concurrentHashMap的线程安全比较" class="headerlink" title="3.3.3 hashtable与concurrentHashMap的线程安全比较"></a>3.3.3 hashtable与concurrentHashMap的线程安全比较</h4>hashmap不存在线程安全</li>
+}</code></pre>这里用&amp;代替%取模运算，加快效率，而第二步，防止高位参与不了取模运算，将自身与高位相异或。</li>
+</ul>
+<p>Q: 为什么一定扩容要是2的倍数：<br>A: 因为第三步取模运算如果length=15，那么length-1=1110，那么1111与1110与这个数相与就得到了一样的数，增加了碰撞的几率，造成了空间的浪费。</p>
+<h4 id="3-3-3-hashtable与concurrentHashMap的线程安全比较"><a href="#3-3-3-hashtable与concurrentHashMap的线程安全比较" class="headerlink" title="3.3.3 hashtable与concurrentHashMap的线程安全比较"></a>3.3.3 hashtable与concurrentHashMap的线程安全比较</h4><p>hashmap不存在线程安全</p>
+<ul>
 <li>hashtable:使用synchronized，锁住整张表</li>
 <li>concurrentHashmap ：使用锁分段技术，将map分为n的segment，每次进行写操作时，只锁住一个segement，也就是一个桶。再到jdk1.8以后，逐渐抛弃segment的概念，转而锁住桶的第一个节点。采用CAS和synchronized来保证并发安全。不允许键值出现null<h4 id="3-3-4-为什么重写了equals方法后必须重写hashcode方法"><a href="#3-3-4-为什么重写了equals方法后必须重写hashcode方法" class="headerlink" title="3.3.4 为什么重写了equals方法后必须重写hashcode方法"></a>3.3.4 为什么重写了equals方法后必须重写hashcode方法</h4><blockquote>
 <p>hashcode的规定:<br>(1)当obj1.equals(obj2)为true时，obj1.hashCode() == obj2.hashCode()必须为true<br>(2)当obj1.hashCode() == obj2.hashCode()为false时，obj1.equals(obj2)必须为false</p>
@@ -527,6 +531,16 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
 </li>
 </ul>
 <p>Object类的equals默认是比较两个对象的地址，hashcode也是根据对象地址生成一个数值，如果不重写，两个对象的equals是不可能相等的，重写了之后，如果在重写后，两个值一样的对象那么equals就等于true，然而他们的hashcode却不一样。自然违背额hashcode的规定。以hashset为例，当放入一个值时，先计算他的hashcode与set集合里面的值相比较，如果没有相同，则放进去，如果相同，再比较他们的equals方法是否相等。</p>
+<h4 id="3-3-5-HashMap在高并发环境下会引发什么样的安全问题？"><a href="#3-3-5-HashMap在高并发环境下会引发什么样的安全问题？" class="headerlink" title="3.3.5 HashMap在高并发环境下会引发什么样的安全问题？"></a>3.3.5 HashMap在高并发环境下会引发什么样的安全问题？</h4><ol>
+<li>死循环：jdk1.8以前在扩容时会将链表逆序处理，也就是扩容前的链表中节点的顺序与扩容后的节点顺序是相反的，假如两个线程同时检测到要扩容，然后进行tranfer循环，形成循环链表，导致get（）方法一直在链表中循环。<br>参考博客<a href="https://www.cnblogs.com/gxyandwmm/p/9537669.html" target="_blank" rel="noopener">https://www.cnblogs.com/gxyandwmm/p/9537669.html</a></li>
+<li>数据丢失：两个线程同时在put元素，如果有产生哈希碰撞，因为两个线程得到同一份下标去存储，可能会导致覆盖的情况，从而数据丢失，参考博客<a href="https://www.cnblogs.com/binyue/p/3726403.html" target="_blank" rel="noopener">https://www.cnblogs.com/binyue/p/3726403.html</a></li>
+</ol>
+<p>三种解决方案</p>
+<ol>
+<li>改用hashtable，效率低</li>
+<li>使用Collections.synchronized（）方法对hashmap进行同步</li>
+<li>使用ConcurrentHashMap</li>
+</ol>
 
             </div>
             <hr/>
