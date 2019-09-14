@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="java并发编程, Liu Mn">
     <meta name="description" content="1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2. 线程间的协作线程状态：新建，就绪，">
+2.0 Synchronized原理每个">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -427,54 +427,56 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="1-锁的种类"><a href="#1-锁的种类" class="headerlink" title="1. 锁的种类"></a>1. 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
-<h2 id="2-线程间的协作"><a href="#2-线程间的协作" class="headerlink" title="2. 线程间的协作"></a>2. 线程间的协作</h2><p>线程状态：新建，就绪，运行，阻塞，终止</p>
-<h3 id="wait-notify-notifyAll"><a href="#wait-notify-notifyAll" class="headerlink" title="wait/notify/notifyAll"></a>wait/notify/notifyAll</h3><p>wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法师傅Object类，而不是属于thread。</p>
-<h3 id="2-1-sleep-yield-join"><a href="#2-1-sleep-yield-join" class="headerlink" title="2.1 sleep/yield/join"></a>2.1 sleep/yield/join</h3><p>属于线程的三个方法，</p>
-<ul>
-<li>sleep():sleep与wait的区别在与：sleep只是暂停，腾出cpu的使用权，但不会释放锁。</li>
-<li>yield()：很少使用，暂停当前线程，以便别的线程可以执行，不能指定时间，也不保证当前线程立即停止。</li>
-<li>join():作用是让父进程等待子进程执行完后再执行，将异步的线程转换为同步的，join方法底层就是用wait()方法来实现的。</li>
-</ul>
-<p>参考博客<a href="https://www.cnblogs.com/paddix/p/5381958.html" target="_blank" rel="noopener">https://www.cnblogs.com/paddix/p/5381958.html</a></p>
-<h2 id="3-0-Synchronized原理"><a href="#3-0-Synchronized原理" class="headerlink" title="3.0 Synchronized原理"></a>3.0 Synchronized原理</h2><p>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
+<h2 id="2-0-Synchronized原理"><a href="#2-0-Synchronized原理" class="headerlink" title="2.0 Synchronized原理"></a>2.0 Synchronized原理</h2><p>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
 <ol>
 <li>当monitor的进入数为0，代表空闲，则该线程可以进入，然后将进入数设置为1</li>
 <li>当该线程已经占有monitor，只是重新进入，则进入monitor的进入数加1</li>
-<li>其他线程想要尝试获得该对象，就会被阻塞，知道占有线程调用monitorexit退出，monitor进入数为0.<h2 id="4-0-CAS"><a href="#4-0-CAS" class="headerlink" title="4.0 CAS"></a>4.0 CAS</h2>compare and switch,用与代替互斥量实现轻量级锁，操作涉及三个操作数：内存位置，预期原值，新值。如果在内存位置的值与预期原值相匹配，那么处理器就会将他更新为新值，否则不会做任何操作。<h3 id="4-1-实现原理"><a href="#4-1-实现原理" class="headerlink" title="4.1 实现原理"></a>4.1 实现原理</h3>java不能直接访问操作系统底层，通过native(jni)来访问，Unsafe类实现原子性操作<h3 id="4-2-存在的问题：ABA"><a href="#4-2-存在的问题：ABA" class="headerlink" title="4.2 存在的问题：ABA"></a>4.2 存在的问题：ABA</h3>一个线程占有了一个变量(变量N，值为1），然后第二个线程用CAS同时去操作，第一个线程将N变为2，而此时又有 第三个线程来抢占了，将N变为1，然后第二个线程获取到的N是旧值，虽然与前面相等，但实际的N已经经历了1到2到1的改变。</li>
+<li>其他线程想要尝试获得该对象，就会被阻塞，知道占有线程调用monitorexit退出，monitor进入数为0.<h2 id="3-0-CAS"><a href="#3-0-CAS" class="headerlink" title="3.0 CAS"></a>3.0 CAS</h2>compare and switch,用与代替互斥量实现轻量级锁，操作涉及三个操作数：内存位置，预期原值，新值。如果在内存位置的值与预期原值相匹配，那么处理器就会将他更新为新值，否则不会做任何操作。<h3 id="3-1-实现原理"><a href="#3-1-实现原理" class="headerlink" title="3.1 实现原理"></a>3.1 实现原理</h3>java不能直接访问操作系统底层，通过native(jni)来访问，Unsafe类实现原子性操作<h3 id="3-2-存在的问题：ABA"><a href="#3-2-存在的问题：ABA" class="headerlink" title="3.2 存在的问题：ABA"></a>3.2 存在的问题：ABA</h3>一个线程占有了一个变量(变量N，值为1），然后第二个线程用CAS同时去操作，第一个线程将N变为2，而此时又有 第三个线程来抢占了，将N变为1，然后第二个线程获取到的N是旧值，虽然与前面相等，但实际的N已经经历了1到2到1的改变。</li>
 </ol>
 <p>解决：给变量加一个版本号</p>
-<h2 id="5-0-ReentrantLock原理"><a href="#5-0-ReentrantLock原理" class="headerlink" title="5.0 ReentrantLock原理"></a>5.0 ReentrantLock原理</h2><p>synchronized与ReentrantLock都是可重入锁（当一个方法得到了锁，那么它里面的方法也同时占有锁)<br>不同点在于ReentrantLock多了三个特性：</p>
+<h2 id="4-0-ReentrantLock原理"><a href="#4-0-ReentrantLock原理" class="headerlink" title="4.0 ReentrantLock原理"></a>4.0 ReentrantLock原理</h2><p>synchronized与ReentrantLock都是可重入锁（当一个方法得到了锁，那么它里面的方法也同时占有锁)<br>不同点在于ReentrantLock多了三个特性：</p>
 <ol>
 <li>添加了公平锁：当一个线程释放锁，其他被阻塞的线程按序进行获取。</li>
 <li>可添加多个条件，synchronized要么唤醒全部线程，要么唤醒一个线程</li>
-<li>让在等待的线程可以去做别的事情。<h3 id="5-1-AQS"><a href="#5-1-AQS" class="headerlink" title="5.1 AQS"></a>5.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，用于表示线程重入锁的次数。用CAS操作实现线程获得锁的过程</li>
+<li>让在等待的线程可以去做别的事情。<h3 id="4-1-AQS"><a href="#4-1-AQS" class="headerlink" title="4.1 AQS"></a>4.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，用于表示线程重入锁的次数。用CAS操作实现线程获得锁的过程</li>
 </ol>
-<h2 id="6-0-实现线程的三种方式"><a href="#6-0-实现线程的三种方式" class="headerlink" title="6.0 实现线程的三种方式"></a>6.0 实现线程的三种方式</h2><ol>
-<li>继承Thread类：Thread类本身就实现了Runnable接口，<pre><code>public class MyThread extends Thread {  
+<h2 id="5-0-实现线程的三种方式"><a href="#5-0-实现线程的三种方式" class="headerlink" title="5.0 实现线程的三种方式"></a>5.0 实现线程的三种方式</h2><ol>
+<li><p>继承Thread类：Thread类本身就实现了Runnable接口，</p>
+<pre><code>public class MyThread extends Thread {  
 　　public void run() {  
 　　 System.out.println(&quot;MyThread.run()&quot;);  
 　　}  
 }  
+MyThread myThread1 = new MyThread();  
+MyThread myThread2 = new MyThread();  
+myThread1.start();  
+myThread2.start();</code></pre></li>
+<li><p>实现Runnable接口：继承Thread类因为单继承所以存在局限性。Runnable只有一个方法： </p>
+<pre><code>public class MyThread extends OtherClass implements Runnable {  
+　　public void run() {  
+　　 System.out.println(&quot;MyThread.run()&quot;);  
+　　}  
+} 
+启动：
+MyThread myThread = new MyThread();  
+Thread thread = new Thread(myThread);  
+thread.start();  </code></pre></li>
+<li><p>实现Callable接口通过FutureTask包装器来创建线程<br>Callable只有一个接口，但允许有返回值</p>
+<pre><code>public class SomeCallable&lt;V&gt; extends OtherClass implements Callable&lt;V&gt; {
+ @Override
+ public V call() throws Exception {
+     // TODO Auto-generated method stub
+     return null;
+ }
 </code></pre></li>
 </ol>
-<p>MyThread myThread1 = new MyThread();<br>MyThread myThread2 = new MyThread();<br>myThread1.start();<br>myThread2.start();</p>
-<pre><code>
-2. 实现Runnable接口：继承Thread类因为单继承所以存在局限性。Runnable只有一个方法： </code></pre><p>public class MyThread extends OtherClass implements Runnable {<br>　　public void run() {<br>　　 System.out.println(“MyThread.run()”);<br>　　}<br>}<br>启动：<br>MyThread myThread = new MyThread();<br>Thread thread = new Thread(myThread);<br>thread.start();  </p>
-<pre><code>3. 实现Callable接口通过FutureTask包装器来创建线程
-Callable只有一个接口，但允许有返回值</code></pre><p>public class SomeCallable<v> extends OtherClass implements Callable<v> {</v></v></p>
-<pre><code>@Override
-public V call() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-}</code></pre><p>}<br>启动：<br>Callable<v> oneCallable = new SomeCallable<v>();<br>//由Callable<integer>创建一个FutureTask<integer>对象：<br>FutureTask<v> oneTask = new FutureTask<v>(oneCallable);<br>//注释：FutureTask<integer>是一个包装器，它通过接受Callable<integer>来创建，它同时实现了Future和Runnable接口。<br>  //由FutureTask<integer>创建一个Thread对象：<br>Thread oneThread = new Thread(oneTask);<br>oneThread.start();<br>//至此，一个线程就创建完成了。</integer></integer></integer></v></v></integer></integer></v></v></p>
+<p>}<br>启动：<br>Callable<v> oneCallable = new SomeCallable<v>();<br>//由Callable<integer>创建一个FutureTask<integer>对象：<br>FutureTask<v> oneTask = new FutureTask<v>(oneCallable);<br>//注释：FutureTask<integer>是一个包装器，它通过接受Callable<integer>来创建，它同时实现了Future和Runnable接口。<br>  //由FutureTask<integer>创建一个Thread对象：<br>Thread oneThread = new Thread(oneTask);<br>oneThread.start();<br>//至此，一个线程就创建完成了。</integer></integer></integer></v></v></integer></integer></v></v></p>
 <pre><code>4. 使用ExecutorSerivice，Callable，Future实现有返回结果的线程
-这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，</code></pre><p>import java.util.concurrent.*;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;  </p>
-<p>/** </p>
+这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，</code></pre><p>import java.util.concurrent.<em>;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;<br>/*</em> </p>
 <ul>
 <li><p>有返回值的线程 </p>
 </li>
-<li><p>/<br>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>   InterruptedException {<br>  System.out.println(“—-程序开始运行—-“);<br>  Date date1 = new Date();  </p>
-<p>  int taskSize = 5;<br>  // 创建一个线程池<br>  ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>  // 创建多个有返回值的任务<br>  List<future> list = new ArrayList<future>();<br>  for (int i = 0; i &lt; taskSize; i++) {<br>   Callable c = new MyCallable(i + “ “);<br>   // 执行任务并获取Future对象<br>   Future f = pool.submit(c);<br>   // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   list.add(f);<br>  }<br>  // 关闭线程池<br>  pool.shutdown();  </future></future></p>
+<li><p>/<br>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>   InterruptedException {<br>  System.out.println(“—-程序开始运行—-“);<br>  Date date1 = new Date();<br>  int taskSize = 5;<br>  // 创建一个线程池<br>  ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>  // 创建多个有返回值的任务<br>  List<future> list = new ArrayList<future>();<br>  for (int i = 0; i &lt; taskSize; i++) {<br>   Callable c = new MyCallable(i + “ “);<br>   // 执行任务并获取Future对象<br>   Future f = pool.submit(c);<br>   // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   list.add(f);<br>  }<br>  // 关闭线程池<br>  pool.shutdown();  </future></future></p>
 <p>  // 获取所有并发任务的运行结果<br>  for (Future f : list) {<br>   // 从Future对象上获取任务的返回值，并输出到控制台<br>   System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>  }  </p>
 <p>  Date date2 = new Date();<br>  System.out.println(“—-程序结束运行—-，程序运行时间【”  </p>
 <pre><code>+ (date2.getTime() - date1.getTime()) + &quot;毫秒】&quot;);  </code></pre><p>}<br>}  </p>
@@ -482,44 +484,77 @@ public V call() throws Exception {
 </ul>
 <p>class MyCallable implements Callable<object> {<br>private String taskNum;  </object></p>
 <p>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}  </p>
-<p>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</p>
-<pre><code>## 7.0 线程池
-三种线程池：
-1、new SingleThreadExecutor()——创建一个单线程的线程池
-2、new FixedThreadPool(int n)——创建一个固定大小的线程池
-3、new CachedThreadPool()——创建一个可缓存的线程池
-### 7.1 excute与submit区别
-1. 接收参数不一样，excute()接收runnable类型参数，而submit接收callable类型参数
-2. excute方法没有返回值，submit方法会放回Future&lt;T&gt;类型返回值
-3. submit方法适合处理异常，在future.get抛出的异常
-### 7.2 使用线程池的好处
-1. 降低资源消耗，频繁的创建线程和销毁线程需要耗费资源
-2. 提高响应效率，任务到达就可以开始处理
-3. 提高线程可管理性
-4. 放置服务器过载
-### 7.3 线程池中的类与接口
-{% asset_img 1.png %}
-### 7.4 三种线程池实现原理
-三种线程最终都是通过构造不同参数的ThreadPoolExcutor来创建的
-{% asset_img 2.png %}
-1. corePoolSize：线程池中维持不会释放的线程数
-2. maximumPoolSize：池中最大的线程数，超出corePoolSize小于maximumPoolSize会在执行任务后释放
-3. keepAliveTime，会被释放的线程的缓存时间
+<p>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}<br>```</p>
+<h2 id="6-线程间的协作"><a href="#6-线程间的协作" class="headerlink" title="6. 线程间的协作"></a>6. 线程间的协作</h2><p>线程状态：新建，就绪，运行，阻塞，终止</p>
+<h3 id="6-1-wait-notify-notifyAll"><a href="#6-1-wait-notify-notifyAll" class="headerlink" title="6.1 wait/notify/notifyAll"></a>6.1 wait/notify/notifyAll</h3><p>wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法师傅Object类，而不是属于thread。</p>
+<h3 id="6-2-sleep-yield-join"><a href="#6-2-sleep-yield-join" class="headerlink" title="6.2 sleep/yield/join"></a>6.2 sleep/yield/join</h3><p>属于线程的三个方法，</p>
+<ul>
+<li>sleep():sleep与wait的区别在与：sleep只是暂停，腾出cpu的使用权，但不会释放锁。</li>
+<li>yield()：很少使用，暂停当前线程，以便别的线程可以执行，不能指定时间，也不保证当前线程立即停止。</li>
+<li>join():作用是让父进程等待子进程执行完后再执行，将异步的线程转换为同步的，join方法底层就是用wait()方法来实现的。</li>
+</ul>
+<p>参考博客<a href="https://www.cnblogs.com/paddix/p/5381958.html" target="_blank" rel="noopener">https://www.cnblogs.com/paddix/p/5381958.html</a></p>
+<h3 id="6-3-守护线程与非守护线程"><a href="#6-3-守护线程与非守护线程" class="headerlink" title="6.3 守护线程与非守护线程"></a>6.3 守护线程与非守护线程</h3><ul>
+<li>守护线程：在程序运行时在后台提供通用服务的进程，比如垃圾回收的线程，不可或缺的线程。<h2 id="7-0-线程池"><a href="#7-0-线程池" class="headerlink" title="7.0 线程池"></a>7.0 线程池</h2>三种线程池：<br>1、new SingleThreadExecutor()——创建一个单线程的线程池<br>2、new FixedThreadPool(int n)——创建一个固定大小的线程池<br>3、new CachedThreadPool()——创建一个可缓存的线程池<br>4、new ScheduledThreadPool()——创建一个固定长度的线程池，而且以延迟或定时的方式执行任务。<h3 id="7-1-excute与submit区别"><a href="#7-1-excute与submit区别" class="headerlink" title="7.1 excute与submit区别"></a>7.1 excute与submit区别</h3></li>
+</ul>
+<ol>
+<li>接收参数不一样，excute()接收runnable类型参数，而submit接收callable类型参数</li>
+<li>excute方法没有返回值，submit方法会放回Future<t>类型返回值</t></li>
+<li>submit方法适合处理异常，在future.get抛出的异常<h3 id="7-2-使用线程池的好处"><a href="#7-2-使用线程池的好处" class="headerlink" title="7.2 使用线程池的好处"></a>7.2 使用线程池的好处</h3></li>
+<li>降低资源消耗，频繁的创建线程和销毁线程需要耗费资源</li>
+<li>提高响应效率，任务到达就可以开始处理</li>
+<li>提高线程可管理性</li>
+<li>放置服务器过载<h3 id="7-3-线程池中的类与接口"><a href="#7-3-线程池中的类与接口" class="headerlink" title="7.3 线程池中的类与接口"></a>7.3 线程池中的类与接口</h3><img src="/2019/09/05/java并发编程/1.png">
+<h3 id="7-4-三种线程池实现原理"><a href="#7-4-三种线程池实现原理" class="headerlink" title="7.4 三种线程池实现原理"></a>7.4 三种线程池实现原理</h3>三种线程最终都是通过构造不同参数的ThreadPoolExcutor来创建的<img src="/2019/09/05/java并发编程/2.png"></li>
+<li>corePoolSize：线程池中维持不会释放的线程数</li>
+<li>maximumPoolSize：池中最大的线程数，超出corePoolSize小于maximumPoolSize会在执行任务后释放</li>
+<li>keepAliveTime，会被释放的线程的缓存时间\</li>
+<li>UNIT 时间单位</li>
+<li>wordkQueue 缓存异步任务的队列</li>
+<li>threadFactory，用来构造线程池里的wordker线程。</li>
+<li>handler 任务队列已满处理策略</li>
+</ol>
+<h3 id="7-5-三种任务队列"><a href="#7-5-三种任务队列" class="headerlink" title="7.5 三种任务队列"></a>7.5 三种任务队列</h3><ol>
+<li>SynchronousQueue：直接提交策略适用于CachedThreadPool。，它将任务直接提交给线程而不保持它们。如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。</li>
+<li>LinkedBlockingQueue——无界队列，适用于FixedThreadPool与SingleThreadExcutor。基于链表的阻塞队列，创建的线程数不会超过corePoolSizes（maximumPoolSize值与其一致），当线程正忙时，任务进入队列等待。按照FIFO原则对元素进行排序，吞吐量高于ArrayBlockingQueue。</li>
+<li>ArrayListBlockingQueue——有界队列，有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。</li>
+</ol>
+<p>newFixedThreadPool和newSingleThreadExcutor默认使用2</p>
+<h3 id="7-6-任务队列已满处理策略"><a href="#7-6-任务队列已满处理策略" class="headerlink" title="7.6 任务队列已满处理策略"></a>7.6 任务队列已满处理策略</h3><p>ThreadPoolExcutor.AbortPolicy()——终止策略是默认的饱和策略，直接抛出异常，默认操作<br>ThreadPoolExcutor.CallerRunsPolicy()——只用调用者所在线程来运行任务<br>ThreadPoolExcutor.DiscardOldersPolicy()——丢弃队列里最近的一个任务，并执行当前任务<br>ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉</p>
+<p>关于excute()方法，它的执行实际上分了三步：<br>1、当少量的线程在运行，线程的数量还没有达到corePoolSize，那么启用新的线程来执行新任务。<br>2、如果线程数量已经达到了corePoolSize，那么尝试把任务缓存起来，然后再次检查线程池的状态，看这个时候是否能添加一个额外的线程，来执行这个任务。如果这个检查到线程池关闭了，就拒绝任务。<br>3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务。</p>
+<h2 id="8-0-并发容器类"><a href="#8-0-并发容器类" class="headerlink" title="8.0 并发容器类"></a>8.0 并发容器类</h2><p>节选自《java并发编程实战》第五章</p>
+<ul>
+<li>ConcurrentHashMap:分段锁（segment），他与其他并发容器一起增强了同步容器类：他们提供的迭代器不会抛出ConcurrentModificationException，取而代之的是在改变时new新的数据从而不影响原有的数据 ，iterator完成后再将头指针替换为新的数据，因此不需要再同步过程中对容器加锁，并且具有弱一致性，可以在迭代时容忍并发的修改。Segment继承了ReentrantLock，是一种个可重入锁。<blockquote>
+<p>快速失败策略：util包中。比如list，实现的是fast-failed迭代器，一旦在迭代时另一个线程对集合进行修改，就会抛出上面的异常</p>
+</blockquote>
+</li>
+<li>CopyOnwriteArraylist:用于替代同步list，它的线程安全性在于每次修改时，都会创建一个新的容器副本，从而实现可变性。</li>
+<li>阻塞队列:上文的任务队列都是阻塞队列，可用于生产者-消费者模式，synchronousQueue，这个队列不会为队列中元素维护存储空间。他维护的是一组线程，仅当有足够多的消费者，并且总是有一个消费者准备好交付工作时，才适合用这个队列</li>
+<li>双端队列与工作密取：Deque和BlockingDeque分别对Queue和BlockingQueue进行了扩展。deque是一个双端队列。工作密取：在前面的模式中消费者共享同一队列，而在工作密取模式中，消费者没个都有自己的双端队列，当它自己的工作完成了，他就会从其他消费者的队列的末尾秘密的获取工作。</li>
+<li>闭锁和栅栏：闭锁：在闭锁到达结束状态前，这扇门是一直关闭的，并且没有任何线程能通过，栅栏：阻塞一组线程知道某个事件发生，栅栏是阻塞线程，而闭锁是阻塞时间。=<h2 id="9-0-临界区，互斥量，信号量之间的关系"><a href="#9-0-临界区，互斥量，信号量之间的关系" class="headerlink" title="9.0 临界区，互斥量，信号量之间的关系"></a>9.0 临界区，互斥量，信号量之间的关系</h2>这应该是属于c++范畴，但还是在这里记录一下</li>
+<li>临界区：提供多个线程的串行化来单独访问同一资源或代码，速度快，适合控制数据访问，只能应用在同一程序中。</li>
+<li>互斥量：跟临界区很像，只有拥有互斥对象的线程才能访问资源，但可以实现不同应用程序之间的线程对同一个资源的共享。</li>
+<li>信号量：上面都是单独访问资源，而信号量而允许多个线程一起访问资源，但设有最大访问数量</li>
+</ul>
+<h2 id="10-0-死锁"><a href="#10-0-死锁" class="headerlink" title="10.0 死锁"></a>10.0 死锁</h2><p>死锁发生的条件：</p>
+<ul>
+<li>占有并等待</li>
+<li>循环并等待</li>
+<li>非抢占</li>
+<li>互斥</li>
+</ul>
+<p>针对对象之间协作造成的死锁最好的解决方法是使用开放调用：如果在调用某个方法时，不需要锁，那么这种调用就称为开放调用。</p>
+<h3 id="10-1-死锁的避免和诊断"><a href="#10-1-死锁的避免和诊断" class="headerlink" title="10.1 死锁的避免和诊断"></a>10.1 死锁的避免和诊断</h3><p>考虑获取锁的顺序</p>
+<ul>
+<li>使用定时的锁trylock，当获取锁的时间超过了某个阈值，就返回失败</li>
+<li>通过线程转储信息来分析死锁：线程转储信息包括了各个运行中的线程的栈追踪信息，加锁信息。<h3 id="10-2-其他活跃性危险"><a href="#10-2-其他活跃性危险" class="headerlink" title="10.2 其他活跃性危险"></a>10.2 其他活跃性危险</h3>除了死锁，还有以下几点活跃性危险</li>
+</ul>
+<ol>
+<li>饥饿：死锁和饥饿都是竞争资源引起的，但死锁时同步的，饥饿是异步的，饥饿涉及到的线程只有一个，而死锁有多个。线程优先级调度中低优先级的线程容易发生饥饿</li>
+<li>糟糕的响应性：一些运行时间较长的任务会影响前台程序的响应，应该降低他们的优先级</li>
+<li>活锁：这问题尽管不会阻塞线程，也不能继续执行，线程不断执行相同的操作，而且总会失败。</li>
+</ol>
 
-### 7.5 三种任务队列
-1. SynchronousQueue：直接提交策略适用于CachedThreadPool。，它将任务直接提交给线程而不保持它们。如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。
-2. LinkedBlockingQueue——无界队列，适用于FixedThreadPool与SingleThreadExcutor。基于链表的阻塞队列，创建的线程数不会超过corePoolSizes（maximumPoolSize值与其一致），当线程正忙时，任务进入队列等待。按照FIFO原则对元素进行排序，吞吐量高于ArrayBlockingQueue。
-3. ArrayListBlockingQueue——有界队列，有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。
-### 7.6 任务队列已满处理策略
-ThreadPoolExcutor.AbortPolicy()——直接抛出异常，默认操作
-ThreadPoolExcutor.CallerRunsPolicy()——只用调用者所在线程来运行任务
-ThreadPoolExcutor.DiscardOldersPolicy()——丢弃队列里最近的一个任务，并执行当前任务
-ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
-
-关于excute()方法，它的执行实际上分了三步：
-1、当少量的线程在运行，线程的数量还没有达到corePoolSize，那么启用新的线程来执行新任务。
-2、如果线程数量已经达到了corePoolSize，那么尝试把任务缓存起来，然后再次检查线程池的状态，看这个时候是否能添加一个额外的线程，来执行这个任务。如果这个检查到线程池关闭了，就拒绝任务。
-3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务。</code></pre>
             </div>
             <hr/>
 

@@ -423,7 +423,25 @@ mkdir -p /u01/app/oraclemkdir 是linux的建立目录命令。如果是级联建
 <h3 id="1-0-文件，目录操作命令"><a href="#1-0-文件，目录操作命令" class="headerlink" title="1.0 文件，目录操作命令"></a>1.0 文件，目录操作命令</h3><blockquote>
 <p>mkdir -p /u01/app/oracle<br>mkdir 是linux的建立目录命令。如果是级联建立要用-p选项。<br>比如要建立/u01/app/oracle目录<br>要这样写mkdir -p /u01/app/oracle<br>要是没有-p 会出错</p>
 </blockquote>
-<h2 id="vim即shell命令常见问题"><a href="#vim即shell命令常见问题" class="headerlink" title="vim即shell命令常见问题"></a>vim即shell命令常见问题</h2><p>变量的定义用反引号`，波浪号对应的那么反引号</p>
+<h2 id="vim即shell命令常见问题"><a href="#vim即shell命令常见问题" class="headerlink" title="vim即shell命令常见问题"></a>vim即shell命令常见问题</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
+<ul>
+<li>tab<br>[tab]用于补全，用于最后字母后面，则为命令补全，用与最后一个字母加个空格再按tab就为文件补全。</li>
+</ul>
+<p>变量的定义用反引号`，波浪号对应的那么反引号</p>
+<ul>
+<li>?：代表上一个值的传回值，数字0代表没有，127代表错误<br>?代表<h3 id="变量的设置规则"><a href="#变量的设置规则" class="headerlink" title="变量的设置规则"></a>变量的设置规则</h3></li>
+</ul>
+<ol>
+<li>两边不能直接空格，要用“或者‘</li>
+<li>变量不能以数字开头</li>
+<li>用$表示这是个变量,$本身也是一个变量，表示线程代号</li>
+<li>\表示转义字符</li>
+<li>可以用`反引号或者$(命令)表示这是另一个命令。注意反引号和单引号的区别</li>
+<li>为变量增加新的内容：PATH=${PATH}:/home/bin</li>
+<li>export将变量设置为环境变量</li>
+<li>unset 用于取消变量</li>
+</ol>
+<p>Q: 双引号和单引号的区别？<br>A: 变量的设置中，双引号中可以有变量，而单引号会这几输出语句，不会输出变量</p>
 <p>数值的加法要用 sum=$(($x+$y))这种格式</p>
 <p>删除一块代码：</p>
 <ol>

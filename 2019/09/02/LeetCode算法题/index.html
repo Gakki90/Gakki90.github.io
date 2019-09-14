@@ -819,6 +819,110 @@ reader{
             }
         }
 
+    }</code></pre><h2 id="算法题从控制台输入多个字符串接收"><a href="#算法题从控制台输入多个字符串接收" class="headerlink" title="算法题从控制台输入多个字符串接收"></a>算法题从控制台输入多个字符串接收</h2><p>平时都是做leetcode上的题，没怎么去了解从控制台输入。<br>当时题的输入是这样的：</p>
+<pre><code>4
+str1
+str2
+str3
+str4
+2
+str5
+str6</code></pre><p>将前四个字符串放到一个list中，将后两个字符串放入另一个list中</p>
+<pre><code>try {
+            String line = null;
+            boolean flag=true;
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            int count=Integer.valueOf(br.readLine());
+            while ((line = br.readLine()) != null) {
+                if (line.equalsIgnoreCase(&quot;&quot;)) {
+                    break;
+                } else {
+                    if(count&gt;0){
+                        str1.add(line);
+                        count--;
+                    }else if(count==0) {
+                        count--;
+                    }else {
+                        str2.add(line);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }</code></pre><pre><code>输入：int[] a={1,2,3,4,5},int[] b={23,42,33,5},int c=3;</code></pre><p>输入一个java语句，提取其中的数字</p>
+<pre><code>boolean flag=true;
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String line=br.readLine();
+            char[] chars=line.toCharArray();
+            int start=0;
+            int length=chars.length;
+            for (int i = 0; i &lt;length ; i++) {
+                if(chars[i]-&#39;0&#39;&gt;=0&amp;&amp;chars[i]-&#39;0&#39;&lt;=9){
+                    if(chars[i-1]-&#39;0&#39;&gt;9||chars[i-1]-&#39;0&#39;&lt;0){
+                        start=i;
+                    }
+                    if(chars[i+1]-&#39;0&#39;&gt;9||chars[i+1]-&#39;0&#39;&lt;0){
+                        arrlist.add(Integer.valueOf(line.substring(start,i+1)));
+                    }
+                }
+
+            }
+
+            for (int n:arrlist){
+                System.out.println(n);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }</code></pre><h2 id="9-回文数"><a href="#9-回文数" class="headerlink" title="9.回文数"></a>9.回文数</h2><p>判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。负数不是回文数</p>
+<p>思路：官方解法：比如123321，翻转一半的数字，变成123和123，然后判读两数是否相等，如果12321，两数变成12，和123，则判断x==reverseNum/10；</p>
+<pre><code> public boolean isPalindrome(int x) {
+        if(x&lt;0||(x%10==0&amp;&amp;x!=0)){
+            return false;
+        }
+        int reverseNum=0;
+        while (reverseNum&lt;x){
+            reverseNum=reverseNum*10+x%10;
+            x/=10;
+        }
+        return x==reverseNum||x==reverseNum/10;
+    }</code></pre><h2 id="2的幂"><a href="#2的幂" class="headerlink" title="2的幂"></a>2的幂</h2><p>给定一个整数，编写一个函数来判断它是否是 2 的幂次方。<br>2的负数次方不算2的幂次方<br>思路：通过n和n-1相与</p>
+<pre><code>public boolean isPowerOfTwo(int n) {
+        if(n==0){
+            return false;
+        }
+        return n&gt;0&amp;&amp;(n&amp;(n-1))==0;
+    }</code></pre><h2 id="147-排序链表"><a href="#147-排序链表" class="headerlink" title="147.排序链表"></a>147.排序链表</h2><p>在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。</p>
+<p>思路：归并排序，找出中间节点，然后划分，然后对两边的数字进行排序。<br>快慢指针可以找出中间节点：我的理解：不从链表的第一个节点开始，而是从链表外看，慢指针第一次跳一格，那么就落在第一个节点，快指针一次跳两格，那么就跳在第二个节点，那么进行n次，那么慢指针落在n处，快指针落在2n步</p>
+<pre><code> public ListNode sortList(ListNode head) {
+            if(head==null||head.next==null){
+                return head;
+            }
+            ListNode slow=head;
+            ListNode fast=head.next;
+            while (fast!=null&amp;&amp;fast.next!=null){
+                slow=slow.next;
+                fast=fast.next;
+                if(fast!=null){
+                    fast=fast.next;
+                }
+            }
+           ListNode right=sortList(slow.next);
+            slow.next=null;//拆分成两段
+            ListNode left=sortList(head);
+            ListNode p=new ListNode(0);
+            ListNode newHead=p;
+            while (left!=null&amp;&amp;right!=null){
+                if(left.val&lt;right.val){
+                    p.next=left;
+                    left=left.next;
+                }else {
+                    p.next=right;
+                    right=right.next;
+                }
+                p=p.next;
+            }
+            p.next=(left==null?right:left);
+            return newHead.next;
     }</code></pre>
             </div>
             <hr/>
@@ -1036,7 +1140,7 @@ reader{
                     <div class="summary block-with-text">
                         
                             1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2. 线程间的协作线程状态：新建，就绪，
+2.0 Synchronized原理每个
                         
                     </div>
                     <div class="publish-info">
