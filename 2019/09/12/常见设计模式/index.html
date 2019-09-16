@@ -419,11 +419,11 @@
             <div id="articleContent">
                 <h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>属于创建型设计模式，提供了创建对象的最佳方式，定义一个创建对象的接口，让其子类决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行。<br>主要解决接口选择问题<br>描述：比如你需要一辆汽车，可以从工厂里面提货，不用去管着辆汽车是怎么做出来的，以及这个汽车里面的具体实现<br>应用场景：1.数据库访问，当用户不知道最后系统采用哪一种数据库，以及数据可能变化时2. 设计连接服务器的框架，三个协议“pop3”，“IMAP”，“HTTP”，让他们共同实现一个接口<br>具体代码参考<a href="https://www.runoob.com/design-pattern/factory-pattern.html" target="_blank" rel="noopener">https://www.runoob.com/design-pattern/factory-pattern.html</a></p>
 <img src="/2019/09/12/常见设计模式/1.jpg">
-<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>代理模式提供对目标对象另外的访问方式，这样做的好处是可以在目标对象实现的基础上，增强额外的功能操作，即扩展目标对象的功能。</p>
-<img src="/2019/09/12/常见设计模式/1.jpg">
-<p>代理对象是对目标对象的扩展，并会调用目标对象<br>有三种代理模式</p>
-<h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><p>被代理（目标）对象和代理对象要实现相同的接口或者是继承相同的父类<br>优点:可以在不修改目标的前提下对目标功能扩展<br>缺点</p>
-<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><ol>
+<h3 id="三种工厂模式"><a href="#三种工厂模式" class="headerlink" title="三种工厂模式"></a>三种工厂模式</h3><ol>
+<li>简单工厂：没有抽象，只是对产品的使用和创建进行简单解耦，如果要扩展就需要对代码进行修改</li>
+<li>工厂方法：可以有多个工厂，工厂有共同的接口，但一种工厂只能创造一种产品</li>
+<li>抽象工厂：一个工厂生产一系列的产品，例如神舟厂家生产自家的键盘，鼠标，而惠普厂家生产自家的键盘，鼠标，但神州厂家和惠普厂家都继承同一个抽象工厂类。<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2>代理模式提供对目标对象另外的访问方式，这样做的好处是可以在目标对象实现的基础上，增强额外的功能操作，即扩展目标对象的功能。<img src="/2019/09/12/常见设计模式/1.jpg">
+代理对象是对目标对象的扩展，并会调用目标对象<br>有三种代理模式<h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3>被代理（目标）对象和代理对象要实现相同的接口或者是继承相同的父类<br>优点:可以在不修改目标的前提下对目标功能扩展<br>缺点<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3></li>
 <li>代理对象可以不实现接口，目标对象要实现接口</li>
 <li>代理对象的生成，是利用JDK的API，动态的在内存中构建代理对象</li>
 <li>动态代理又称：JDK代理，接口代理</li>
@@ -431,6 +431,11 @@
 <p>代理类所在的包：java.lang.reflect.Proxy<br>使用Proxy的静态方法</p>
 <pre><code>static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,InvocationHandler h )</code></pre><p>参数分别代表：类加载器，目标对象实现的接口，时间处理函数</p>
 <h3 id="Cglib代理"><a href="#Cglib代理" class="headerlink" title="Cglib代理"></a>Cglib代理</h3><p>目标对象和代理对象都不需要实现接口，而是创建一个目标对象的子类实现代理，又称子类代理。它被广泛应用到许多AOP的框架使用<br>代理的类不能为final，如果目标对象的方法如果为final/static，那么就不会被拦截，不会指向目标对象额外的业务方法。<br>实现方法比较复杂，需要引入spring-core-3.2.5.jar<br>在Spring AOP中，如果加入的容器对象有实现接口，则jDK代理，否则Cglib代理。<br>参考自博客<a href="https://www.cnblogs.com/cenyu/p/6289209.html" target="_blank" rel="noopener">https://www.cnblogs.com/cenyu/p/6289209.html</a></p>
+<h3 id="JDK代理与子类代理的区别"><a href="#JDK代理与子类代理的区别" class="headerlink" title="JDK代理与子类代理的区别"></a>JDK代理与子类代理的区别</h3><ol>
+<li>JDK是实现了被代理对象的接口，而子类代理是继承了被代理对象</li>
+<li>都是在运行期间生产字节码，jdk是直接写class字节码，而子类是用ASM框架写class字节码，所以创建效率低于jdk</li>
+<li>jdk是通过反射实现方法调用，子类是通过fashclass机制（为被代理类和代理类的方法分配index，使用时直接定位到该方法），所以执行效率高于jdk。</li>
+</ol>
 
             </div>
             <hr/>

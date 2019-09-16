@@ -488,14 +488,21 @@
 <p>超时间隔加倍：TCP每次在重传后会把超时间隔设置成原来的两倍，而不是从RTT公式计算。</p>
 <p>快速重传：由于超时间隔加倍会增加端到端的时延，接收端采取累计确认。在期望报文段到达之前会不断发送相同的ack确认号，此为冗余ACk，在发送方收到3个冗余ACk，会采取快速重传，在定时器过期之前重传丢失的报文段。<br>Q：为什么是接收到3个冗余ack才开始重传<br>A：主要是因为考虑到分组的丢失是网络故障还是乱序造成的，如果是两次冗余ack，很有可能是乱序导致的，三个ack就有可能是网络故障，四次就更有可能。参考<a href="https://blog.csdn.net/u010202588/article/details/54563648" target="_blank" rel="noopener">https://blog.csdn.net/u010202588/article/details/54563648</a></p>
 <p>选择重传：TCP更像是一种选择重传，但他结合了GBC和选择重传，发送方收到冗余ack或者超时，只会重传一个报文。</p>
-<h4 id="1-4-4-流量控制"><a href="#1-4-4-流量控制" class="headerlink" title="1.4.4 流量控制"></a>1.4.4 流量控制</h4><p>TCP通过接收窗口（rwnd）的变量来提供流量控制，用于给发送方表明接收方还有多少可用的缓存空间。有一个问题是当rwnd为0时，接收方清空缓存后，B没有数据要想a发送，a也不知道b的缓存清空，即主机a被阻塞了，不再发送数据了。为了解决这个问题，tcp规定当rwnd=0时，发送方继续发送一个字节数据的报文段。</p>
-<h4 id="1-4-5-连接管理"><a href="#1-4-5-连接管理" class="headerlink" title="1.4.5 连接管理"></a>1.4.5 连接管理</h4><p>三次握手:</p>
-<img src="/2019/09/01/TCP-IP协议总结/6.jpg">
+<h4 id="1-4-4-流量控制"><a href="#1-4-4-流量控制" class="headerlink" title="1.4.4 流量控制"></a>1.4.4 流量控制</h4><p>TCP通过滑动窗口机制来提供流量控制，用于给发送方表明接收方还有多少可用的缓存空间。</p>
 <ul>
-<li>SYN:报文段首部的同步位</li>
-<li>seq：初始序号</li>
-<li>ACK:首部的确认位</li>
-<li>ack：确认号<br>Q: 为什么需要三次握手<br>A：</li>
+<li><p>死锁：当B的接收窗口到达0，告诉发送方A停止发送数据，然后B又有了一些缓存，然后发送报文段告诉A，这段报文段丢失了，然后就出现了A等B，B等A的死锁情况。为了解决这个问题，tcp引入了持续计时器，当A收到B接收窗口为0的报文就启动计时器，到时间就发送一个大小为一个字节的报文去探测接收端的情况，如果还是为0，那么就重启定时器。</p>
+</li>
+<li><p>滑动窗口协议（ARQ）：TCP为了提高信道的利用率没有用停等协议，而是用ARQ协议：TCP发送端根据接收报文中的接收窗口rwnd来调整发送窗口：</p>
+<h4 id="1-4-5-连接管理"><a href="#1-4-5-连接管理" class="headerlink" title="1.4.5 连接管理"></a>1.4.5 连接管理</h4><p>三次握手:</p>
+<img src="/2019/09/01/TCP-IP协议总结/6.jpg"></li>
+<li><p>SYN:报文段首部的同步位</p>
+</li>
+<li><p>seq：初始序号</p>
+</li>
+<li><p>ACK:首部的确认位</p>
+</li>
+<li><p>ack：确认号<br>Q: 为什么需要三次握手<br>A：</p>
+</li>
 </ul>
 <ol>
 <li>放止已失效的连接请求报文突然有传送到了服务器，从而产生错误连接</li>
@@ -859,12 +866,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/锁/" target="_blank">
-                        <span class="chip bg-color">锁</span>
-                    </a>
-                    
                     <a href="/tags/数据库/" target="_blank">
                         <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                    <a href="/tags/锁/" target="_blank">
+                        <span class="chip bg-color">锁</span>
                     </a>
                     
                 </div>

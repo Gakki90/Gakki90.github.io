@@ -442,14 +442,82 @@ mkdir -p /u01/app/oraclemkdir 是linux的建立目录命令。如果是级联建
 <li>unset 用于取消变量</li>
 </ol>
 <p>Q: 双引号和单引号的区别？<br>A: 变量的设置中，双引号中可以有变量，而单引号会这几输出语句，不会输出变量</p>
-<p>数值的加法要用 sum=$(($x+$y))这种格式</p>
-<p>删除一块代码：</p>
-<ol>
-<li>设置行号 :set number</li>
-<li>转到多少行  11G</li>
-<li>删除从3行到当前行的代码 3,.d  .代表当前行</li>
-<li>如果只需要删除某一行，可以用dd就行</li>
-</ol>
+<h3 id="read，array，declare"><a href="#read，array，declare" class="headerlink" title="read，array，declare"></a>read，array，declare</h3><pre><code># read atest 
+# echo $atest//从键盘读取并输出
+
+# read -p &quot;please input your name&quot; -t 30 named
+# echo $named//有提示符，并最多显示30秒
+
+## declare [-aixr] variable
+-a 声明为数组
+-i 声明为数字
+-x export，声明为环境变量
+-r 只读
+
+## var[1]=&quot;string&quot;
+## echo ${var[1]}//数组的输出用${}
+数值的加法要用 sum=$(($x+$y))这种格式</code></pre><h3 id="与文件系统和程序的限制关系：ulimit"><a href="#与文件系统和程序的限制关系：ulimit" class="headerlink" title="与文件系统和程序的限制关系：ulimit"></a>与文件系统和程序的限制关系：ulimit</h3><pre><code># ulimit [-SHacdfltu]</code></pre><p>可以用来限制文件的大小等参数</p>
+<h3 id="变量内容的删除替代与替换"><a href="#变量内容的删除替代与替换" class="headerlink" title="变量内容的删除替代与替换"></a>变量内容的删除替代与替换</h3><pre><code>${变量#关键字} //从头开始第一个关键字，最短匹配
+${变量##关键字} //从头开始第一个关键字，最长匹配
+${变量%关键字} //从尾开始第一个关键字，最短匹配
+${变量%%关键字} //从尾开始第一个关键字，最长匹配
+${变量/旧字符串/新字符串} //替换第一个关键字
+${变量//旧字符串/新字符串} //替换所有关键字</code></pre><h3 id="命名别名与历史命令"><a href="#命名别名与历史命令" class="headerlink" title="命名别名与历史命令"></a>命名别名与历史命令</h3><pre><code># alias lm=&#39;ls -l |more&#39; //设置命令的别名
+
+# history //查看历史命令
+# !! //执行上一次的命令
+# !n //执行第n个命令</code></pre><h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><table>
+<thead>
+<tr>
+<th>符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td align="center">代表0到无穷多个任意字符</td>
+</tr>
+<tr>
+<td>？</td>
+<td align="center">代表一个字符，任意的一个</td>
+</tr>
+<tr>
+<td>[]</td>
+<td align="center">代表括号内的一个字符，[abcd]代表abcd中任意一个</td>
+</tr>
+<tr>
+<td>[-]</td>
+<td align="center">代表括号中编码顺序内的所有字符，[0-9]</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td align="center">代表反向选择，[^abc]代表任意一个字符，只要不是abc中的就行</td>
+</tr>
+<tr>
+<td>###</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>删除一块代码：</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>1. 设置行号 :set number</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>2. 转到多少行  11G</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>3. 删除从3行到当前行的代码 3,.d  .代表当前行</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>4. 如果只需要删除某一行，可以用dd就行</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 
             </div>
             <hr/>
