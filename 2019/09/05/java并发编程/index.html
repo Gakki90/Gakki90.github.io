@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="java并发编程, Liu Mn">
     <meta name="description" content="1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2.0 Synchronized原理每个">
+2.0 Synchronized原理sy">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -427,18 +427,28 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="1-锁的种类"><a href="#1-锁的种类" class="headerlink" title="1. 锁的种类"></a>1. 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
-<h2 id="2-0-Synchronized原理"><a href="#2-0-Synchronized原理" class="headerlink" title="2.0 Synchronized原理"></a>2.0 Synchronized原理</h2><p>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
+<h2 id="2-0-Synchronized原理"><a href="#2-0-Synchronized原理" class="headerlink" title="2.0 Synchronized原理"></a>2.0 Synchronized原理</h2><p>synchronized又被称为内置锁<br>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
 <ol>
 <li>当monitor的进入数为0，代表空闲，则该线程可以进入，然后将进入数设置为1</li>
 <li>当该线程已经占有monitor，只是重新进入，则进入monitor的进入数加1</li>
-<li>其他线程想要尝试获得该对象，就会被阻塞，知道占有线程调用monitorexit退出，monitor进入数为0.<h2 id="3-0-CAS"><a href="#3-0-CAS" class="headerlink" title="3.0 CAS"></a>3.0 CAS</h2>compare and switch,用与代替互斥量实现轻量级锁，操作涉及三个操作数：内存位置，预期原值，新值。如果在内存位置的值与预期原值相匹配，那么处理器就会将他更新为新值，否则不会做任何操作。<h3 id="3-1-实现原理"><a href="#3-1-实现原理" class="headerlink" title="3.1 实现原理"></a>3.1 实现原理</h3>java不能直接访问操作系统底层，通过native(jni)来访问，Unsafe类实现原子性操作<h3 id="3-2-存在的问题：ABA"><a href="#3-2-存在的问题：ABA" class="headerlink" title="3.2 存在的问题：ABA"></a>3.2 存在的问题：ABA</h3>一个线程占有了一个变量(变量N，值为1），然后第二个线程用CAS同时去操作，第一个线程将N变为2，而此时又有 第三个线程来抢占了，将N变为1，然后第二个线程获取到的N是旧值，虽然与前面相等，但实际的N已经经历了1到2到1的改变。</li>
+<li>其他线程想要尝试获得该对象，就会被阻塞，知道占有线程调用monitorexit退出，monitor进入数为0.</li>
 </ol>
+<h2 id="3-0-CAS"><a href="#3-0-CAS" class="headerlink" title="3.0 CAS"></a>3.0 CAS</h2><p>compare and switch,用与代替互斥量实现轻量级锁，操作涉及三个操作数：内存位置，预期原值，新值。如果在内存位置的值与预期原值相匹配，那么处理器就会将他更新为新值，否则不会做任何操作。</p>
+<h3 id="3-1-实现原理"><a href="#3-1-实现原理" class="headerlink" title="3.1 实现原理"></a>3.1 实现原理</h3><p>java不能直接访问操作系统底层，通过native(jni)来访问，Unsafe类实现原子性操作</p>
+<h3 id="3-2-存在的问题：ABA"><a href="#3-2-存在的问题：ABA" class="headerlink" title="3.2 存在的问题：ABA"></a>3.2 存在的问题：ABA</h3><p>一个线程占有了一个变量(变量N，值为1），然后第二个线程用CAS同时去操作，第一个线程将N变为2，而此时又有 第三个线程来抢占了，将N变为1，然后第二个线程获取到的N是旧值，虽然与前面相等，但实际的N已经经历了1到2到1的改变。</p>
 <p>解决：给变量加一个版本号</p>
-<h2 id="4-0-ReentrantLock原理"><a href="#4-0-ReentrantLock原理" class="headerlink" title="4.0 ReentrantLock原理"></a>4.0 ReentrantLock原理</h2><p>synchronized与ReentrantLock都是可重入锁（当一个方法得到了锁，那么它里面的方法也同时占有锁)<br>不同点在于ReentrantLock多了三个特性：</p>
+<h2 id="4-0-ReentrantLock原理（实现了lock接口）"><a href="#4-0-ReentrantLock原理（实现了lock接口）" class="headerlink" title="4.0 ReentrantLock原理（实现了lock接口）"></a>4.0 ReentrantLock原理（实现了lock接口）</h2><p>synchronized与ReentrantLock都是可重入锁（当一个方法得到了锁，那么它里面的方法也同时占有锁)<br>不同点在于ReentrantLock多了三个特性：</p>
 <ol>
 <li>添加了公平锁：当一个线程释放锁，其他被阻塞的线程按序进行获取。</li>
 <li>可添加多个条件，synchronized要么唤醒全部线程，要么唤醒一个线程</li>
-<li>让在等待的线程可以去做别的事情。<h3 id="4-1-AQS"><a href="#4-1-AQS" class="headerlink" title="4.1 AQS"></a>4.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，用于表示线程重入锁的次数。用CAS操作实现线程获得锁的过程</li>
+<li>可中断的锁等待，让在等待的线程可以去做别的事情。</li>
+<li>它是一种定时的锁等待（trylock），睡眠时间包括固定和随机部分，从而降低了活锁的可能性。</li>
+<li>非块结构的加锁，比如在遍历散列链时，需要获得下一个节点的锁才能去释放该节点的锁，reentrantlock提供了连锁式加锁或者称为锁耦合。</li>
+</ol>
+<p>Q: 为什么有了ReentrantLock还要内置锁<br>A: 因为内置锁在这些方面优于ReentrantLock</p>
+<ol>
+<li>内置锁是自动释放锁的，reetrantlock需要再finally中释放锁，</li>
+<li>JDK1.5 之前，线程转储上给出的信息只是内置锁的信息，能够检测和识别发生死锁的线程。<h3 id="4-1-AQS"><a href="#4-1-AQS" class="headerlink" title="4.1 AQS"></a>4.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，在ReentrantLock用于表示线程重入锁的次数，在信号量表示剩余的许可数量，在futureTask中用于表示任务的状态。用CAS操作实现线程获得锁的过程</li>
 </ol>
 <h2 id="5-0-实现线程的三种方式"><a href="#5-0-实现线程的三种方式" class="headerlink" title="5.0 实现线程的三种方式"></a>5.0 实现线程的三种方式</h2><ol>
 <li><p>继承Thread类：Thread类本身就实现了Runnable接口，</p>
@@ -468,28 +478,34 @@ thread.start();  </code></pre></li>
      // TODO Auto-generated method stub
      return null;
  }
-</code></pre></li>
+}
+启动：
+Callable&lt;V&gt; oneCallable = new SomeCallable&lt;V&gt;();   
+//由Callable&lt;Integer&gt;创建一个FutureTask&lt;Integer&gt;对象：   
+FutureTask&lt;V&gt; oneTask = new FutureTask&lt;V&gt;(oneCallable);   
+//注释：FutureTask&lt;Integer&gt;是一个包装器，它通过接受Callable&lt;Integer&gt;来创建，它同时实现了Future和Runnable接口。 
+//由FutureTask&lt;Integer&gt;创建一个Thread对象：   
+Thread oneThread = new Thread(oneTask);   
+oneThread.start();   
+//至此，一个线程就创建完成了。</code></pre></li>
+<li><p>使用ExecutorSerivice，Callable，Future实现有返回结果的线程<br>这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，<br>```<br>import java.util.concurrent.<em>;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;<br>/*</em> </p>
+</li>
 </ol>
-<p>}<br>启动：<br>Callable<v> oneCallable = new SomeCallable<v>();<br>//由Callable<integer>创建一个FutureTask<integer>对象：<br>FutureTask<v> oneTask = new FutureTask<v>(oneCallable);<br>//注释：FutureTask<integer>是一个包装器，它通过接受Callable<integer>来创建，它同时实现了Future和Runnable接口。<br>  //由FutureTask<integer>创建一个Thread对象：<br>Thread oneThread = new Thread(oneTask);<br>oneThread.start();<br>//至此，一个线程就创建完成了。</integer></integer></integer></v></v></integer></integer></v></v></p>
-<pre><code>4. 使用ExecutorSerivice，Callable，Future实现有返回结果的线程
-这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，</code></pre><p>import java.util.concurrent.<em>;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;<br>/*</em> </p>
 <ul>
 <li><p>有返回值的线程 </p>
 </li>
 <li><p>/<br>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>   InterruptedException {<br>  System.out.println(“—-程序开始运行—-“);<br>  Date date1 = new Date();<br>  int taskSize = 5;<br>  // 创建一个线程池<br>  ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>  // 创建多个有返回值的任务<br>  List<future> list = new ArrayList<future>();<br>  for (int i = 0; i &lt; taskSize; i++) {<br>   Callable c = new MyCallable(i + “ “);<br>   // 执行任务并获取Future对象<br>   Future f = pool.submit(c);<br>   // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   list.add(f);<br>  }<br>  // 关闭线程池<br>  pool.shutdown();  </future></future></p>
 <p>  // 获取所有并发任务的运行结果<br>  for (Future f : list) {<br>   // 从Future对象上获取任务的返回值，并输出到控制台<br>   System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>  }  </p>
 <p>  Date date2 = new Date();<br>  System.out.println(“—-程序结束运行—-，程序运行时间【”  </p>
-<pre><code>+ (date2.getTime() - date1.getTime()) + &quot;毫秒】&quot;);  </code></pre><p>}<br>}  </p>
+<pre><code>+ (date2.getTime() - date1.getTime()) + &quot;毫秒】&quot;);</code></pre><p>}<br>}  </p>
 </li>
 </ul>
-<p>class MyCallable implements Callable<object> {<br>private String taskNum;  </object></p>
-<p>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}  </p>
-<p>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</p>
+<p>class MyCallable implements Callable<object> {<br>private String taskNum;<br>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}<br>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</object></p>
 <pre><code>## 6. 线程间的协作
 线程状态：新建，就绪，运行，阻塞，终止
 
 ### 6.1 wait/notify/notifyAll
-wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法师傅Object类，而不是属于thread。
+wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法属于Object类，而不是属于thread。
 ### 6.2 sleep/yield/join
 属于线程的三个方法，
 * sleep():sleep与wait的区别在与：sleep只是暂停，腾出cpu的使用权，但不会释放锁。
@@ -524,8 +540,8 @@ wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时�
 2. maximumPoolSize：池中最大的线程数，超出corePoolSize小于maximumPoolSize会在执行任务后释放
 3. keepAliveTime，会被释放的线程的缓存时间\
 4. UNIT 时间单位
-5. wordkQueue 缓存异步任务的队列
-6. threadFactory，用来构造线程池里的wordker线程。
+5. workQueue 缓存异步任务的队列
+6. threadFactory，用来构造线程池里的worker线程。
 7. handler 任务队列已满处理策略
 
 
@@ -547,12 +563,13 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
 3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务。
 ## 8.0 并发容器类
 节选自《java并发编程实战》第五章
+* ReadAndWrite：读-写锁，普通的锁可以避免“读/写”，“写/写”的冲突，但也避免了“读/读”冲突，降低了性能，而读写锁加锁策略中，允许“读/读”的情况发生，可以选择公平还是非公平的读写锁
 * ConcurrentHashMap:分段锁（segment），他与其他并发容器一起增强了同步容器类：他们提供的迭代器不会抛出ConcurrentModificationException，取而代之的是在改变时new新的数据从而不影响原有的数据 ，iterator完成后再将头指针替换为新的数据，因此不需要再同步过程中对容器加锁，并且具有弱一致性，可以在迭代时容忍并发的修改。Segment继承了ReentrantLock，是一种个可重入锁。
 &gt; 快速失败策略：util包中。比如list，实现的是fast-failed迭代器，一旦在迭代时另一个线程对集合进行修改，就会抛出上面的异常
 * CopyOnwriteArraylist:用于替代同步list，它的线程安全性在于每次修改时，都会创建一个新的容器副本，从而实现可变性。
 * 阻塞队列:上文的任务队列都是阻塞队列，可用于生产者-消费者模式，synchronousQueue，这个队列不会为队列中元素维护存储空间。他维护的是一组线程，仅当有足够多的消费者，并且总是有一个消费者准备好交付工作时，才适合用这个队列
 * 双端队列与工作密取：Deque和BlockingDeque分别对Queue和BlockingQueue进行了扩展。deque是一个双端队列。工作密取：在前面的模式中消费者共享同一队列，而在工作密取模式中，消费者没个都有自己的双端队列，当它自己的工作完成了，他就会从其他消费者的队列的末尾秘密的获取工作。
-* 闭锁和栅栏：闭锁：在闭锁到达结束状态前，这扇门是一直关闭的，并且没有任何线程能通过，栅栏：阻塞一组线程知道某个事件发生，栅栏是阻塞线程，而闭锁是阻塞时间。=
+* 闭锁和栅栏：闭锁：在闭锁到达结束状态前，这扇门是一直关闭的，并且没有任何线程能通过，栅栏：阻塞一组线程知道某个事件发生，栅栏是阻塞线程，而闭锁是阻塞事件。=
 ## 9.0 临界区，互斥量，信号量之间的关系
 这应该是属于c++范畴，但还是在这里记录一下
 * 临界区：提供多个线程的串行化来单独访问同一资源或代码，速度快，适合控制数据访问，只能应用在同一程序中。

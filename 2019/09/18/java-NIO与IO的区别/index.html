@@ -4,11 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="美团后端研发岗面经-第一面, Liu Mn">
-    <meta name="description" content="本来以为第一面肯定是算法面，结果一上来就是怼项目，然后是基础知识，最后是一道算法。
-首先是自我介绍，接下来就到项目了
-项目问了我关于项目的架构以及项目的难点亮点，关于我项目的两个难点
-图片回显客户端上传图片，然后保存到服务器，生成他的唯一i">
+    <meta name="keywords" content="java NIO与IO的区别, Liu Mn">
+    <meta name="description" content="1. 阻塞与同步NIO可以称为new IO，non-block IO阻塞是指访问数据时，数据是否准备就绪，如果未准备就会一直等待在那里。非阻塞：
+1.1 同步与异步方式同步：应用程序直接参与IO读写操作，如果阻塞，那么就完全不能做其他的事情">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>美团后端研发岗面经-第一面 | Liu Mn</title>
+    <title>java NIO与IO的区别 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -263,13 +261,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        美团后端研发岗面经-第一面
+                        java NIO与IO的区别
                     </div>
                 </div>
             </div>
@@ -380,8 +378,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/面试/" target="_blank">
-                                <span class="chip bg-color">面试</span>
+                            <a href="/tags/NIO/" target="_blank">
+                                <span class="chip bg-color">NIO</span>
                             </a>
                         
                     </div>
@@ -392,8 +390,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/面试/" class="post-category" target="_blank">
-                                面试
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                java基础
                             </a>
                         
                     </div>
@@ -404,7 +402,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-09-07
+                    2019-09-18
                 </div>
 
                 
@@ -420,99 +418,12 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本来以为第一面肯定是算法面，结果一上来就是怼项目，然后是基础知识，最后是一道算法。</p>
-<p>首先是自我介绍，接下来就到项目了</p>
-<h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>问了我关于项目的架构以及项目的难点亮点，关于我项目的两个难点</p>
-<h3 id="图片回显"><a href="#图片回显" class="headerlink" title="图片回显"></a>图片回显</h3><p>客户端上传图片，然后保存到服务器，生成他的唯一id(hashcode+随机数)，然后回显，然后他说有更好的办法</p>
-<h3 id="数据新增字段"><a href="#数据新增字段" class="headerlink" title="数据新增字段"></a>数据新增字段</h3><p>在数据库新增字段时，先将mapper下的文件删除然后再用mybatis-generator生成一遍，否则会导致项目的崩溃，也有更好的办法<br>在数据库字段中有一个update_time来实现乐观锁机制，逻辑删除</p>
-<h3 id="库存问题"><a href="#库存问题" class="headerlink" title="库存问题"></a>库存问题</h3><p>商品购买中，最重要的是库存机制，一定要记录正确，比如秒杀情况<br>常见的实现方案有5种：</p>
-<ul>
-<li>代码同步，例如synchronized，lock等，有以下缺陷：<ol>
-<li>synchronized的作用范围是jvm实例，如果做了集群，分布式，那就没用了</li>
-<li>synchronized作用在对象实例上，如果不是单个实例，那么不会对多个实例进行同步</li>
-<li>单个jvm中，也不能保证数据库事务的隔离性，具体看下边的的分析<br>spring事务的开启和提交是通过AOP来实现的，在进行方法之前就开启了事务，所以是先开启事务然后获得锁，退出锁然后提交事务，所以在另一个方法执行时，前一个方法又可能刚退出锁未提交时事务。</li>
-</ol>
-</li>
-<li>不查询，直接更新：意思是只要更新后库存大于0，就更新 update table set surplus = (surplus - buyQuantity) where id = 1 and (surplus - buyQuantity) &gt; 0 ;可行，但不具备通用性，只能用于库存大于0的情况</li>
-<li>使用乐观锁（CAS):先取回剩余库存，然后更新库存<pre><code>public void buy(String productName, Integer buyQuantity) {
-  // 其他校验...
-  Product product = getByDB(productName);//product为此时的库存
-  int result = update table set surplus = (surplus - buyQuantity) where id = 1 and surplus = product ;
-  while (result == 0) {//result等于0更新失败，那就循环更新
-      product = getByDB(productName);//product为此时的库存
-      if (product &gt; buyQuantity) {
-          result = update table set surplus = (surplus - buyQuantity) where id = 1 and surplus = product ;
-      } else {
-          return &quot;库存不足&quot;;
-      }
-  }</code></pre>这里数据库的隔离级别必须是读已提交，因为如果用可重复读，一个事务如果更新不成功那么每次他读到的库存都是原来的库存，导致程序死循环，乐观锁也就没有了意义。还有一个问题，如果只是取得库存，存在ABA问题（具体可以去看浅谈数据库那一篇文章），所以要增加版本号字段，每次取得版本号字段来代替取库存，然后每次更新完是版本号+1，还要限制失败循环次数。</li>
-<li>悲观锁：在查询语句上增加for update，表级锁，相当于事务串行化，加锁顺序要一致，否知会出现死锁。</li>
-<li>使用分布式：zookeeper，redis，synchornized的同步仅在单个jvm中，而分布式的锁是全局可见的，当然悲观锁也是全局可见的</li>
-</ul>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><ul>
-<li>数据库引擎及其实现</li>
-<li>linux命令</li>
-<li>写一个shell脚本（完全不会）</li>
-<li>协程<br>  协程：又称微线程，python，go中有协程，协程的效率高于线程，因为线程切换很耗费，线程需要内核来参与管理调度，而协程对内核不可见，可以理解为用户空间线程。</li>
-<li>进程与线程</li>
-<li>TCP首部</li>
-<li>TCP流量控制</li>
-<li>http与https的区别</li>
-</ul>
-<h2 id="java相关"><a href="#java相关" class="headerlink" title="java相关"></a>java相关</h2><ul>
-<li>hashmap，为什么扩容是二的倍数</li>
-<li>hashmap会导致什么样的线程不安全的结果</li>
-<li>JVM</li>
-<li>内存回收与GC</li>
-<li>分布式（不会）<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2>搜索引擎输入词的联想功能怎么实现（字典树）<br>这里介绍下字典树的原理和实现<br>三个基本性质：</li>
-</ul>
-<ol>
-<li>根节点不包含字符，每条边代表一个字符</li>
-<li>根节点到某一节点的路径代表一个字符串</li>
-<li>每个节点包含的子节点都不一样<img src="/2019/09/07/美团后端研发岗面经-第一面/1.jpg">
-这里还要记录每个词出现的频率，来实现词汇的优先级<pre><code>public class TrieTreeDemo {
- public static class TrieNode{
-     int count;
-     HashMap&lt;Character,TrieNode&gt; children;
-     TrieNode(){
-         count=1;
-         children=new HashMap&lt;&gt;();
-     }
- }
- public void insert(TrieNode node,String word){
-     char[] chars=word.toCharArray();
-     for (int i = 0; i &lt;chars.length ; i++) {
-         if(!node.children.containsKey(chars[i])){
-             node.children.put(chars[i],new TrieNode());
-         }else {
-             node.children.get(chars[i]).count++;
-         }
-         node=node.children.get(chars[i]);
-     }
- }
- public int search(TrieNode node ,String word){
-     char[] chars=word.toCharArray();
-     for (int i = 0; i &lt;chars.length ; i++) {
-         if(!node.children.containsKey(chars[i])){
-             return 0;
-         }
-         node=node.children.get(chars[i]);
-     }
-     return node.count;
- }
-}
-测试代码：
-String[] words={&quot;中国&quot;,&quot;美国&quot;,&quot;英国&quot;,&quot;俄罗斯&quot;,&quot;美国&quot;,&quot;中国&quot;,&quot;中国&quot;};
-     String[] searchWords={&quot;中国&quot;,&quot;日国&quot;};
-     TrieTreeDemo.TrieNode trieNode=new TrieTreeDemo.TrieNode();
-     TrieTreeDemo tree=new TrieTreeDemo();
-     for (String word:words){
-         tree.insert(trieNode,word);
-     }
-     for (String word:searchWords){
-         int count=tree.search(trieNode,word);
-         System.out.println(word+&quot;&#39;s count is&quot;+count);
-     }</code></pre><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2>两个大数相加<br>思路：用字符串表示，注意最高位的进位问题</li>
+                <h2 id="1-阻塞与同步"><a href="#1-阻塞与同步" class="headerlink" title="1. 阻塞与同步"></a>1. 阻塞与同步</h2><p>NIO可以称为new IO，non-block IO<br>阻塞是指访问数据时，数据是否准备就绪，如果未准备就会一直等待在那里。<br>非阻塞：</p>
+<h3 id="1-1-同步与异步方式"><a href="#1-1-同步与异步方式" class="headerlink" title="1.1 同步与异步方式"></a>1.1 同步与异步方式</h3><p>同步：应用程序直接参与IO读写操作，如果阻塞，那么就完全不能做其他的事情<br>异步：所有的IO都交给操作系统去处理，应用程序只需要等待通知</p>
+<h2 id="2-IO与NIO的区别"><a href="#2-IO与NIO的区别" class="headerlink" title="2. IO与NIO的区别"></a>2. IO与NIO的区别</h2><ol>
+<li>IO面向流，NIO面向缓冲：IO每次从流中读取多个字节，直至读取到所有字节，不能移动流中的数据，NIO每次将数据读取到一个稍后处理的缓冲区。</li>
+<li>IO阻塞，NIO非阻塞：当一个线程调用read或write，该线程直到读取完数据之前，不能干任何事情：而NIO当目前没有数据可用时，就什么都不获取，转而去做别的事情，而不是保持线程阻塞。</li>
+<li>选择器：NIO的选择器允许一个线程来监视到个通道，注册多个通道使用一个选择器来选择通道：这些通道里已经有可以处理的输入，或者已准备写入的通道。这个选择器，使得一个线程可以很容易来管理多个通道。<br>参考自博客<a href="https://blog.csdn.net/charjay_lin/article/details/81810922" target="_blank" rel="noopener">https://blog.csdn.net/charjay_lin/article/details/81810922</a></li>
 </ol>
 
             </div>
@@ -672,9 +583,9 @@ String[] words={&quot;中国&quot;,&quot;美国&quot;,&quot;英国&quot;,&quot;�
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《美团后端研发岗面经-第一面》
+                    《java NIO与IO的区别》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/07/美团后端研发岗面经-第一面/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/18/java-NIO与IO的区别/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liu Mn
             </a> is licensed under a
@@ -714,78 +625,29 @@ String[] words={&quot;中国&quot;,&quot;美国&quot;,&quot;英国&quot;,&quot;�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2019/09/12/常见设计模式/">
+                <a href="/2019/09/18/java-NIO与IO的区别/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="常见设计模式">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="java NIO与IO的区别">
                         
-                        <span class="card-title">常见设计模式</span>
+                        <span class="card-title">java NIO与IO的区别</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            工厂，代理，单例
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-12
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java基础/" class="post-category" target="_blank">
-                                    java基础
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/设计模式/" target="_blank">
-                        <span class="chip bg-color">设计模式</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2019/09/05/java并发编程/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java并发编程">
-                        
-                        <span class="card-title">java并发编程</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2.0 Synchronized原理sy
+                            浅析NIO
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-05
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-18
                             </span>
                         <span class="publish-author">
                             
@@ -799,19 +661,61 @@ String[] words={&quot;中国&quot;,&quot;美国&quot;,&quot;英国&quot;,&quot;�
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/锁/" target="_blank">
-                        <span class="chip bg-color">锁</span>
+                    <a href="/tags/NIO/" target="_blank">
+                        <span class="chip bg-color">NIO</span>
                     </a>
                     
-                    <a href="/tags/并发/" target="_blank">
-                        <span class="chip bg-color">并发</span>
-                    </a>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/14/OS相关知识/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="OS相关知识">
+                        
+                        <span class="card-title">OS相关知识</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/操作系统/" class="post-category" target="_blank">
+                                    操作系统
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
                     
-                    <a href="/tags/线程/" target="_blank">
-                        <span class="chip bg-color">线程</span>
+                    <a href="/tags/操作系统/" target="_blank">
+                        <span class="chip bg-color">操作系统</span>
                     </a>
                     
                 </div>

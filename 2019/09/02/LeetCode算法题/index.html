@@ -955,7 +955,62 @@ str6</code></pre><p>将前四个字符串放到一个list中，将后两个字�
      return start==end&amp;&amp;start&lt;nums.length&amp;&amp;(nums[start]==target)?start:-1;
  }</code></pre>本题中还要防止输入两个数的情况，比如[1,3]和0，那么会越过数组边界</li>
 </ol>
+<h2 id="二叉树的最近公共祖先"><a href="#二叉树的最近公共祖先" class="headerlink" title="二叉树的最近公共祖先"></a>二叉树的最近公共祖先</h2><p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+<p>例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p>思路：</p>
+<ol>
+<li><p>找到从根节点到p，q的两条路径，然后寻找最后一个相同的节点，复杂度较高，而且需要额外空间</p>
+<pre><code>List&lt;List&lt;TreeNode&gt;&gt; lists = new ArrayList&lt;&gt;();
+ List&lt;TreeNode&gt; list = new ArrayList&lt;&gt;();
 
+ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+         core(root,p,q);
+     int length=lists.get(0).size()&lt;lists.get(1).size()?lists.get(0).size():lists.get(1).size();
+     for (int i = length-1; i &gt;=0 ; i--) {
+         if(lists.get(0).get(i)==lists.get(1).get(i)){
+             return lists.get(0).get(i);
+         }
+
+     }
+     return null;
+ }
+
+ public void core(TreeNode root, TreeNode p, TreeNode q) {
+     if (root == null) {
+         return;
+     }
+     list.add(root);
+     if (root == p || root == q) {
+         List&lt;TreeNode&gt; path = new ArrayList&lt;&gt;(list);
+         lists.add(path);
+     }
+     core(root.left, p, q);
+     core(root.right, p, q);
+     list.remove(list.size() - 1);
+     return;
+ }</code></pre><h2 id="89-格雷编码"><a href="#89-格雷编码" class="headerlink" title="89.格雷编码"></a>89.格雷编码</h2><p>题目；<br>格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。</p>
+</li>
+</ol>
+<p>给定一个代表编码总位数的非负整数 n，打印其格雷编码序列。格雷编码序列必须以 0 开头。</p>
+<pre><code>输入: 2
+输出: [0,1,3,2]
+解释:
+00 - 0
+01 - 1
+11 - 3
+10 - 2</code></pre><p>思路：动态规划，从n-1的数的编码得到n的数的编码，其实就是在n-1的数的基础上在前面加上2的n-1次方，但是要逆序添加进list，</p>
+<pre><code>public List&lt;Integer&gt; grayCode(int n) {
+        List&lt;Integer&gt; list=new ArrayList&lt;&gt;();
+        list.add(0);
+        for (int i = 0; i &lt;n ; i++) {
+            int add=1&lt;&lt;i;
+            for (int j = list.size()-1; j &gt;=0 ; j--) {
+                list.add(list.get(j)+add);
+            }
+        }
+        return list;
+    }</code></pre>
             </div>
             <hr/>
 
@@ -1172,7 +1227,7 @@ str6</code></pre><p>将前四个字符串放到一个list中，将后两个字�
                     <div class="summary block-with-text">
                         
                             1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2.0 Synchronized原理每个
+2.0 Synchronized原理sy
                         
                     </div>
                     <div class="publish-info">

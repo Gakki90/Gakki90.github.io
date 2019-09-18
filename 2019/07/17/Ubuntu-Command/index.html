@@ -6,8 +6,11 @@
     <meta charset="utf-8">
     <meta name="keywords" content="Ubuntu 常用命令（待补充）, Liu Mn">
     <meta name="description" content="Ubuntu 常用命令
-1.0 文件，目录操作命令
-mkdir -p /u01/app/oraclemkdir 是linux的建立目录命令。如果是级联建立要用-p选项。比如要建立/u01/app/oracle目录要这样写mkdir -p /">
+
+
+1.0 shell命令shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，
+
+tab[tab]用于补全，用于最后字母后面，则">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -420,105 +423,95 @@ mkdir -p /u01/app/oraclemkdir 是linux的建立目录命令。如果是级联建
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="Ubuntu-常用命令"><a href="#Ubuntu-常用命令" class="headerlink" title="Ubuntu 常用命令"></a>Ubuntu 常用命令</h2><a id="more"></a>
-<h3 id="1-0-文件，目录操作命令"><a href="#1-0-文件，目录操作命令" class="headerlink" title="1.0 文件，目录操作命令"></a>1.0 文件，目录操作命令</h3><blockquote>
-<p>mkdir -p /u01/app/oracle<br>mkdir 是linux的建立目录命令。如果是级联建立要用-p选项。<br>比如要建立/u01/app/oracle目录<br>要这样写mkdir -p /u01/app/oracle<br>要是没有-p 会出错</p>
-</blockquote>
-<h2 id="vim即shell命令常见问题"><a href="#vim即shell命令常见问题" class="headerlink" title="vim即shell命令常见问题"></a>vim即shell命令常见问题</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
+
+
+<h2 id="1-0-shell命令"><a href="#1-0-shell命令" class="headerlink" title="1.0 shell命令"></a>1.0 shell命令</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
 <ul>
 <li>tab<br>[tab]用于补全，用于最后字母后面，则为命令补全，用与最后一个字母加个空格再按tab就为文件补全。</li>
 </ul>
 <p>变量的定义用反引号`，波浪号对应的那么反引号</p>
 <ul>
-<li>?：代表上一个值的传回值，数字0代表没有，127代表错误<br>?代表<h3 id="变量的设置规则"><a href="#变量的设置规则" class="headerlink" title="变量的设置规则"></a>变量的设置规则</h3></li>
+<li>?：代表上一个值的传回值，数字0代表没有，127代表错误<br>?代表<h3 id="1-1-文件，目录操作命令"><a href="#1-1-文件，目录操作命令" class="headerlink" title="1.1 文件，目录操作命令"></a>1.1 文件，目录操作命令</h3><blockquote>
+<p>mkdir -p /u01/app/oracle<br>mkdir 是linux的建立目录命令。如果是级联建立要用-p选项。<br>比如要建立/u01/app/oracle目录<br>要这样写mkdir -p /u01/app/oracle<br>要是没有-p 会出错</p>
+</blockquote>
+</li>
 </ul>
+<p>shell 重定向：<br>linux的io输入输出有三种：</p>
 <ol>
-<li>两边不能直接空格，要用“或者‘</li>
-<li>变量不能以数字开头</li>
-<li>用$表示这是个变量,$本身也是一个变量，表示线程代号</li>
-<li>\表示转义字符</li>
-<li>可以用`反引号或者$(命令)表示这是另一个命令。注意反引号和单引号的区别</li>
-<li>为变量增加新的内容：PATH=${PATH}:/home/bin</li>
-<li>export将变量设置为环境变量</li>
-<li>unset 用于取消变量</li>
+<li>Standard Input 代码 0</li>
+<li>Standard Output 代码 1</li>
+<li>Standard Error 代码 2<pre><code># ls test.sh test1.sh 1&gt;success.txt 2&gt;&amp;1
+将错误信息2与标准输出1一起输出到success.txt中
+如果是这样
+# command 1&gt;file 2&gt;file 2和1会互相覆盖内容
+# command 1&gt;file 2&gt;$1 这样就不会覆盖
+</code></pre></li>
 </ol>
-<p>Q: 双引号和单引号的区别？<br>A: 变量的设置中，双引号中可以有变量，而单引号会这几输出语句，不会输出变量</p>
-<h3 id="read，array，declare"><a href="#read，array，declare" class="headerlink" title="read，array，declare"></a>read，array，declare</h3><pre><code># read atest 
-# echo $atest//从键盘读取并输出
+<p>&lt; 代表输入重定向</p>
+<blockquote>
+<p>输出重定向</p>
+<blockquote>
+<p>代表追加到文件尾，不覆盖</p>
+</blockquote>
+</blockquote>
+<p>command &gt;/dev/null 2&gt;&amp;1 与command  2&gt;&amp;1 &gt;/dev/null</p>
+<p>前者先将标准输出输出到/dev/null中,再将错误输出重定向到标准输出,所以都输出到/dev/null</p>
+<p>后者先将错误输出重定向到标准输出也就是输出到屏幕上,再将标准输出到/dev/null,只是把原来的标准输出输出到/de/null中,错误输出重定向到标准输出会显示在屏幕上;</p>
+<p>标准输出与错误输出同时输出:command  2&gt;file 1&gt;file 会因抢占file文件的管道二出现乱码/确实/覆盖等现象(即两个输出流操作一个文件的写入),所以要用2&gt;&amp;1 进行重定向到一个输出流才可以全部输出到一个文件</p>
+<pre><code>### 1.2 变量的设置规则
+1. 两边不能直接空格，要用“或者‘
+2. 变量不能以数字开头
+3. 用$表示这是个变量,$本身也是一个变量，表示线程代号
+4. \表示转义字符
+5. 可以用`反引号或者$(命令)表示这是另一个命令。注意反引号和单引号的区别
+6. 为变量增加新的内容：PATH=${PATH}:/home/bin
+7. export将变量设置为环境变量
+8. unset 用于取消变量
 
-# read -p &quot;please input your name&quot; -t 30 named
-# echo $named//有提示符，并最多显示30秒
+Q: 双引号和单引号的区别？
+A: 变量的设置中，双引号中可以有变量，而单引号会这几输出语句，不会输出变量
 
-## declare [-aixr] variable
--a 声明为数组
--i 声明为数字
--x export，声明为环境变量
--r 只读
+### 1.3 read，array，declare</code></pre><h1 id="read-atest"><a href="#read-atest" class="headerlink" title="read atest"></a>read atest</h1><h1 id="echo-atest-从键盘读取并输出"><a href="#echo-atest-从键盘读取并输出" class="headerlink" title="echo $atest//从键盘读取并输出"></a>echo $atest//从键盘读取并输出</h1><h1 id="read-p-“please-input-your-name”-t-30-named"><a href="#read-p-“please-input-your-name”-t-30-named" class="headerlink" title="read -p “please input your name” -t 30 named"></a>read -p “please input your name” -t 30 named</h1><h1 id="echo-named-有提示符，并最多显示30秒"><a href="#echo-named-有提示符，并最多显示30秒" class="headerlink" title="echo $named//有提示符，并最多显示30秒"></a>echo $named//有提示符，并最多显示30秒</h1><h2 id="declare-aixr-variable"><a href="#declare-aixr-variable" class="headerlink" title="declare [-aixr] variable"></a>declare [-aixr] variable</h2><p>-a 声明为数组<br>-i 声明为数字<br>-x export，声明为环境变量<br>-r 只读</p>
+<h2 id="var-1-”string”"><a href="#var-1-”string”" class="headerlink" title="var[1]=”string”"></a>var[1]=”string”</h2><h2 id="echo-var-1-数组的输出用"><a href="#echo-var-1-数组的输出用" class="headerlink" title="echo ${var[1]}//数组的输出用${}"></a>echo ${var[1]}//数组的输出用${}</h2><p>数值的加法要用 sum=$(($x+$y))这种格式</p>
+<pre><code>### 1.4 与文件系统和程序的限制关系：ulimit</code></pre><h1 id="ulimit-SHacdfltu"><a href="#ulimit-SHacdfltu" class="headerlink" title="ulimit [-SHacdfltu]"></a>ulimit [-SHacdfltu]</h1><pre><code>可以用来限制文件的大小等参数
 
-## var[1]=&quot;string&quot;
-## echo ${var[1]}//数组的输出用${}
-数值的加法要用 sum=$(($x+$y))这种格式</code></pre><h3 id="与文件系统和程序的限制关系：ulimit"><a href="#与文件系统和程序的限制关系：ulimit" class="headerlink" title="与文件系统和程序的限制关系：ulimit"></a>与文件系统和程序的限制关系：ulimit</h3><pre><code># ulimit [-SHacdfltu]</code></pre><p>可以用来限制文件的大小等参数</p>
-<h3 id="变量内容的删除替代与替换"><a href="#变量内容的删除替代与替换" class="headerlink" title="变量内容的删除替代与替换"></a>变量内容的删除替代与替换</h3><pre><code>${变量#关键字} //从头开始第一个关键字，最短匹配
-${变量##关键字} //从头开始第一个关键字，最长匹配
-${变量%关键字} //从尾开始第一个关键字，最短匹配
-${变量%%关键字} //从尾开始第一个关键字，最长匹配
-${变量/旧字符串/新字符串} //替换第一个关键字
-${变量//旧字符串/新字符串} //替换所有关键字</code></pre><h3 id="命名别名与历史命令"><a href="#命名别名与历史命令" class="headerlink" title="命名别名与历史命令"></a>命名别名与历史命令</h3><pre><code># alias lm=&#39;ls -l |more&#39; //设置命令的别名
-
-# history //查看历史命令
-# !! //执行上一次的命令
-# !n //执行第n个命令</code></pre><h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><table>
-<thead>
-<tr>
-<th>符号</th>
-<th align="center">意义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>*</td>
-<td align="center">代表0到无穷多个任意字符</td>
-</tr>
-<tr>
-<td>？</td>
-<td align="center">代表一个字符，任意的一个</td>
-</tr>
-<tr>
-<td>[]</td>
-<td align="center">代表括号内的一个字符，[abcd]代表abcd中任意一个</td>
-</tr>
-<tr>
-<td>[-]</td>
-<td align="center">代表括号中编码顺序内的所有字符，[0-9]</td>
-</tr>
-<tr>
-<td>[^]</td>
-<td align="center">代表反向选择，[^abc]代表任意一个字符，只要不是abc中的就行</td>
-</tr>
-<tr>
-<td>###</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td>删除一块代码：</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td>1. 设置行号 :set number</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td>2. 转到多少行  11G</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td>3. 删除从3行到当前行的代码 3,.d  .代表当前行</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td>4. 如果只需要删除某一行，可以用dd就行</td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-
+### 1.5 变量内容的删除替代与替换</code></pre><p>${变量#关键字} //从头开始第一个关键字，最短匹配<br>${变量##关键字} //从头开始第一个关键字，最长匹配<br>${变量%关键字} //从尾开始第一个关键字，最短匹配<br>${变量%%关键字} //从尾开始第一个关键字，最长匹配<br>${变量/旧字符串/新字符串} //替换第一个关键字<br>${变量//旧字符串/新字符串} //替换所有关键字</p>
+<pre><code>### 1.6 命名别名与历史命令</code></pre><h1 id="alias-lm-’ls-l-more’-设置命令的别名"><a href="#alias-lm-’ls-l-more’-设置命令的别名" class="headerlink" title="alias lm=’ls -l |more’ //设置命令的别名"></a>alias lm=’ls -l |more’ //设置命令的别名</h1><h1 id="history-查看历史命令"><a href="#history-查看历史命令" class="headerlink" title="history //查看历史命令"></a>history //查看历史命令</h1><h1 id="执行上一次的命令"><a href="#执行上一次的命令" class="headerlink" title="!! //执行上一次的命令"></a>!! //执行上一次的命令</h1><h1 id="n-执行第n个命令"><a href="#n-执行第n个命令" class="headerlink" title="!n //执行第n个命令"></a>!n //执行第n个命令</h1><pre><code>### 1.7 通配符
+符号|意义
+---|:--:
+* |代表0到无穷多个任意字符
+？|代表一个字符，任意的一个
+[]|代表括号内的一个字符，[abcd]代表abcd中任意一个
+[-]|代表括号中编码顺序内的所有字符，[0-9]
+[^]|代表反向选择，[^abc]代表任意一个字符，只要不是abc中的就行
+### 1.8 命令执行的判断依据 ；|| &amp;&amp;
+上一条命令如果执行成功的话$?就会返回0
+1. &amp;&amp;与||：</code></pre><h1 id="cmd1-amp-amp-cmd2-命令1执行成功那么就执行命令2，失败就不执行命令2"><a href="#cmd1-amp-amp-cmd2-命令1执行成功那么就执行命令2，失败就不执行命令2" class="headerlink" title="cmd1 &amp;&amp; cmd2 //命令1执行成功那么就执行命令2，失败就不执行命令2"></a>cmd1 &amp;&amp; cmd2 //命令1执行成功那么就执行命令2，失败就不执行命令2</h1><h1 id="cmd2-cmd2-命令1执行不成功就执行命令2，成功就不执行命令2"><a href="#cmd2-cmd2-命令1执行不成功就执行命令2，成功就不执行命令2" class="headerlink" title="cmd2 || cmd2 //命令1执行不成功就执行命令2，成功就不执行命令2"></a>cmd2 || cmd2 //命令1执行不成功就执行命令2，成功就不执行命令2</h1><p>要注意&amp;&amp;与||连用时，不同的顺序可能导致不同的结果</p>
+<pre><code>2. ; :分号代表两个命令无联系，
+### 1.9 管道命令
+使用|对前面的命令获取的结果进行处理</code></pre><h1 id="ll-etc-less-只显示少部分的etc下面的文件"><a href="#ll-etc-less-只显示少部分的etc下面的文件" class="headerlink" title="ll /etc | less //只显示少部分的etc下面的文件"></a>ll /etc | less //只显示少部分的etc下面的文件</h1><pre><code>#### 1.9.1 选取命令 cut</code></pre><h1 id="echo-PATH-cut-d-‘-’-f-3-5-将path中的路径以-分割，输出第三个位置和第五个位置的字符串"><a href="#echo-PATH-cut-d-‘-’-f-3-5-将path中的路径以-分割，输出第三个位置和第五个位置的字符串" class="headerlink" title="echo $PATH | cut -d ‘;’ -f 3,5 //将path中的路径以;分割，输出第三个位置和第五个位置的字符串"></a>echo $PATH | cut -d ‘;’ -f 3,5 //将path中的路径以;分割，输出第三个位置和第五个位置的字符串</h1><h1 id="echo-PATH-cut-c-12-输出path路径中从低13个字符以后的字符"><a href="#echo-PATH-cut-c-12-输出path路径中从低13个字符以后的字符" class="headerlink" title="echo $PATH | cut -c 12- //输出path路径中从低13个字符以后的字符"></a>echo $PATH | cut -c 12- //输出path路径中从低13个字符以后的字符</h1><h1 id="last-输出用户的登录记录"><a href="#last-输出用户的登录记录" class="headerlink" title="last 输出用户的登录记录"></a>last 输出用户的登录记录</h1><h1 id="last-cut-d-‘-‘-f-1-输出第一列的数据"><a href="#last-cut-d-‘-‘-f-1-输出第一列的数据" class="headerlink" title="last | cut -d ‘ ‘ -f 1 //输出第一列的数据"></a>last | cut -d ‘ ‘ -f 1 //输出第一列的数据</h1><pre><code>#### 1.9.2 选取命令 grep
+cut 是对找到的字符串进行裁剪，而grep是根据字符串去查找相应的记录</code></pre><h1 id="grep-acinv-–color-auto-‘目标字符串’-filename"><a href="#grep-acinv-–color-auto-‘目标字符串’-filename" class="headerlink" title="grep [-acinv] [–color=auto] ‘目标字符串’ filename"></a>grep [-acinv] [–color=auto] ‘目标字符串’ filename</h1><p>-v 反向选择<br>-i 忽略大小写<br>–color=auto 对目标字符串显示特殊颜色</p>
+<pre><code>#### 1.9.3排序命令：sort wc uniq</code></pre><h1 id="sort-fbmnrtuk-file-or-stdin-默认按文字类型排序"><a href="#sort-fbmnrtuk-file-or-stdin-默认按文字类型排序" class="headerlink" title="sort [-fbmnrtuk] [file or stdin] 默认按文字类型排序"></a>sort [-fbmnrtuk] [file or stdin] 默认按文字类型排序</h1><h1 id="uniq-ic-删除重复的数据，仅列出一个显示"><a href="#uniq-ic-删除重复的数据，仅列出一个显示" class="headerlink" title="uniq [-ic]  //删除重复的数据，仅列出一个显示"></a>uniq [-ic]  //删除重复的数据，仅列出一个显示</h1><p>-i 忽略大小写<br>-c 统计次数</p>
+<h1 id="wc-lwm-对文件中行，字数，字符数进行统计"><a href="#wc-lwm-对文件中行，字数，字符数进行统计" class="headerlink" title="wc [-lwm] //对文件中行，字数，字符数进行统计"></a>wc [-lwm] //对文件中行，字数，字符数进行统计</h1><p>-l 只统计行<br>-w 字（英文单字）<br>-m 字符</p>
+<pre><code>#### 1.9.4 双向重定向：tee</code></pre><h1 id="tee-a-file-将获取到的数据输入到文件中"><a href="#tee-a-file-将获取到的数据输入到文件中" class="headerlink" title="tee [-a] file //将获取到的数据输入到文件中"></a>tee [-a] file //将获取到的数据输入到文件中</h1><p>-a 以累加（append）方式</p>
+<h1 id="last-tee-last-list-将last获取到的数据写入last-list中，并且输出到屏幕上"><a href="#last-tee-last-list-将last获取到的数据写入last-list中，并且输出到屏幕上" class="headerlink" title="last| tee last.list 将last获取到的数据写入last.list中，并且输出到屏幕上"></a>last| tee last.list 将last获取到的数据写入last.list中，并且输出到屏幕上</h1><pre><code>#### 1.9.5 字符转换命令：tr col join paste expand</code></pre><p>tr ‘[a-z]’ ‘[A-Z]’ 用大写替换全部小写<br>tr -d ‘:’ 删除：号</p>
+<pre><code>* col将tab键换成空格键
+* join处理两个文件的数据
+* paste也是处理两个文件间的数据
+* expand将tab键转换成空格
+#### 1.9.6 切割命令： split</code></pre><p>split [-bl] file PREFIX<br>-b 单位，切成的文件大小<br>-l 以行数来添加</p>
+<h1 id="split-b-300k-etc-termcap-termcap"><a href="#split-b-300k-etc-termcap-termcap" class="headerlink" title="split -b 300k /etc/termcap termcap"></a>split -b 300k /etc/termcap termcap</h1><h1 id="cat-termcap-gt-gt-termcap-合并前缀为termcap的文件"><a href="#cat-termcap-gt-gt-termcap-合并前缀为termcap的文件" class="headerlink" title="cat termcap* &gt;&gt; termcap 合并前缀为termcap的文件"></a>cat termcap* &gt;&gt; termcap 合并前缀为termcap的文件</h1><pre><code>#### 1.9.7 -
+减号- 代表上一次命令的输出作为这一次命令的输入</code></pre><h1 id="tar-cvf-home-tar-xvf"><a href="#tar-cvf-home-tar-xvf" class="headerlink" title="tar -cvf - /home | tar -xvf -"></a>tar -cvf - /home | tar -xvf -</h1><pre><code>
+#### 1.9.8 参数代换： xargs
+很多命令不支持管道命令，那么就用xargs代替该命令</code></pre><h1 id="find-sbin-perm-7000-ls-l"><a href="#find-sbin-perm-7000-ls-l" class="headerlink" title="find /sbin -perm +7000 |ls -l"></a>find /sbin -perm +7000 |ls -l</h1><p>ls -l不是管道命令，所以就无法执行</p>
+<h1 id="find-sbin-perm-7000-xargs-ls-l"><a href="#find-sbin-perm-7000-xargs-ls-l" class="headerlink" title="find /sbin -perm +7000 |xargs ls -l"></a>find /sbin -perm +7000 |xargs ls -l</h1><pre><code>## VIM命令
+### 
+删除一块代码：
+1. 设置行号 :set number
+2. 转到多少行  11G
+3. 删除从3行到当前行的代码 3,.d  .代表当前行
+4. 如果只需要删除某一行，可以用dd就行
+</code></pre>
             </div>
             <hr/>
 
