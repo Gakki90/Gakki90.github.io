@@ -435,6 +435,7 @@
 <li>无需建立连接：在发送报文段之前，双方不会“握手”。udp也不会维护连接状态，不需要像tcp一样维护接受和发送的缓存，拥塞控制参数等</li>
 <li>实时性较强，tcp由于其拥塞控制而较弱</li>
 <li>分组首部开销小</li>
+<li>面向数据包的不可靠连接</li>
 </ul>
 <p>DNS（域名系统）就是udp的一个例子。</p>
 <h4 id="1-2-1-UDP报文段"><a href="#1-2-1-UDP报文段" class="headerlink" title="1.2.1 UDP报文段"></a>1.2.1 UDP报文段</h4><img src="/2019/09/01/TCP-IP协议总结/1.jpg">
@@ -449,7 +450,8 @@
 <li>序号</li>
 <li>定时器：用于实现重传机制</li>
 <li>肯定和否定确认</li>
-<li>窗口，流水线</li>
+<li>滑动窗口协议</li>
+<li>选择重传</li>
 </ol>
 <p>rdt3.0 协议的最大缺陷是他是一个停等协议，他必须等待确认信号后才能发送下一个分组。但会带来下列问题:</p>
 <ol>
@@ -467,9 +469,15 @@
 <h3 id="1-4-TCP"><a href="#1-4-TCP" class="headerlink" title="1.4 TCP"></a>1.4 TCP</h3><ul>
 <li>面向连接：在数据传输前，双方必须握手，即他们必须先发送预备报文段，</li>
 <li>全双工：双方都可以发送和接受报文。</li>
+<li>面向流的可靠连接<br>MSS：最大报文段长度，</li>
 </ul>
-<p>MSS：最大报文段长度，</p>
-<h4 id="1-4-1-TCP报文段"><a href="#1-4-1-TCP报文段" class="headerlink" title="1.4.1 TCP报文段"></a>1.4.1 TCP报文段</h4><img src="/2019/09/01/TCP-IP协议总结/4.jpg">
+<h4 id="TCP怎么实现有序"><a href="#TCP怎么实现有序" class="headerlink" title="TCP怎么实现有序"></a>TCP怎么实现有序</h4><ol>
+<li>序号</li>
+<li>确认号</li>
+<li>超时机制</li>
+<li>重组：会将无序的报文重组再传递到高层<h4 id="1-4-1-TCP报文段"><a href="#1-4-1-TCP报文段" class="headerlink" title="1.4.1 TCP报文段"></a>1.4.1 TCP报文段</h4></li>
+</ol>
+<img src="/2019/09/01/TCP-IP协议总结/4.jpg">
 <ol>
 <li>序号和确认号：用于分组标识，序号好理解，而确认号是因为tcp是全双工的，在接收分组同时还是发送分组，所以这时候他就将累计确认的确认号放置于此发送给它的另一方。</li>
 <li>滑动窗口：用于流量控制<h4 id="1-4-2-往返时间估计和超时"><a href="#1-4-2-往返时间估计和超时" class="headerlink" title="1.4.2 往返时间估计和超时"></a>1.4.2 往返时间估计和超时</h4>tcp采用超时/重传机制处理丢失的报文段，但超时间隔长度的设置是个问题。</li>
@@ -866,12 +874,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/数据库/" target="_blank">
-                        <span class="chip bg-color">数据库</span>
-                    </a>
-                    
                     <a href="/tags/锁/" target="_blank">
                         <span class="chip bg-color">锁</span>
+                    </a>
+                    
+                    <a href="/tags/数据库/" target="_blank">
+                        <span class="chip bg-color">数据库</span>
                     </a>
                     
                 </div>

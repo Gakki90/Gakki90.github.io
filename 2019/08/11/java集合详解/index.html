@@ -541,6 +541,13 @@ static int indexFor(int h, int length) {  //jdk1.7的源码，jdk1.8没有这个
 <li>使用Collections.synchronized（）方法对hashmap进行同步</li>
 <li>使用ConcurrentHashMap</li>
 </ol>
+<h3 id="3-4-list详解"><a href="#3-4-list详解" class="headerlink" title="3.4 list详解"></a>3.4 list详解</h3><p>Arraylist与Linkedlist</p>
+<ol>
+<li>两者都不是线程安全的</li>
+<li>Arraylist底层是数组，linkedlist底层是双向链表</li>
+<li>Arraylist支持高效的随机访问，而linkedlist不支持</li>
+<li>Arraylist实现了RandomAccess接口，优先使用for循环，其次是foreach循环，而linkedlist未实现，优先使用iterator遍历（底层也是foreach循环），其次再用for循环</li>
+</ol>
 
             </div>
             <hr/>

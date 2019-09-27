@@ -501,11 +501,13 @@ oneThread.start();
 </li>
 </ul>
 <p>class MyCallable implements Callable<object> {<br>private String taskNum;<br>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}<br>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</object></p>
-<pre><code>## 6. 线程间的协作
+<pre><code>Q: 为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法？
+A: 因为我们在调用start后，线程就处于就绪状态，之后就等待分配时间片来运行，如果只是调用run方法，那么还是在原来的主线程运行这个方法。
+## 6. 线程间的协作
 线程状态：新建，就绪，运行，阻塞，终止
 
 ### 6.1 wait/notify/notifyAll
-wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都要monitor对象，所以这三个方法属于Object类，而不是属于thread。
+wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时间，0即代表只能通过notify/notifyall方法唤醒，wait方法只能在获取到了monitor对象后使用，因为每个OBject都有monitor对象，所以这三个方法属于Object类，而不是属于thread。
 ### 6.2 sleep/yield/join
 属于线程的三个方法，
 * sleep():sleep与wait的区别在与：sleep只是暂停，腾出cpu的使用权，但不会释放锁。
@@ -534,7 +536,7 @@ wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时�
 ### 7.3 线程池中的类与接口
 {% asset_img 1.png %}
 ### 7.4 三种线程池实现原理
-三种线程最终都是通过构造不同参数的ThreadPoolExcutor来创建的
+三种线程最终都是通过构造不同参数的ThreadPoolExecutor来创建的
 {% asset_img 2.png %}
 1. corePoolSize：线程池中维持不会释放的线程数
 2. maximumPoolSize：池中最大的线程数，超出corePoolSize小于maximumPoolSize会在执行任务后释放
@@ -544,7 +546,9 @@ wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时�
 6. threadFactory，用来构造线程池里的worker线程。
 7. handler 任务队列已满处理策略
 
+执行方式：当核心线程数没满时，来了任务直接提交，当满了时，就加入任务队列，当任务队列满了时就继续创建线程。
 
+《阿里巴巴java开发手册中》规定不能用Executor默认的静态方法创建线程池，因为默认的线程池maximumPoolSize都是2的31次方，容易导致OOM，必须要用ThreadPoolExecutor设定具体参数。
 ### 7.5 三种任务队列
 1. SynchronousQueue：直接提交策略适用于CachedThreadPool。，它将任务直接提交给线程而不保持它们。如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。
 2. LinkedBlockingQueue——无界队列，适用于FixedThreadPool与SingleThreadExcutor。基于链表的阻塞队列，创建的线程数不会超过corePoolSizes（maximumPoolSize值与其一致），当线程正忙时，任务进入队列等待。按照FIFO原则对元素进行排序，吞吐量高于ArrayBlockingQueue。

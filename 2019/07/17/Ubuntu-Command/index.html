@@ -7,10 +7,9 @@
     <meta name="keywords" content="Ubuntu 常用命令（待补充）, Liu Mn">
     <meta name="description" content="Ubuntu 常用命令
 
-
-1.0 shell命令shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，
-
-tab[tab]用于补全，用于最后字母后面，则">
+linux文件权限权限分为三个组：[用户][用户组][其他人]每一个组占三个符号
+-rwxr-xr-x 1 root root   207 9月  23 16:44 sh04.sh*
+//rwx代表用户可以读，写，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -422,10 +421,11 @@ tab[tab]用于补全，用于最后字母后面，则">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Ubuntu-常用命令"><a href="#Ubuntu-常用命令" class="headerlink" title="Ubuntu 常用命令"></a>Ubuntu 常用命令</h2><a id="more"></a>
+                <h1 id="Ubuntu-常用命令"><a href="#Ubuntu-常用命令" class="headerlink" title="Ubuntu 常用命令"></a>Ubuntu 常用命令</h1><a id="more"></a>
 
-
-<h2 id="1-0-shell命令"><a href="#1-0-shell命令" class="headerlink" title="1.0 shell命令"></a>1.0 shell命令</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
+<h2 id="linux文件权限"><a href="#linux文件权限" class="headerlink" title="linux文件权限"></a>linux文件权限</h2><p>权限分为三个组：[用户][用户组][其他人]<br>每一个组占三个符号</p>
+<pre><code>-rwxr-xr-x 1 root root   207 9月  23 16:44 sh04.sh*
+//rwx代表用户可以读，写，执行，r-x代表用户组可以读，执行，r-x代表其他人可以读，执行，如果第一个字符为d那么表明他是一个目录</code></pre><h2 id="1-0-shell命令"><a href="#1-0-shell命令" class="headerlink" title="1.0 shell命令"></a>1.0 shell命令</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
 <ul>
 <li>tab<br>[tab]用于补全，用于最后字母后面，则为命令补全，用与最后一个字母加个空格再按tab就为文件补全。</li>
 </ul>
@@ -436,7 +436,7 @@ tab[tab]用于补全，用于最后字母后面，则">
 </blockquote>
 </li>
 </ul>
-<p>shell 重定向：<br>linux的io输入输出有三种：</p>
+<h3 id="1-2-shell-重定向："><a href="#1-2-shell-重定向：" class="headerlink" title="1.2 shell 重定向："></a>1.2 shell 重定向：</h3><p>linux的io输入输出有三种：</p>
 <ol>
 <li>Standard Input 代码 0</li>
 <li>Standard Output 代码 1</li>
@@ -469,7 +469,7 @@ tab[tab]用于补全，用于最后字母后面，则">
 8. unset 用于取消变量
 
 Q: 双引号和单引号的区别？
-A: 变量的设置中，双引号中可以有变量，而单引号会这几输出语句，不会输出变量
+A: 变量的设置中，双引号中可以有变量，而单引号会直接输出语句，不会输出变量，单引号称为强引用，双引号称为弱引用
 
 ### 1.3 read，array，declare</code></pre><h1 id="read-atest"><a href="#read-atest" class="headerlink" title="read atest"></a>read atest</h1><h1 id="echo-atest-从键盘读取并输出"><a href="#echo-atest-从键盘读取并输出" class="headerlink" title="echo $atest//从键盘读取并输出"></a>echo $atest//从键盘读取并输出</h1><h1 id="read-p-“please-input-your-name”-t-30-named"><a href="#read-p-“please-input-your-name”-t-30-named" class="headerlink" title="read -p “please input your name” -t 30 named"></a>read -p “please input your name” -t 30 named</h1><h1 id="echo-named-有提示符，并最多显示30秒"><a href="#echo-named-有提示符，并最多显示30秒" class="headerlink" title="echo $named//有提示符，并最多显示30秒"></a>echo $named//有提示符，并最多显示30秒</h1><h2 id="declare-aixr-variable"><a href="#declare-aixr-variable" class="headerlink" title="declare [-aixr] variable"></a>declare [-aixr] variable</h2><p>-a 声明为数组<br>-i 声明为数字<br>-x export，声明为环境变量<br>-r 只读</p>
 <h2 id="var-1-”string”"><a href="#var-1-”string”" class="headerlink" title="var[1]=”string”"></a>var[1]=”string”</h2><h2 id="echo-var-1-数组的输出用"><a href="#echo-var-1-数组的输出用" class="headerlink" title="echo ${var[1]}//数组的输出用${}"></a>echo ${var[1]}//数组的输出用${}</h2><p>数值的加法要用 sum=$(($x+$y))这种格式</p>
@@ -504,14 +504,78 @@ cut 是对找到的字符串进行裁剪，而grep是根据字符串去查找相
 减号- 代表上一次命令的输出作为这一次命令的输入</code></pre><h1 id="tar-cvf-home-tar-xvf"><a href="#tar-cvf-home-tar-xvf" class="headerlink" title="tar -cvf - /home | tar -xvf -"></a>tar -cvf - /home | tar -xvf -</h1><pre><code>
 #### 1.9.8 参数代换： xargs
 很多命令不支持管道命令，那么就用xargs代替该命令</code></pre><h1 id="find-sbin-perm-7000-ls-l"><a href="#find-sbin-perm-7000-ls-l" class="headerlink" title="find /sbin -perm +7000 |ls -l"></a>find /sbin -perm +7000 |ls -l</h1><p>ls -l不是管道命令，所以就无法执行</p>
-<h1 id="find-sbin-perm-7000-xargs-ls-l"><a href="#find-sbin-perm-7000-xargs-ls-l" class="headerlink" title="find /sbin -perm +7000 |xargs ls -l"></a>find /sbin -perm +7000 |xargs ls -l</h1><pre><code>## VIM命令
-### 
-删除一块代码：
-1. 设置行号 :set number
-2. 转到多少行  11G
-3. 删除从3行到当前行的代码 3,.d  .代表当前行
-4. 如果只需要删除某一行，可以用dd就行
-</code></pre>
+<h1 id="find-sbin-perm-7000-xargs-ls-l"><a href="#find-sbin-perm-7000-xargs-ls-l" class="headerlink" title="find /sbin -perm +7000 |xargs ls -l"></a>find /sbin -perm +7000 |xargs ls -l</h1><pre><code>
+## 2.0 正则表达式的使用
+### 2.1 特殊正则式
+[:alnym:] 代表英文字母大小写和数字，即0-9，A-Z，a-z
+[:alpha:] 代表任何英文字母大小写，即a-z，A-Z
+[:digit:] 代表数字，即0-9
+### 2.2 高级Grep用法</code></pre><h1 id="grep-A-B-n-‘String’-filename-查找String"><a href="#grep-A-B-n-‘String’-filename-查找String" class="headerlink" title="grep [-A] [-B] [-n] ‘String’ filename //查找String"></a>grep [-A] [-B] [-n] ‘String’ filename //查找String</h1><p>-A后可接数字，代表after，后续的行<br>-B后可接数字，代表before，前面的行<br>-n表示开启行数显示</p>
+<h1 id="grep-n-‘the’-1-txt-查询包含the的行"><a href="#grep-n-‘the’-1-txt-查询包含the的行" class="headerlink" title="grep -n ‘the’ 1.txt // 查询包含the的行"></a>grep -n ‘the’ 1.txt // 查询包含the的行</h1><h1 id="grep-vn-‘the’-1-txt-查询不包含the的行"><a href="#grep-vn-‘the’-1-txt-查询不包含the的行" class="headerlink" title="grep -vn ‘the’ 1.txt //查询不包含the的行"></a>grep -vn ‘the’ 1.txt //查询不包含the的行</h1><h1 id="grep-in-‘the’-1-txt-查询the的行，部分大小写"><a href="#grep-in-‘the’-1-txt-查询the的行，部分大小写" class="headerlink" title="grep -in ‘the’ 1.txt //查询the的行，部分大小写"></a>grep -in ‘the’ 1.txt //查询the的行，部分大小写</h1><pre><code>正则表示式|代表的意思
+:-|:-:|
+t[ae]st|代表tast，test
+[^g]00|代表不已g开头的oo字符串
+^the|代表the开头的行
+\.$|代表以.结束的行
+^$|代表空行
+g..d|代表以g和d中间有两个任意字符
+g\*g|代表\*前面的g有0到无穷多个
+go\\{2,4\\}g|代表o有2到4个
+### 2.3 sed用法
+sed以行为单位进行处理，通常用于编辑文件
+sed本身也是一个管道命令，对行进行操作</code></pre><h1 id="cat-etc-passwd-sed-‘2-5d’-删除2到5行"><a href="#cat-etc-passwd-sed-‘2-5d’-删除2到5行" class="headerlink" title="cat /etc/passwd | sed ‘2,5d’ //删除2到5行"></a>cat /etc/passwd | sed ‘2,5d’ //删除2到5行</h1><h1 id="cat-etc-passwd-sed-n-‘5-7p’-只展示5到7行，一定要加-n"><a href="#cat-etc-passwd-sed-n-‘5-7p’-只展示5到7行，一定要加-n" class="headerlink" title="cat /etc/passwd | sed -n ‘5,7p’ //只展示5到7行，一定要加-n"></a>cat /etc/passwd | sed -n ‘5,7p’ //只展示5到7行，一定要加-n</h1><h1 id="sed-‘s-String1-String2-g’-用字符串2替换字符串1"><a href="#sed-‘s-String1-String2-g’-用字符串2替换字符串1" class="headerlink" title="sed ‘s/String1/String2/g’ //用字符串2替换字符串1"></a>sed ‘s/String1/String2/g’ //用字符串2替换字符串1</h1><pre><code>
+### 2.4 扩展正则表达式
+扩展正则表示式用egrep表示
+
+RE字符|意义与范例
+:-:|:-:
++|重复一个或一个以上的前一个RE字符
+？|零个或一个的前一个RE字符
+\||用or的方式查找字符串
+()|查找组字符串：比如查找glad和good，就可以egrep -n &#39;g(la|oo)d express_regular.txt
+
+### 2.5 awk
+数据处理工具，相比sed作用于一整行的处理，awk作用于一整列的处理，用于根据内容分析并处理</code></pre><h1 id="last-n-5-awk-‘-printf-1-“-t”-3-’-输出第一行和第三行"><a href="#last-n-5-awk-‘-printf-1-“-t”-3-’-输出第一行和第三行" class="headerlink" title="last -n 5|awk ‘{printf $1 “\t” $3}’ //输出第一行和第三行"></a>last -n 5|awk ‘{printf $1 “\t” $3}’ //输出第一行和第三行</h1><pre><code>
+## 3.0 shell script
+
+### date
+%Y%m%d 的格式是20190921
+%y%m%d 的格式是190921
+date可以直接输入，不需要$date，
+date --date=&quot;20190924&quot;+%s可一转换成秒
+### 3.1 数值运算
+var=$((运算内容))
+
+### 3.2 ./ , source ,sh命令的区别
+三个命令都可以运行脚本，但./在运行之前需要赋权
+不同点在于：./和sh都是在子进程中运行，运行完后销毁进程，所以不保存局部变量，但source是在当前进程中运行，保存变量。
+
+
+### 3.3 test命令
+test 命令用于测试文件是否存在以及他的其他信息</code></pre><p>test -e filename //查看文件是否存在</p>
+<pre><code>### 3.4 判断符号 []
+在判断符号[]中我们可以去判断两数是否相等</code></pre><p>[ “$yn” == “Y” -o “$yn” == “y” ] &amp;&amp; echo “OK, continue!” &amp;&amp; exit 0 </p>
+<pre><code>这里由于dash和bash不兼容，bash中默认判断符号为单个=号，运行脚本会出现unexpected operator
+1. ：sudo dpkg-reconfigure dash   选NO
+将ubuntu 默认的shell 链接的dash 改成传统的 bash \
+2. 使用=号
+
+### 3.5 shell script 的默认变量（\$1,$2...)
+假如我们在执行脚本的命令后面加上几个变量，那么就可以在脚本中引用</code></pre><p>sh sh07.sh one two three<br>那么$0就代表sh7.sh,$1就代表one，依次$#就代表变量的树木，$@就打印所有的变量</p>
+<pre><code>shift用于偏移量</code></pre><p>sh sh07.sh one two three<br>在脚本中写上shift 2 ，那么$0就指向了one</p>
+<pre><code>
+### 3.6 条件判断式</code></pre><p>if [] ; then </p>
+<p>elif [];then</p>
+<p>else</p>
+<p>fi  //fi代表结束，注意其中的空格<br>```</p>
+<h2 id="4-0-VIM命令"><a href="#4-0-VIM命令" class="headerlink" title="4.0 VIM命令"></a>4.0 VIM命令</h2><p>###<br>删除一块代码：</p>
+<ol>
+<li>设置行号 :set number</li>
+<li>转到多少行  11G</li>
+<li>删除从3行到当前行的代码 3,.d  .代表当前行</li>
+<li>如果只需要删除某一行，可以用dd就行</li>
+</ol>
+
             </div>
             <hr/>
 

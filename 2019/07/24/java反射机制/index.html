@@ -476,6 +476,25 @@ java反射机制是在运行状态中，对于任意一个类，都能知道这�
 </ul>
 <p>通过反射还可以获取构造方法，成员方法等，反射在实际开发中使用的不多，像c++，pascal等语言没有提供这样的特性。由于反射机制能够实现在运行时对类进行装载，因此能够增加程序的灵活性，但是不恰当的使用反射机制，也会严重影响系统的性能。</p>
 <h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>数据库注册驱动时；AOP动态代理中的JDK代理<br>若想深入了解反射特性，可参考这篇博客:<br><a href="https://blog.csdn.net/sinat_38259539/article/details/71799078" target="_blank" rel="noopener">https://blog.csdn.net/sinat_38259539/article/details/71799078</a></p>
+<p>利用反射还可以修改String不可变的对象</p>
+<pre><code>// 创建字符串&quot;Hello World&quot;， 并赋给引用s
+        String s = &quot;Hello World&quot;;
+
+        System.out.println(&quot;s = &quot; + s); // Hello World
+
+        // 获取String类中的value字段
+        Field valueFieldOfString = String.class.getDeclaredField(&quot;value&quot;);
+
+        // 改变value属性的访问权限
+        valueFieldOfString.setAccessible(true);
+
+        // 获取s对象上的value属性的值
+        char[] value = (char[]) valueFieldOfString.get(s);
+
+        // 改变value所引用的数组中的第5个字符
+        value[5] = &#39;_&#39;;
+
+        System.out.println(&quot;s = &quot; + s); // Hello_World</code></pre><p>利用反射获取私有成员，通过value改变字符数组的值。</p>
 
             </div>
             <hr/>

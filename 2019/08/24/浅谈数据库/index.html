@@ -378,12 +378,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/数据库/" target="_blank">
-                                <span class="chip bg-color">数据库</span>
-                            </a>
-                        
                             <a href="/tags/锁/" target="_blank">
                                 <span class="chip bg-color">锁</span>
+                            </a>
+                        
+                            <a href="/tags/数据库/" target="_blank">
+                                <span class="chip bg-color">数据库</span>
                             </a>
                         
                     </div>
@@ -439,6 +439,8 @@
 <h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><p>可以严格保证数据访问的安全</p>
 <h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><p>每次请求都会额外产生锁的开销，未获取的锁的请求则会被阻塞，容易造成性能问题，还可能产生死锁情况。<br>当A操作执行其update操作时需要用到B操作的锁,而B操作这时也要用到A操作的锁，出现死锁时系统会自动回滚一个事务。可以考虑用乐观锁或者按照顺序去获得锁。</p>
 <p>综上，悲观锁适合于并发量较小、失败成本高丶又需要独占读取结果并依赖读取的结果进行判断的业务场景比较适合使用悲观锁。</p>
+<h2 id="排他锁与共享锁"><a href="#排他锁与共享锁" class="headerlink" title="排他锁与共享锁"></a>排他锁与共享锁</h2><p>共享锁：读锁，多个事务可以对同一行数据共享一把锁，只能读不能修改<br>排他锁：一个事务能获取一个数据行的排它锁，另一个事务就无法获取了，获取了排他锁的事务可以对数据行进行读取或修改。</p>
+<p>默认的select语句是不加锁，select。。。lock in share 实现共享锁，利用for update加了排他锁之后不可以加其他的锁，只能用普通的select查询数据，不能用共享锁也不能用排他锁查询或修改。</p>
 <h2 id="2-0-数据库的引擎"><a href="#2-0-数据库的引擎" class="headerlink" title="2.0 数据库的引擎"></a>2.0 数据库的引擎</h2><p>mysql引擎取决于mysql在安装时如何被编译的，要添加一个新的的引擎，就必须重新编译mysql，mysql有3个引擎<br>ISAM/MyISAM/HEAP,另外两种类型是INNODB/BERKLEY</p>
 <ul>
 <li>ISAM:设计之初就是认为表的查询次数远大于修改次数<br>ISAM查询速度快，不占用大内存和硬盘，但不支持事务，也不容错，一旦硬盘崩溃了，那么数据库文件就无法恢复了。</li>
@@ -493,9 +495,11 @@
 <ol>
 <li>大大减少存储引擎需要扫描的数据量</li>
 <li>进行排序避免使用临时表</li>
-<li>将随机IO变成顺序IO<h3 id="2-3-INNODB与MyISAM使用的锁"><a href="#2-3-INNODB与MyISAM使用的锁" class="headerlink" title="2.3 INNODB与MyISAM使用的锁"></a>2.3 INNODB与MyISAM使用的锁</h3></li>
+<li>将随机IO变成顺序IO</li>
 </ol>
-<ul>
+<h3 id="索引的最左匹配原则"><a href="#索引的最左匹配原则" class="headerlink" title="索引的最左匹配原则"></a>索引的最左匹配原则</h3><p>当我们为三个列建立联合索引时，</p>
+<pre><code>ALTER TABLE people ADD INDEX lname_fname_age (lname,fname,age); </code></pre><p>相当于创建了（lname）单列索引，（lname,fname）组合索引，和(lname,fname,age)组合索引，最左边的列名优先，当查询中不包含最左边的列名时，将不会同过索引查询。</p>
+<h3 id="2-3-INNODB与MyISAM使用的锁"><a href="#2-3-INNODB与MyISAM使用的锁" class="headerlink" title="2.3 INNODB与MyISAM使用的锁"></a>2.3 INNODB与MyISAM使用的锁</h3><ul>
 <li>MyISAM使用表级锁</li>
 <li>InnoDB使用行级锁和表级锁，默认为行级锁</li>
 </ul>
@@ -516,8 +520,8 @@
 </ul>
 <p>成绩表中的学号不是成绩表的主键，而在学生表中是主键，就称成绩表中的学号为学生表的外键。同理 成绩表中的课程号是课程表的外键 </p>
 <h2 id="5-0-聚集索引与非聚集索引"><a href="#5-0-聚集索引与非聚集索引" class="headerlink" title="5.0 聚集索引与非聚集索引"></a>5.0 聚集索引与非聚集索引</h2><ul>
-<li>聚集索引：键值的逻辑顺序就决定了表中相应行的物理顺序，　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 <img src="/2019/08/24/浅谈数据库/1.jpg"></li>
-<li>非聚集索引：该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。聚集索引的叶子节点就是数据节点，然而非聚集索引的叶子节点任然是索引节点，只不过有一个指针指向对应的数据块。<img src="/2019/08/24/浅谈数据库/2.jpg">
+<li>聚集索引：键值的逻辑顺序就决定了表中相应行的物理顺序，　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 {% asset_img 1.jpg %}</li>
+<li>非聚集索引：该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。聚集索引的叶子节点就是数据节点，然而非聚集索引的叶子节点任然是索引节点，只不过有一个指针指向对应的数据块。{% asset_img 2.jpg %}
 
 </li>
 </ul>
@@ -530,10 +534,10 @@
 <p>摘抄自博客<a href="https://www.cnblogs.com/aspnethot/articles/1504082.html" target="_blank" rel="noopener">https://www.cnblogs.com/aspnethot/articles/1504082.html</a></p>
 <h3 id="5-2-数据库表的连接"><a href="#5-2-数据库表的连接" class="headerlink" title="5.2 数据库表的连接"></a>5.2 数据库表的连接</h3><p>分为外连接和内连接和交叉连接，</p>
 <ul>
-<li>外连接又分左外连接，右外连接，全外连接<img src="/2019/08/24/浅谈数据库/1.png">
-<img src="/2019/08/24/浅谈数据库/2.png">
-<img src="/2019/08/24/浅谈数据库/3.png">
-<img src="/2019/08/24/浅谈数据库/4.png"></li>
+<li>外连接又分左外连接，右外连接，全外连接{% asset_img 1.png %}
+{% asset_img 2.png %}
+{% asset_img 3.png %}
+{% asset_img 4.png %}</li>
 <li>交叉连接指的是笛卡尔积</li>
 </ul>
 <p>具体可以参考博客<a href="https://www.cnblogs.com/thomasguan/p/4252410.html" target="_blank" rel="noopener">https://www.cnblogs.com/thomasguan/p/4252410.html</a></p>
@@ -573,6 +577,63 @@
 <li>水平分区：对数据库表按行拆分，表结构不变。如果数据记录太多，就可以将他拆分成几个数据表存储，水平拆分可以支持很大的数据量，如果只是分表，所有的信息还是存储在一个计算机上，那是没用的，所以最好水平分库，将不同数据表储存在不同计算机上（分布式）。<br> 优点：能支持很大的数据量，应用端改造较少，<br> 缺点：分片事务难以解决 ，因为拆分会带来逻辑、部署、运维的各种复杂度，如果实在要分片，尽量选择客户端分片架构，这样可以减少一次和中间件的网络I/O。</li>
 </ol>
 <p>下面补充一下数据库分片的两种常见方案：<br>客户端代理： 分片逻辑在应用端，封装在jar包中，通过修改或者封装JDBC层来实现。 当当网的 Sharding-JDBC 、阿里的TDDL是两种比较常用的实现。<br>中间件代理： 在应用和数据中间加了一个代理层。分片逻辑统一维护在中间件服务中。 我们现在谈的 Mycat 、360的Atlas、网易的DDB等等都是这种架构的实现。</p>
+<h2 id="8-0-MYSQL（结构化查询语句）"><a href="#8-0-MYSQL（结构化查询语句）" class="headerlink" title="8.0 MYSQL（结构化查询语句）"></a>8.0 MYSQL（结构化查询语句）</h2><h3 id="8-1-简单查询"><a href="#8-1-简单查询" class="headerlink" title="8.1 简单查询"></a>8.1 简单查询</h3><p>以下sql来自于《MYSQL必知必会》</p>
+<pre><code>SELECT DISTINT vend_id FROM products //返回id不同的列
+SELECT prod_name FROM products LIMIT 5 //限制返回五条记录
+SELECT prod_name FROM products LIMIT 3，4 //限制返回4条记录，从第3条开始，注意有第0行的存在
+</code></pre><h3 id="8-2-排序检索"><a href="#8-2-排序检索" class="headerlink" title="8.2 排序检索"></a>8.2 排序检索</h3><pre><code>SELECT user_id FROM user_info ORDER BY user_level //按user_level从小到大排列
+
+SELECT user_id FROM user_info ORDER BY user_level DESC //使用DESC 按user_level从大到小排列
+
+SELECT user_id FROM user_info ORDER BY user_level ，product_name //先按user_level从小到大排列，如果user_level相同，则会按product_name排序</code></pre><h3 id="8-3-过滤数据"><a href="#8-3-过滤数据" class="headerlink" title="8.3 过滤数据"></a>8.3 过滤数据</h3><p>使用where</p>
+<pre><code>SELECT prod_name ,prod_price FROM products WHERE prod_price BETWEEN 5 AND 10; //查询某一个区间的值</code></pre><p>in操作符可以实现between操作符相同的功能；<br>and的优先级高于or，必要时可以加括号处理；</p>
+<h3 id="8-4-通配符"><a href="#8-4-通配符" class="headerlink" title="8.4 通配符"></a>8.4 通配符</h3><p>LIKE操作符后面跟上统配符可实现特殊的查找<br>通配符有两种</p>
+<ol>
+<li>%代表匹配0个或1一个或多个任意字符</li>
+<li>_代表匹配一个任意字符</li>
+</ol>
+<p>不要过度使用通配符，会影响性能，如果实在是需要，那么不要把统配符放在最前面。</p>
+<h3 id="8-5-创建计算字段"><a href="#8-5-创建计算字段" class="headerlink" title="8.5 创建计算字段"></a>8.5 创建计算字段</h3><pre><code>SELECT Concat(goods_id,&#39;(&#39;,color,&#39;)&#39;
+) FROM goods_detail ORDER BY goods_id; //使用concat关键字来组合字符串。
+
+SELECT goods_id*stock AS price
+ FROM goods_detail ORDER BY goods_id;//使用*获取计算结果，并用AS赋值为新的字段名
+</code></pre><h3 id="8-6-函数"><a href="#8-6-函数" class="headerlink" title="8.6 函数"></a>8.6 函数</h3><p>函数的可移植性不强，因为每个DBMS的函数可能不同，但在必要时，通过函数可以实现很方便的查找</p>
+<ol>
+<li>文本处理函数，Trim（），Upper(), Soundex()(转换成发音)</li>
+<li>日期处理函数，Date（），Year（），Month（）<pre><code>SELECT order_id FROM order_info where Month(order_date)=7//查询七月的订单
+SELECT order_id FROM order_info where Date(order_date)=&#39;2019-07-10&#39;;//日期的格式必须是yyyy-mm-dd；</code></pre></li>
+<li>数值处理函数,Abs(),Mod().</li>
+<li>聚集函数：AVG(),COUNT(),MAX(),MIN(),SUM()<pre><code>SELECT AVG(order_price) AS average FROM order_info ORDER BY order_price;</code></pre><h3 id="8-7-分组查询"><a href="#8-7-分组查询" class="headerlink" title="8.7 分组查询"></a>8.7 分组查询</h3>使用 GROUP BY 语句可以实现对各种系列数目的统计<pre><code>SELECT user_id ,
+COUNT(*) AS count FROM order_info GROUP BY user_id;</code></pre></li>
+</ol>
+<p>使用HAVING关键字可以过滤分组，同时HAVING关键字也可以替换前面所有的WHERE使用的地方，WHERE，HAVING,GROUP BY使用的顺序如下</p>
+<pre><code>SELECT vend_id,COUNT(*) FROM products WHERE prod_price&gt;=10 GROUP BY VEND_ID HAVING COUNT(*)&gt;2
+
+SELECT&gt;FROM&gt;WHERE&gt;GROUP BY&gt;HAVING&gt;ORDER BY&gt;LIMIT</code></pre><h3 id="8-8-子查询"><a href="#8-8-子查询" class="headerlink" title="8.8 子查询"></a>8.8 子查询</h3><p>最常见的子查询就是使用where 。。in（），括号中添加另一个查询语句，当然也有作为计算字段作为子查询</p>
+<pre><code>SELECT user_id, user_level ,
+        (SELECT COUNT(*) FROM order_info WHERE                  
+        order_info.user_id =user_info.user_id) AS count 
+                  FROM user_info ORDER BY user_id;</code></pre><h3 id="8-9-联结"><a href="#8-9-联结" class="headerlink" title="8.9 联结"></a>8.9 联结</h3><p>在关系数据库中，不同表之间可以有关联，使用联结可以更方便的查询</p>
+<ol>
+<li><p>通过完全限定列名查询</p>
+<pre><code>SELECT user_info.user_id, user_level ,order_id FROM user_info,order_info 
+   WHERE user_info.user_id=order_info.user_id 
+         ORDER BY user_info.user_id;
+//这里的user_id要使用完全限定列名，不然会有歧义</code></pre></li>
+<li><p>笛卡尔积，如果没有用联结条件，那么查询的数据数目就是user的数目*order查询到的数目</p>
+</li>
+<li><p>内联结,</p>
+<pre><code>SELECT user_info.user_id, user_level ,order_id
+FROM user_info INNER JOIN order_info 
+   ON  user_info.user_id=order_info.user_id 
+       ORDER BY user_info.user_id;</code></pre><p>可以达到同一同样的效果</p>
+</li>
+<li><p>左外联结与右外联结，同时返回另一个表中不匹配的项</p>
+</li>
+<li><p>自联结，对同一个表使用自联结</p>
+<pre><code>SELECT p1.id,p1.name FROM products AS p1,products AS p2 WHERE P1.id=p2.id AND p1.level=19;</code></pre></li>
+</ol>
 
             </div>
             <hr/>

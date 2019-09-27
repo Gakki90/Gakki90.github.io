@@ -4,9 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="java NIO与IO的区别, Liu Mn">
-    <meta name="description" content="1. 阻塞与同步NIO可以称为new IO，non-block IO阻塞是指访问数据时，数据是否准备就绪，如果未准备就会一直等待在那里。非阻塞：
-1.1 同步与异步方式同步：应用程序直接参与IO读写操作，如果阻塞，那么就完全不能做其他的事情">
+    <meta name="keywords" content="IO复用,AIO,BIO,NIO,同步，异步，阻塞和非阻塞 区别, Liu Mn">
+    <meta name="description" content="1. 什么是AIO，BIO,NIOAIO:异步非阻塞IOBIO：阻塞IONIO：非阻塞io
+2. 同步与异步，阻塞与非阻塞同步与异步对针对应用程序与内核的交互而言的：同步：进程触发IO操作并等待或者轮询的查看IO操作是否完成都是同步的异步：">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>java NIO与IO的区别 | Liu Mn</title>
+    <title>IO复用,AIO,BIO,NIO,同步，异步，阻塞和非阻塞 区别 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -261,13 +261,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        java NIO与IO的区别
+                        IO复用,AIO,BIO,NIO,同步，异步，阻塞和非阻塞 区别
                     </div>
                 </div>
             </div>
@@ -382,6 +382,10 @@
                                 <span class="chip bg-color">NIO</span>
                             </a>
                         
+                            <a href="/tags/IO/" target="_blank">
+                                <span class="chip bg-color">IO</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -418,8 +422,18 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="1-阻塞与同步"><a href="#1-阻塞与同步" class="headerlink" title="1. 阻塞与同步"></a>1. 阻塞与同步</h2><p>NIO可以称为new IO，non-block IO<br>阻塞是指访问数据时，数据是否准备就绪，如果未准备就会一直等待在那里。<br>非阻塞：</p>
-<h3 id="1-1-同步与异步方式"><a href="#1-1-同步与异步方式" class="headerlink" title="1.1 同步与异步方式"></a>1.1 同步与异步方式</h3><p>同步：应用程序直接参与IO读写操作，如果阻塞，那么就完全不能做其他的事情<br>异步：所有的IO都交给操作系统去处理，应用程序只需要等待通知</p>
+                <h2 id="1-什么是AIO，BIO-NIO"><a href="#1-什么是AIO，BIO-NIO" class="headerlink" title="1. 什么是AIO，BIO,NIO"></a>1. 什么是AIO，BIO,NIO</h2><p>AIO:异步非阻塞IO<br>BIO：阻塞IO<br>NIO：非阻塞io</p>
+<h2 id="2-同步与异步，阻塞与非阻塞"><a href="#2-同步与异步，阻塞与非阻塞" class="headerlink" title="2. 同步与异步，阻塞与非阻塞"></a>2. 同步与异步，阻塞与非阻塞</h2><p>同步与异步对针对应用程序与内核的交互而言的：<br>同步：进程触发IO操作并等待或者轮询的查看IO操作是否完成都是同步的<br>异步：进程触发IO操作，直接返回，IO交给内核处理，内核处理完后通知进程IO完成</p>
+<p>阻塞与非阻塞是针对应用程序的执行状态而言的：<br>同步可以是阻塞和非阻塞的，而异步就一定是非阻塞的<br>阻塞：进程给cpu传达一个任务，直到任务完成，进程才继续执行下一个任务<br>非阻塞：进程给cpu传达一个任务，然后继续处理下一个任务，然后通过轮询的方式去查看cpu之前的任务是否完成。</p>
+<h2 id="3-四种高性能IO模型"><a href="#3-四种高性能IO模型" class="headerlink" title="3. 四种高性能IO模型"></a>3. 四种高性能IO模型</h2><ol>
+<li>同步阻塞IO：最简单的io模型，用户线程在内核进行io操作时阻塞</li>
+<li>同步非阻塞IO ：用户线程发起io请求立即返回，并不断发起io请求，知道数据到达后，才真正读取到数据，继续执行，轮询消耗了cpu大量资源，一般很少用</li>
+<li>IO多路复用：IO多路复用模型是建立在内核提供的多路分离函数select基础上的，使用select可以避免非阻塞模型中轮询情况<img src="/2019/09/18/java-NIO与IO的区别/1.png">
+select函数貌似与非阻塞io并无区别，关键在与select函数可以管理多个socket的io请求，达到在同一个线程内同时处理多个io请求的目的，并且select函数允许用户线程只注册自己感兴趣的事件，这里就使用了Reactor模式，<img src="/2019/09/18/java-NIO与IO的区别/2.png">
+此多路io复用模型也被称为异步阻塞io模型，这里的阻塞是指select函数执行时线程被阻塞，并不是用户线程被阻塞，并不能称为完全的异步</li>
+<li>异步IO：基于Proactor模式，使用内核提供的异步IO api发起read请求，发起后立即返回，然后操作系统开启独立的内核线程去处理IO的操作，由内核去读取数据并放到用户指定的缓冲区，然后通知用户直接调用即可<img src="/2019/09/18/java-NIO与IO的区别/3.png">
+异步io并不常用，而是使用io多路复用模型去模拟异步IO(将数据写到缓冲区)，java7已经支持异步IO<br>参考自博客<a href="https://www.cnblogs.com/aspirant/p/6877350.html" target="_blank" rel="noopener">https://www.cnblogs.com/aspirant/p/6877350.html</a></li>
+</ol>
 <h2 id="2-IO与NIO的区别"><a href="#2-IO与NIO的区别" class="headerlink" title="2. IO与NIO的区别"></a>2. IO与NIO的区别</h2><ol>
 <li>IO面向流，NIO面向缓冲：IO每次从流中读取多个字节，直至读取到所有字节，不能移动流中的数据，NIO每次将数据读取到一个稍后处理的缓冲区。</li>
 <li>IO阻塞，NIO非阻塞：当一个线程调用read或write，该线程直到读取完数据之前，不能干任何事情：而NIO当目前没有数据可用时，就什么都不获取，转而去做别的事情，而不是保持线程阻塞。</li>
@@ -583,7 +597,7 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《java NIO与IO的区别》
+                    《IO复用,AIO,BIO,NIO,同步，异步，阻塞和非阻塞 区别》
                 </span> by
             <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/18/java-NIO与IO的区别/" property="cc:attributionName"
                rel="cc:attributionURL">
@@ -625,48 +639,46 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2019/09/18/java-NIO与IO的区别/">
+                <a href="/2019/09/21/经典面试题汇总/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="java NIO与IO的区别">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="经典面试题汇总">
                         
-                        <span class="card-title">java NIO与IO的区别</span>
+                        <span class="card-title">经典面试题汇总</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            浅析NIO
+                            对网络上的面经中出现的难题汇总
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-18
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-21
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/java基础/" class="post-category" target="_blank">
-                                    java基础
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                    面试
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/NIO/" target="_blank">
-                        <span class="chip bg-color">NIO</span>
+                    <a href="/tags/面试/" target="_blank">
+                        <span class="chip bg-color">面试</span>
                     </a>
                     
                 </div>
