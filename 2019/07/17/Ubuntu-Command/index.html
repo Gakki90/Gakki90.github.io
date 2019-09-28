@@ -542,7 +542,7 @@ RE字符|意义与范例
 %Y%m%d 的格式是20190921
 %y%m%d 的格式是190921
 date可以直接输入，不需要$date，
-date --date=&quot;20190924&quot;+%s可一转换成秒
+date --date=&quot;20190924&quot; +%s可一转换成秒，中间有空格
 ### 3.1 数值运算
 var=$((运算内容))
 
@@ -567,7 +567,26 @@ test 命令用于测试文件是否存在以及他的其他信息</code></pre><p
 ### 3.6 条件判断式</code></pre><p>if [] ; then </p>
 <p>elif [];then</p>
 <p>else</p>
-<p>fi  //fi代表结束，注意其中的空格<br>```</p>
+<p>fi  //fi代表结束，注意其中的空格</p>
+<pre><code></code></pre><p>case $variable in<br>    “hello”)</p>
+<pre><code>;;
+&quot;&quot;)
+
+;;
+*)
+
+;;</code></pre><p>esac  </p>
+<pre><code>### 3.7 function功能</code></pre><p>function fname(){<br>    echo “your print is $1”<br>}<br>fname one  //函数中的$1代表这个one，one就是函数的第一个参数，$0代表的是函数本身</p>
+<pre><code>### 3.8 loop循环
+不定循环，while和until</code></pre><p>while[ condition ]<br>do</p>
+<p>done //当条件成立执行循环</p>
+<pre><code></code></pre><p>until [condition ]<br>do</p>
+<p>done //当条件成立跳出循环</p>
+<pre><code>定次数循环for</code></pre><p>for name in $names<br>do</p>
+<p>done //相当于foreach循环</p>
+<pre><code></code></pre><p>for ((i=0;i&lt;$num;i=i+1))<br>do</p>
+<p>done//相当于for循环</p>
+<pre><code>### 3.9 shell script的调试</code></pre><h1 id="sh-nvx-scripts-sh"><a href="#sh-nvx-scripts-sh" class="headerlink" title="sh [-nvx] scripts.sh"></a>sh [-nvx] scripts.sh</h1><p>-n 单纯的检查语法<br>-v 输出script的内容<br>-x 功能最强大，追踪程序运行的每一步结果<br>```</p>
 <h2 id="4-0-VIM命令"><a href="#4-0-VIM命令" class="headerlink" title="4.0 VIM命令"></a>4.0 VIM命令</h2><p>###<br>删除一块代码：</p>
 <ol>
 <li>设置行号 :set number</li>

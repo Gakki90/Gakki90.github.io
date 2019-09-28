@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="LeetCode算法题, Liu Mn">
+    <meta name="keywords" content="LeetCode以及牛客网的算法题, Liu Mn">
     <meta name="description" content="1. 两数之和给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
 思路：空间换时间，用">
@@ -15,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>LeetCode算法题 | Liu Mn</title>
+    <title>LeetCode以及牛客网的算法题 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -262,13 +262,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        LeetCode算法题
+                        LeetCode以及牛客网的算法题
                     </div>
                 </div>
             </div>
@@ -1035,6 +1035,82 @@ str6</code></pre><p>将前四个字符串放到一个list中，将后两个字�
             index--;
         }
         return true;
+}</code></pre><h2 id="字节跳动算法笔试题"><a href="#字节跳动算法笔试题" class="headerlink" title="字节跳动算法笔试题"></a>字节跳动算法笔试题</h2><h2 id="三"><a href="#三" class="headerlink" title="三."></a>三.</h2><p>小包最近迷上了一款叫做雀魂的麻将游戏，但是这个游戏规则太复杂，小包玩了几个月了还是输多赢少。<br>于是生气的小包根据游戏简化了一下规则发明了一种新的麻将，只留下一种花色，并且去除了一些特殊和牌方式（例如七对子等），具体的规则如下：</p>
+<p>总共有36张牌，每张牌是1~9。每个数字4张牌。<br>你手里有其中的14张牌，如果这14张牌满足如下条件，即算作和牌<br>14张牌中有2张相同数字的牌，称为雀头。<br>除去上述2张牌，剩下12张牌可以组成4个顺子或刻子。顺子的意思是递增的连续3个数字牌（例如234,567等），刻子的意思是相同数字的3个数字牌（例如111,777）</p>
+<p>例如：<br>1 1 1 2 2 2 6 6 6 7 7 7 9 9 可以组成1,2,6,7的4个刻子和9的雀头，可以和牌<br>1 1 1 1 2 2 3 3 5 6 7 7 8 9 用1做雀头，组123,123,567,789的四个顺子，可以和牌<br>1 1 1 2 2 2 3 3 3 5 6 7 7 9 无论用1 2 3 7哪个做雀头，都无法组成和牌的条件。</p>
+<p>现在，小包从36张牌中抽取了13张牌，他想知道在剩下的23张牌中，再取一张牌，取到哪几种数字牌可以和牌。</p>
+<p>思路：统计1-9数字出现的个数，然后遍历，如果数字个数小于4，就加1，然后到canHu（）进行判断，首先判断有头没，将个数&gt;2的作为头部，有头那么就判断连续数字个数是否都大于0，减完后记得加上来，不影响后边的计算，当然输入到canhu（）中的数组也会被改变（如果是能胡的话，那么后边的++就不执行了），所以要用复制数组。</p>
+<pre><code>import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static boolean canHu(int[] countOfNums,int number,boolean hasHead){
+        if(number&lt;=0){
+            return true;
+        }
+        if(!hasHead){
+            for (int i = 1; i &lt;10 ; i++) {
+                if(countOfNums[i]&gt;=2){
+                    countOfNums[i]-=2;
+                    if(canHu(countOfNums,number-2,true)){
+                        return true;
+                    }
+                    countOfNums[i]+=2;
+                }
+            }
+            return false;
+        }else {
+            for (int i = 1; i &lt;10 ; i++) {
+                if (countOfNums[i] &gt; 0) {
+                    if (countOfNums[i] &gt;= 3) {
+                        countOfNums[i] -= 3;
+                        if (canHu(countOfNums, number - 3, true)) {
+                            return true;
+                        }
+                        countOfNums[i]+=3;
+                    }
+                    if (i + 2 &lt; 10 &amp;&amp; countOfNums[i + 1] &gt; 0 &amp;&amp; countOfNums[i + 2] &gt; 0) {
+                                countOfNums[i]--;
+                                countOfNums[i+1]--;
+                                countOfNums[i+2]--;
+                                if(canHu(countOfNums,number-3,true)){
+                                    return true;
+                                }
+                                countOfNums[i]++;
+                                countOfNums[i+1]++;
+                                countOfNums[i+2]++;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int[] countOfNums=new int[10];
+        for (int i = 0; i &lt;13 ; i++) {
+            int k=sc.nextInt();
+            countOfNums[k]++;
+        }
+        int count=0;
+        for (int i = 1; i &lt;10 ; i++) {
+            if(countOfNums[i]&lt;4) {
+                int[] testArray = Arrays.copyOf(countOfNums, 10);
+                testArray[i]++;
+                if (canHu(testArray, 14, false)) {
+                    System.out.print(i + &quot; &quot;);
+                    count++;
+                }
+            }
+        }
+        if(count==0){
+            System.out.println(0);
+        }
+
+        sc.close();
+    }
 }</code></pre>
             </div>
             <hr/>
@@ -1193,7 +1269,7 @@ str6</code></pre><p>将前四个字符串放到一个list中，将后两个字�
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《LeetCode算法题》
+                    《LeetCode以及牛客网的算法题》
                 </span> by
             <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/02/LeetCode算法题/" property="cc:attributionName"
                rel="cc:attributionURL">

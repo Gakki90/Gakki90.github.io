@@ -627,13 +627,15 @@ SELECT&gt;FROM&gt;WHERE&gt;GROUP BY&gt;HAVING&gt;ORDER BY&gt;LIMIT</code></pre><
 <pre><code>SELECT user_info.user_id, user_level ,order_id
 FROM user_info INNER JOIN order_info 
    ON  user_info.user_id=order_info.user_id 
-       ORDER BY user_info.user_id;</code></pre><p>可以达到同一同样的效果</p>
+       ORDER BY user_info.user_id;</code></pre><p>可以达到同样的效果</p>
 </li>
 <li><p>左外联结与右外联结，同时返回另一个表中不匹配的项</p>
 </li>
 <li><p>自联结，对同一个表使用自联结</p>
-<pre><code>SELECT p1.id,p1.name FROM products AS p1,products AS p2 WHERE P1.id=p2.id AND p1.level=19;</code></pre></li>
+<pre><code>SELECT p1.id,p1.name FROM products AS p1,products AS p2 WHERE P1.id=p2.id AND p1.level=19;</code></pre><h3 id="8-10-组合查询"><a href="#8-10-组合查询" class="headerlink" title="8.10 组合查询"></a>8.10 组合查询</h3><p>当要从一个或多个表中返回数据时，可以用union将返回值结构相同的查询组合起来</p>
+<pre><code></code></pre></li>
 </ol>
+<p>```</p>
 
             </div>
             <hr/>
