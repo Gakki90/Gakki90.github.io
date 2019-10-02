@@ -4,11 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="TCP/IP协议总结, Liu Mn">
-    <meta name="description" content="因为之前有一篇图解http总结，这里直接从运输层开始，主要是对以前tcp/ip学过的总结。
-1.0 运输层1.1 多路复用与多路分解
-多路分解：从运输层报文段中的数据交付到正确的套接字的工作
-多路复用：从主机的不同套接字收集数据块，并为每个">
+    <meta name="keywords" content="JDK1.8新特性, Liu Mn">
+    <meta name="description" content="一红黑树，以及concurrentHashmap就不说了
+二丶lamda表示式lamda本质是一个匿名内部类，也可以是传递数据的代码前置|表示式-:|-:无参无返回值|()-&amp;gt;sout(“hello”)有一个参，无返|(x)-sout">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -16,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>TCP/IP协议总结 | Liu Mn</title>
+    <title>JDK1.8新特性 | Liu Mn</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -263,13 +261,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        TCP/IP协议总结
+                        JDK1.8新特性
                     </div>
                 </div>
             </div>
@@ -380,12 +378,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/计算机网络/" target="_blank">
-                                <span class="chip bg-color">计算机网络</span>
-                            </a>
-                        
-                            <a href="/tags/TCP-IP/" target="_blank">
-                                <span class="chip bg-color">TCP/IP</span>
+                            <a href="/tags/lamda/" target="_blank">
+                                <span class="chip bg-color">lamda</span>
                             </a>
                         
                     </div>
@@ -396,8 +390,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/计算机网络/" class="post-category" target="_blank">
-                                计算机网络
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                java基础
                             </a>
                         
                     </div>
@@ -408,7 +402,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-09-01
+                    2019-09-29
                 </div>
 
                 
@@ -424,170 +418,134 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>因为之前有一篇图解http总结，这里直接从运输层开始，主要是对以前tcp/ip学过的总结。</p>
-<h2 id="1-0-运输层"><a href="#1-0-运输层" class="headerlink" title="1.0 运输层"></a>1.0 运输层</h2><h3 id="1-1-多路复用与多路分解"><a href="#1-1-多路复用与多路分解" class="headerlink" title="1.1 多路复用与多路分解"></a>1.1 多路复用与多路分解</h3><ul>
-<li>多路分解：从运输层报文段中的数据交付到正确的套接字的工作</li>
-<li>多路复用：从主机的不同套接字收集数据块，并为每个数据块封装上首部信息从而生成报文段，然后传递到网络层。</li>
-</ul>
-<p>UDP套接字由一个二元组来全面标识，包含一个目的端口号和一个目的ip地址，所以不同的源ip地址或源端口号，如果他们udp套接字相同，将会通过相同的套接字定向到相同的目的进程。<br>而TCP套接字支持并行，也就是可以有两个相同套接字一起工作，TCP套接字由一个四元组标识，包含目的端口号，源端口号，目的ip地址，源ip地址，所以不同的源ip地址或源端口号就算他们的目的端口号，目的ip地址相同，也会被分解到不同的套接字。</p>
-<h3 id="1-2-UDP"><a href="#1-2-UDP" class="headerlink" title="1.2 UDP"></a>1.2 UDP</h3><p>特性</p>
-<ul>
-<li>无需建立连接：在发送报文段之前，双方不会“握手”。udp也不会维护连接状态，不需要像tcp一样维护接受和发送的缓存，拥塞控制参数等</li>
-<li>实时性较强，tcp由于其拥塞控制而较弱</li>
-<li>分组首部开销小</li>
-<li>面向数据包的不可靠连接</li>
-</ul>
-<p>DNS（域名系统）就是udp的一个例子。</p>
-<h4 id="1-2-1-UDP报文段"><a href="#1-2-1-UDP报文段" class="headerlink" title="1.2.1 UDP报文段"></a>1.2.1 UDP报文段</h4><img src="/2019/09/01/TCP-IP协议总结/1.jpg">
-<p>四个字段每个都只占两个字节</p>
-<ul>
-<li>长度：用来指示udp报文段中的字节数（首部加数据）</li>
-<li>检验和：提供了差错检测功能，对报文段中所有的16比特字的和进行反码运算，求和时任何溢出都要被回卷（将最高位溢出的1加到最低位上），得到的值就是检验和的值。</li>
-</ul>
-<h3 id="1-3-可靠数据传输原理"><a href="#1-3-可靠数据传输原理" class="headerlink" title="1.3 可靠数据传输原理"></a>1.3 可靠数据传输原理</h3><p>可靠数据传输协议往往建立在不可靠的ip网络层协议上。<br>可靠传输需要的技术（rdt3.0）：</p>
-<ol>
-<li>检验和</li>
-<li>序号</li>
-<li>定时器：用于实现重传机制</li>
-<li>肯定和否定确认</li>
-<li>滑动窗口协议</li>
-<li>选择重传</li>
+                <h2 id="一"><a href="#一" class="headerlink" title="一"></a>一</h2><p>红黑树，以及concurrentHashmap就不说了</p>
+<h2 id="二丶lamda表示式"><a href="#二丶lamda表示式" class="headerlink" title="二丶lamda表示式"></a>二丶lamda表示式</h2><p>lamda本质是一个匿名内部类，也可以是传递数据的代码<br>前置|表示式<br>-:|-:<br>无参无返回值|()-&gt;sout(“hello”)<br>有一个参，无返|(x)-sout(x)<br>有多个参，无返|(x,y)-sout(x+y)<br>有参有返|(x)-&gt;{sout(“hello”);return x}<br>无参有返|()-&gt;{sout(“hello”);return “world”}</p>
+<pre><code>Arrays.sort(strs,(s1,s2)-&gt;s1.compareTo(s2)) //利用lamda集合排序</code></pre><h2 id="三丶函数式接口"><a href="#三丶函数式接口" class="headerlink" title="三丶函数式接口"></a>三丶函数式接口</h2><ol>
+<li>只有一个抽象方法的接口叫函数式接口</li>
+<li>在jdk1.8中，接口中可以用default实现方法</li>
+<li>可以用lamda表达式创建该接口的对象</li>
+<li>可以@funcitonalInterface注明改接口是函数式接口，非必须</li>
 </ol>
-<p>rdt3.0 协议的最大缺陷是他是一个停等协议，他必须等待确认信号后才能发送下一个分组。但会带来下列问题:</p>
+<p>java.util.function 包中含有四大函数式接口</p>
 <ol>
-<li>必须增加序号范围，每个分组要具有唯一的序号</li>
-<li>协议的发送方和接受方需要缓存多个分组，那么未确认的分组和已接收的分组。</li>
-<li>所需序号范围和对缓冲的要求取决于数据传输协议如何处理丢失和损坏及延时过大的分组，有两种方法：<ul>
-<li>回退N步： 允许发送端发送多个分组，当已发送而未被确认的分组数不能大于N个，N是滑动窗口的大小，当等于n时，窗口已满，则会通知上层等下再调用，当某一分组发送后丢失，出现超时，发送方会重传所有已被发送而未被确认的分组，即回退n步。在这里，如果某一分组丢失，则接受端接收后面的分组时发送的ack还是丢失分组前的，这里就是累计确认。<img src="/2019/09/01/TCP-IP协议总结/2.jpg"></li>
-<li>选择重传：GBN协议中许多分组没必要重传， 选择重传机制让发送端只重传那些丢失超时的分组。每个分组都是单独的定时器，用于超时事件。 <img src="/2019/09/01/TCP-IP协议总结/3.jpg">
+<li>函数型接口Function&lt;F,T&gt; ，有参有返</li>
+<li>消费性接口Consumer&lt;F,T&gt;,有参无返</li>
+<li>供给型接口Supplier<t>,无参返回t类型</t></li>
+<li>断定型接口Predicate<t>,接收T，返回boolean</t></li>
+</ol>
+<p>具体使用</p>
+<pre><code>Predicate&lt;String&gt; function=(x)-&gt;{
 
-
-</li>
-</ul>
-</li>
-</ol>
-<h3 id="1-4-TCP"><a href="#1-4-TCP" class="headerlink" title="1.4 TCP"></a>1.4 TCP</h3><ul>
-<li>面向连接：在数据传输前，双方必须握手，即他们必须先发送预备报文段，</li>
-<li>全双工：双方都可以发送和接受报文。</li>
-<li>面向流的可靠连接<br>MSS：最大报文段长度，</li>
-</ul>
-<h4 id="TCP怎么实现有序"><a href="#TCP怎么实现有序" class="headerlink" title="TCP怎么实现有序"></a>TCP怎么实现有序</h4><ol>
-<li>序号</li>
-<li>确认号</li>
-<li>超时机制</li>
-<li>重组：会将无序的报文重组再传递到高层<h4 id="1-4-1-TCP报文段"><a href="#1-4-1-TCP报文段" class="headerlink" title="1.4.1 TCP报文段"></a>1.4.1 TCP报文段</h4></li>
-</ol>
-<img src="/2019/09/01/TCP-IP协议总结/4.jpg">
-<ol>
-<li>序号和确认号：用于分组标识，序号好理解，而确认号是因为tcp是全双工的，在接收分组同时还是发送分组，所以这时候他就将累计确认的确认号放置于此发送给它的另一方。</li>
-<li>滑动窗口：用于流量控制<h4 id="1-4-2-往返时间估计和超时"><a href="#1-4-2-往返时间估计和超时" class="headerlink" title="1.4.2 往返时间估计和超时"></a>1.4.2 往返时间估计和超时</h4>tcp采用超时/重传机制处理丢失的报文段，但超时间隔长度的设置是个问题。</li>
-</ol>
-<p>EstimatedRTT = (1-a)<em>EstimatedRTT+a</em>SampleRTT，a一般取0.125</p>
-<ul>
-<li>RTT：往返时间</li>
-<li>报文段的样本RTT（SampleRTT）表示从某报文段被发出到接收到确认的时间</li>
-<li>EstimatedRTT：是一个sampleRTT的加权平均值</li>
-</ul>
-<p>而超时间隔：</p>
-<p>TimeoutInterval=EstimatedRTT+4*DevRTT</p>
-<ul>
-<li>DevRTT: RTT偏差：DevRTT = (1-b)DevRTT+b*|EstimatedRTT - SampleRTT|，b取0.25。<h4 id="1-4-3-可靠数据传输"><a href="#1-4-3-可靠数据传输" class="headerlink" title="1.4.3 可靠数据传输"></a>1.4.3 可靠数据传输</h4>发送方只用超时来恢复报文段的丢失。发送方有3个与发送和重传有关的事件: 从上层应用接受数据，定时器超时和收到ACK。</li>
-</ul>
-<p>超时间隔加倍：TCP每次在重传后会把超时间隔设置成原来的两倍，而不是从RTT公式计算。</p>
-<p>快速重传：由于超时间隔加倍会增加端到端的时延，接收端采取累计确认。在期望报文段到达之前会不断发送相同的ack确认号，此为冗余ACk，在发送方收到3个冗余ACk，会采取快速重传，在定时器过期之前重传丢失的报文段。<br>Q：为什么是接收到3个冗余ack才开始重传<br>A：主要是因为考虑到分组的丢失是网络故障还是乱序造成的，如果是两次冗余ack，很有可能是乱序导致的，三个ack就有可能是网络故障，四次就更有可能。参考<a href="https://blog.csdn.net/u010202588/article/details/54563648" target="_blank" rel="noopener">https://blog.csdn.net/u010202588/article/details/54563648</a></p>
-<p>选择重传：TCP更像是一种选择重传，但他结合了GBC和选择重传，发送方收到冗余ack或者超时，只会重传一个报文。</p>
-<h4 id="1-4-4-流量控制"><a href="#1-4-4-流量控制" class="headerlink" title="1.4.4 流量控制"></a>1.4.4 流量控制</h4><p>TCP通过滑动窗口机制来提供流量控制，用于给发送方表明接收方还有多少可用的缓存空间。</p>
-<ul>
-<li><p>死锁：当B的接收窗口到达0，告诉发送方A停止发送数据，然后B又有了一些缓存，然后发送报文段告诉A，这段报文段丢失了，然后就出现了A等B，B等A的死锁情况。为了解决这个问题，tcp引入了持续计时器，当A收到B接收窗口为0的报文就启动计时器，到时间就发送一个大小为一个字节的报文去探测接收端的情况，如果还是为0，那么就重启定时器。</p>
-</li>
-<li><p>滑动窗口协议（ARQ）：TCP为了提高信道的利用率没有用停等协议，而是用ARQ协议，规定滑动窗口大小为n，那么已发送而未被确认的分组数不能大于n：TCP发送端根据接收报文中的接收窗口rwnd来调整发送窗口：</p>
-<h4 id="1-4-5-连接管理"><a href="#1-4-5-连接管理" class="headerlink" title="1.4.5 连接管理"></a>1.4.5 连接管理</h4><p>三次握手:</p>
-<img src="/2019/09/01/TCP-IP协议总结/6.jpg"></li>
-<li><p>SYN:报文段首部的同步位</p>
-</li>
-<li><p>seq：初始序号</p>
-</li>
-<li><p>ACK:首部的确认位</p>
-</li>
-<li><p>ack：确认号<br>Q: 为什么需要三次握手<br>A：</p>
-</li>
-</ul>
-<ol>
-<li>放止已失效的连接请求报文突然有传送到了服务器，从而产生错误连接</li>
-<li>两次握手可能产生死锁，a向b发送请求，b收到请求后发送确认信号，开始发送数据，而a并没有受到b的确认信号（丢失），那么a不知道b的序列号，无法接收b的数据，b在发送数据超时后会重复发送，从而死锁。</li>
-</ol>
-<p>四次挥手：</p>
-<img src="/2019/09/01/TCP-IP协议总结/7.jpg">
-<p>Q: 为什么客户端需要等待2MSL(MSL：报文最大生存时间)?<br>A: TCP报文段在网络中的最大生存周期建议是2min .</p>
-<ol>
-<li>如果最后的ACK丢失，客户端就可以重传最后的确认报文</li>
-<li>假设直接进入客户端closed状态，服务端发送的数据还在网络中，而另一个应用重新占据此端口，就会导致上一个程序的数据发送给了这个新的连接。</li>
-</ol>
-<h4 id="1-4-6-拥塞控制"><a href="#1-4-6-拥塞控制" class="headerlink" title="1.4.6 拥塞控制"></a>1.4.6 拥塞控制</h4><p>参考自博客<a href="https://blog.csdn.net/jtracydy/article/details/52366461" target="_blank" rel="noopener">https://blog.csdn.net/jtracydy/article/details/52366461</a></p>
-<h5 id="1-4-6-1-拥塞控制与流量控制"><a href="#1-4-6-1-拥塞控制与流量控制" class="headerlink" title="1.4.6.1 拥塞控制与流量控制"></a>1.4.6.1 拥塞控制与流量控制</h5><p>两者都是通过遏制发送方来达到的，但拥塞控制是一个全局的过程，设计到所有的主机，路由器，放止过多的数据注入到网络中个，而流量控制是端对端的问题</p>
-<h5 id="1-4-6-2-慢启动"><a href="#1-4-6-2-慢启动" class="headerlink" title="1.4.6.2 慢启动"></a>1.4.6.2 慢启动</h5><p>刚开始传送数据时，为了探测网络状况，首先将cwnd设为1，发送m1后，然后当发送方收到m1的确认报文后，再发送m2，m3，之后收到m2和m3的确认报文后，又发送四个，即每经过一次传输轮次，cwnd就加倍。</p>
-<h5 id="1-4-6-3-拥塞避免"><a href="#1-4-6-3-拥塞避免" class="headerlink" title="1.4.6.3 拥塞避免"></a>1.4.6.3 拥塞避免</h5><p>为了防止慢启动cwnd增加过快，设置了一个慢开始门限(ssthresh),当cwnd&gt;ssthresh时就进入拥塞避免状态,没经过一个RTT时间就让cwnd+1，而不是加倍</p>
-<h5 id="1-4-6-4-发生超时"><a href="#1-4-6-4-发生超时" class="headerlink" title="1.4.6.4 发生超时"></a>1.4.6.4 发生超时</h5><p>无论是慢启动状态还是拥塞避免状态，一旦出现网络拥塞即发生超时事件，就会将慢开始门限（ssthresh）设置为cwnd值的一半，cwnd的值置为1，然后重新进入慢启动状态</p>
-<h5 id="1-4-6-4-收到3个冗余ACK"><a href="#1-4-6-4-收到3个冗余ACK" class="headerlink" title="1.4.6.4 收到3个冗余ACK"></a>1.4.6.4 收到3个冗余ACK</h5><p>这里涉及到一个概念快速重传：当接收方收到失序的报文段时，会立即发送三个之前的已经确认的报文的确认报文，当接收方接收到后，不必等定时器过期，直接发送报文段。<br>在收到3个冗余ACK，这里不再是将cwnd设置为1，而是用快恢复：将ssthresh设置为cwnd的一半，然后cwnd=ssthresh，然后执行拥塞避免算法，是窗口缓慢增大。</p>
-<h2 id="2-0-网络层"><a href="#2-0-网络层" class="headerlink" title="2.0 网络层"></a>2.0 网络层</h2><h3 id="2-1-转发与路由"><a href="#2-1-转发与路由" class="headerlink" title="2.1 转发与路由"></a>2.1 转发与路由</h3><ul>
-<li>转发是将分组从路由器的输入端口转移到合适输出端口（转发表）。</li>
-<li>路由涉及到一个网络中的所有路由器，决定了从源到目的地的路径（路由协议）。<h3 id="2-2-连接建立"><a href="#2-2-连接建立" class="headerlink" title="2.2 连接建立"></a>2.2 连接建立</h3>需要源到目的地沿着所选择的路径握手，以便建立起连接状态。<br>与TCP连接不同：网络层的连接建立是主机和主机之间，而tcp三次握手是不同应用之间。<h3 id="2-3-数据报网络与虚电路网络"><a href="#2-3-数据报网络与虚电路网络" class="headerlink" title="2.3 数据报网络与虚电路网络"></a>2.3 数据报网络与虚电路网络</h3>类似于运输层的TCP和UDP的连接和无连接服务，网络也分连接和无连接网络，不同的是网路层的服务是主机到主机，并且由网络核心实现。<h4 id="2-3-1-数据报网络"><a href="#2-3-1-数据报网络" class="headerlink" title="2.3.1 数据报网络"></a>2.3.1 数据报网络</h4></li>
-<li>提供无连接服务</li>
-<li>不事先为系列分组的传输确定传输路径</li>
-<li>不同分组路径可能不同<h4 id="2-3-2-虚电路网络"><a href="#2-3-2-虚电路网络" class="headerlink" title="2.3.2 虚电路网络"></a>2.3.2 虚电路网络</h4></li>
-<li>提供连接服务</li>
-<li>事先就确定了传输路径</li>
-<li>系列分组传输路径相同<h3 id="2-4-IPv4"><a href="#2-4-IPv4" class="headerlink" title="2.4 IPv4"></a>2.4 IPv4</h3><img src="/2019/09/01/TCP-IP协议总结/8.jpg">
-
-</li>
-</ul>
-<table>
+            return x.equals(&quot;hello&quot;);
+        };
+        System.out.println(function.test(&quot;hello&quot;));</code></pre><h2 id="四丶方法引用"><a href="#四丶方法引用" class="headerlink" title="四丶方法引用"></a>四丶方法引用</h2><table>
 <thead>
 <tr>
-<th>首部</th>
-<th align="center">描述</th>
+<th align="left">类型</th>
+<th align="left">示例</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>版本</td>
-<td align="center">IPv4与IPv6</td>
+<td align="left">某个对象的方法引用</td>
+<td align="left">Object : instanceMethodName</td>
 </tr>
 <tr>
-<td>首部长度</td>
-<td align="center">ip首部一般是20字节</td>
+<td align="left">特定类的任意对象的方法引用</td>
+<td align="left">Type : methodName</td>
 </tr>
 <tr>
-<td>服务类型</td>
-<td align="center">FTP，IP电话应用等不同类型的ip数据区分开来</td>
+<td align="left">类静态方法引用</td>
+<td align="left">Class : staticMethodName</td>
 </tr>
 <tr>
-<td>数据报长度</td>
-<td align="center">该字段为16bit所有理论最大长度为2的16次方-1（总长度）</td>
-</tr>
-<tr>
-<td>标识，标志，片偏移</td>
-<td align="center">与ip分片有关</td>
-</tr>
-<tr>
-<td>寿命TTL</td>
-<td align="center">没经过一台路由器减一</td>
-</tr>
-<tr>
-<td>协议</td>
-<td align="center">指示了ip数据要交付给运输层的哪种协议，类似于运输层到应用层的端口号</td>
-</tr>
-<tr>
-<td>首部检验和</td>
-<td align="center">只对首部进行检验和</td>
-</tr>
-<tr>
-<td>选项</td>
-<td align="center">允许ip首部被扩展</td>
+<td align="left">构造方法引用</td>
+<td align="left">className : new</td>
 </tr>
 </tbody></table>
-<h4 id="2-4-1-IP数据报分片"><a href="#2-4-1-IP数据报分片" class="headerlink" title="2.4.1 IP数据报分片"></a>2.4.1 IP数据报分片</h4><p>链路层帧能承载的最大数据量为MTU（最大传送单元），严格限制着ip数据报的长度，过大的ip分组如何压缩进链路层帧的有效载荷？分片<br>IP数据报被分为许多片，到达目的地后进行组装。<br>与之相关的字段有数据报长度，标识，标志，片偏移<br>分片时每个片的标识是一样的，标志都置为1，只有最后一个片标志为0，而片偏移指示了它在原数据报中的位置。<br>每一片的长度都应该是8的倍数（一字节等于8bit）。</p>
-<h3 id="2-5-选路算法"><a href="#2-5-选路算法" class="headerlink" title="2.5 选路算法"></a>2.5 选路算法</h3><p>全局的：采用链路状态算法，一开始就知道所有路由器具有完全的拓扑，费用信息<br>分散的：距离矢量算法，只知道邻居的信息。</p>
+<p>:):(:|</p>
+<h2 id="五丶Stream流"><a href="#五丶Stream流" class="headerlink" title="五丶Stream流"></a>五丶Stream流</h2><p>是在函数式编程中对集合类进行复杂操作的工具，更像是高级版本低的iterator，与iterator不同，他不会存储元素，不改变源对象，效率更高</p>
+<p>创建</p>
+<pre><code> // 1，校验通过Collection 系列集合提供的stream()或者paralleStream()
+    List&lt;String&gt; list = new ArrayList&lt;&gt;();
+    Strean&lt;String&gt; stream1 = list.stream();
 
+    // 2.通过Arrays的静态方法stream()获取数组流
+    String[] str = new String[10];
+    Stream&lt;String&gt; stream2 = Arrays.stream(str);
+
+    // 3.通过Stream类中的静态方法of
+    Stream&lt;String&gt; stream3 = Stream.of(&quot;aa&quot;,&quot;bb&quot;,&quot;cc&quot;);
+
+    // 4.创建无限流
+    // 迭代
+    Stream&lt;Integer&gt; stream4 = Stream.iterate(0,(x) -&gt; x+2);
+
+    //生成
+    Stream.generate(() -&gt;Math.random());
+</code></pre><p>中间操作</p>
+<pre><code>emps.stream()
+          .filter(e -&gt; e.getAge() &gt; 10)
+          .limit(4)
+          .skip(4)
+          // 需要流中的元素重写hashCode和equals方法
+          .distinct()
+          .forEach(System.out::println);
+
+
+  /**
+   *  生成新的流 通过map映射
+   */
+  emps.stream()
+          .map((e) -&gt; e.getAge())
+          .forEach(System.out::println);
+
+
+  /**
+   *  自然排序  定制排序
+   */
+  emps.stream()
+          .sorted((e1 ,e2) -&gt; {
+              if (e1.getAge().equals(e2.getAge())){
+                  return e1.getName().compareTo(e2.getName());
+              } else{
+                  return e1.getAge().compareTo(e2.getAge());
+              }
+          })
+          .forEach(System.out::println);
+</code></pre><p>终止操作</p>
+<pre><code>    boolean b1 = emps.stream()
+                .allMatch((e) -&gt; e.getStatus().equals(Employee.Status.BUSY));
+        System.out.println(b1);
+
+        boolean b2 = emps.stream()
+                .anyMatch((e) -&gt; e.getStatus().equals(Employee.Status.BUSY));
+        System.out.println(b2);
+
+        boolean b3 = emps.stream()
+                .noneMatch((e) -&gt; e.getStatus().equals(Employee.Status.BUSY));
+        System.out.println(b3);
+
+        Optional&lt;Employee&gt; opt = emps.stream()
+                .findFirst();
+        System.out.println(opt.get());
+
+        // 并行流
+        Optional&lt;Employee&gt; opt2 = emps.parallelStream()
+                .findAny();
+        System.out.println(opt2.get());
+
+        long count = emps.stream()
+                .count();
+        System.out.println(count);
+
+        Optional&lt;Employee&gt; max = emps.stream()
+                .max((e1, e2) -&gt; Double.compare(e1.getSalary(), e2.getSalary()));
+        System.out.println(max.get());
+
+        Optional&lt;Employee&gt; min = emps.stream()
+                .min((e1, e2) -&gt; Double.compare(e1.getSalary(), e2.getSalary()));
+        System.out.println(min.get());
+</code></pre>
             </div>
             <hr/>
 
@@ -745,9 +703,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《TCP/IP协议总结》
+                    《JDK1.8新特性》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/01/TCP-IP协议总结/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/29/JDK1-8新特性/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Liu Mn
             </a> is licensed under a
@@ -787,46 +745,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2019/09/02/LeetCode算法题/">
+                <a href="/2019/09/29/JDK1-8新特性/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="LeetCode以及牛客网的算法题">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="JDK1.8新特性">
                         
-                        <span class="card-title">LeetCode以及牛客网的算法题</span>
+                        <span class="card-title">JDK1.8新特性</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录一些leetcode上题目的解题思路
+                            lamda，函数式接口，流
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/算法/" class="post-category" target="_blank">
-                                    算法
+                            <a href="/categories/java基础/" class="post-category" target="_blank">
+                                    java基础
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/算法/" target="_blank">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/lamda/" target="_blank">
+                        <span class="chip bg-color">lamda</span>
                     </a>
                     
                 </div>
@@ -840,48 +800,32 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/08/24/浅谈数据库/">
+                <a href="/2019/09/28/Spring-ioc-aop/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="浅谈数据库">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Spring ioc aop">
                         
-                        <span class="card-title">浅谈数据库</span>
+                        <span class="card-title">Spring ioc aop</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            有关数据库的部分知识
+                            IOC另种说法叫依赖注入（DI），他是一种设计思想，我们通过IOC将相互依赖的对象的创建，协调叫给spring容器去做，而容器用的又是一种工厂模式，每个对象只需要关注其自身的业务逻辑关系就可以。在这样的角度看，获取对象的方式，进行了反转，变
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-24
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/数据库/" class="post-category" target="_blank">
-                                    数据库
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Liu Mn
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/锁/" target="_blank">
-                        <span class="chip bg-color">锁</span>
-                    </a>
-                    
-                    <a href="/tags/数据库/" target="_blank">
-                        <span class="chip bg-color">数据库</span>
-                    </a>
-                    
                 </div>
                 
             </div>

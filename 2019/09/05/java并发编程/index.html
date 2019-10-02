@@ -5,8 +5,8 @@
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta name="keywords" content="java并发编程, Liu Mn">
-    <meta name="description" content="1. 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
-2.0 Synchronized原理sy">
+    <meta name="description" content="1.0 锁的种类jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。
+1.2 什么是线程安全性在线程安全性的">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -426,7 +426,14 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="1-锁的种类"><a href="#1-锁的种类" class="headerlink" title="1. 锁的种类"></a>1. 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
+                <h2 id="1-0-锁的种类"><a href="#1-0-锁的种类" class="headerlink" title="1.0 锁的种类"></a>1.0 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
+<h2 id="1-2-什么是线程安全性"><a href="#1-2-什么是线程安全性" class="headerlink" title="1.2 什么是线程安全性"></a>1.2 什么是线程安全性</h2><p>在线程安全性的定义中，最核心的就是正确性：多个线程访问某个类时，这个类始终能表现出正确的行为，那么就称这个类为线程安全的。<br>除正确性外：线程安全表现在原子性，加锁机制上。</p>
+<p>Q: 当多个线程访问同一变量出现错误时，如何去修复：<br>A: </p>
+<ol>
+<li>不在线程中共享这个变量（可以理解为为每个线程保存共享变量独立的副本，threadlocal）</li>
+<li>将变量定义为不可变，final</li>
+<li>在访问变量时使用同步，synchronized</li>
+</ol>
 <h2 id="2-0-Synchronized原理"><a href="#2-0-Synchronized原理" class="headerlink" title="2.0 Synchronized原理"></a>2.0 Synchronized原理</h2><p>synchronized又被称为内置锁<br>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
 <ol>
 <li>当monitor的进入数为0，代表空闲，则该线程可以进入，然后将进入数设置为1</li>
