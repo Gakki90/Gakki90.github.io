@@ -1035,7 +1035,45 @@ str6</code></pre><p>将前四个字符串放到一个list中，将后两个字�
             index--;
         }
         return true;
-}</code></pre><h2 id="字节跳动算法笔试题"><a href="#字节跳动算法笔试题" class="headerlink" title="字节跳动算法笔试题"></a>字节跳动算法笔试题</h2><h2 id="三"><a href="#三" class="headerlink" title="三."></a>三.</h2><p>小包最近迷上了一款叫做雀魂的麻将游戏，但是这个游戏规则太复杂，小包玩了几个月了还是输多赢少。<br>于是生气的小包根据游戏简化了一下规则发明了一种新的麻将，只留下一种花色，并且去除了一些特殊和牌方式（例如七对子等），具体的规则如下：</p>
+}</code></pre><h2 id="131-分割回文串"><a href="#131-分割回文串" class="headerlink" title="131.分割回文串"></a>131.分割回文串</h2><p>给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。</p>
+<p>返回 s 所有可能的分割方案。</p>
+<pre><code>输入: &quot;aab&quot;
+输出:
+[
+  [&quot;aa&quot;,&quot;b&quot;],
+  [&quot;a&quot;,&quot;a&quot;,&quot;b&quot;]
+]</code></pre><p>思路： 动态规划，然后用分治法，递归</p>
+<pre><code> public List&lt;List&lt;String&gt;&gt; partition(String s) {
+            int length=s.length();
+            boolean[][] dp=new boolean[length][length];
+        for (int len = 1; len &lt;=length ; len++) {
+            for (int i = 0; i &lt;length-len+1 ; i++) {
+                int j=i+len-1;
+                dp[i][j]=(s.charAt(i)==s.charAt(j))&amp;&amp;(len&lt;3||dp[i+1][j-1]);
+            }
+        }
+        return partitionHelper(s,0,dp);
+    }
+    List&lt;List&lt;String&gt;&gt; partitionHelper(String s,int start,boolean[][] dp){
+        List&lt;List&lt;String&gt;&gt; lists=new ArrayList&lt;&gt;();
+        if(start==s.length()){
+            List&lt;String&gt; l=new ArrayList&lt;&gt;();
+            lists.add(l);
+            return lists;
+        }
+
+        for (int i = start; i &lt;s.length() ; i++) {
+            if(dp[start][i]){
+                String left=s.substring(start,i+1);
+                for (List&lt;String&gt; l:partitionHelper(s,i+1,dp)
+                     ) {
+                    l.add(0,left);//这里很巧妙，将前一个回文串加入到后面的字符串list中的第一个
+                    lists.add(l);
+                }
+            }
+        }
+        return lists;
+    }</code></pre><h2 id="字节跳动算法笔试题"><a href="#字节跳动算法笔试题" class="headerlink" title="字节跳动算法笔试题"></a>字节跳动算法笔试题</h2><h2 id="三"><a href="#三" class="headerlink" title="三."></a>三.</h2><p>小包最近迷上了一款叫做雀魂的麻将游戏，但是这个游戏规则太复杂，小包玩了几个月了还是输多赢少。<br>于是生气的小包根据游戏简化了一下规则发明了一种新的麻将，只留下一种花色，并且去除了一些特殊和牌方式（例如七对子等），具体的规则如下：</p>
 <p>总共有36张牌，每张牌是1~9。每个数字4张牌。<br>你手里有其中的14张牌，如果这14张牌满足如下条件，即算作和牌<br>14张牌中有2张相同数字的牌，称为雀头。<br>除去上述2张牌，剩下12张牌可以组成4个顺子或刻子。顺子的意思是递增的连续3个数字牌（例如234,567等），刻子的意思是相同数字的3个数字牌（例如111,777）</p>
 <p>例如：<br>1 1 1 2 2 2 6 6 6 7 7 7 9 9 可以组成1,2,6,7的4个刻子和9的雀头，可以和牌<br>1 1 1 1 2 2 3 3 5 6 7 7 8 9 用1做雀头，组123,123,567,789的四个顺子，可以和牌<br>1 1 1 2 2 2 3 3 3 5 6 7 7 9 无论用1 2 3 7哪个做雀头，都无法组成和牌的条件。</p>
 <p>现在，小包从36张牌中抽取了13张牌，他想知道在剩下的23张牌中，再取一张牌，取到哪几种数字牌可以和牌。</p>

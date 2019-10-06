@@ -434,9 +434,8 @@ linux文件权限权限分为三个组：[用户][用户组][其他人]每一个
 <li>?：代表上一个值的传回值，数字0代表没有，127代表错误<br>?代表<h3 id="1-1-文件，目录操作命令"><a href="#1-1-文件，目录操作命令" class="headerlink" title="1.1 文件，目录操作命令"></a>1.1 文件，目录操作命令</h3><blockquote>
 <p>mkdir -p /u01/app/oracle<br>mkdir 是linux的建立目录命令。如果是级联建立要用-p选项。<br>比如要建立/u01/app/oracle目录<br>要这样写mkdir -p /u01/app/oracle<br>要是没有-p 会出错</p>
 </blockquote>
-</li>
+<h3 id="1-2-shell-重定向："><a href="#1-2-shell-重定向：" class="headerlink" title="1.2 shell 重定向："></a>1.2 shell 重定向：</h3>linux的io输入输出有三种：</li>
 </ul>
-<h3 id="1-2-shell-重定向："><a href="#1-2-shell-重定向：" class="headerlink" title="1.2 shell 重定向："></a>1.2 shell 重定向：</h3><p>linux的io输入输出有三种：</p>
 <ol>
 <li>Standard Input 代码 0</li>
 <li>Standard Output 代码 1</li>
@@ -445,16 +444,12 @@ linux文件权限权限分为三个组：[用户][用户组][其他人]每一个
 如果是这样
 # command 1&gt;file 2&gt;file 2和1会互相覆盖内容
 # command 1&gt;file 2&gt;$1 这样就不会覆盖
+&lt; 代表输入重定向
+&gt; 输出重定向
+&gt;&gt; 代表追加到文件尾，不覆盖
+command &gt;/dev/null 2&gt;&amp;1 与command  2&gt;&amp;1 &gt;/dev/null
 </code></pre></li>
 </ol>
-<p>&lt; 代表输入重定向</p>
-<blockquote>
-<p>输出重定向</p>
-<blockquote>
-<p>代表追加到文件尾，不覆盖</p>
-</blockquote>
-</blockquote>
-<p>command &gt;/dev/null 2&gt;&amp;1 与command  2&gt;&amp;1 &gt;/dev/null</p>
 <p>前者先将标准输出输出到/dev/null中,再将错误输出重定向到标准输出,所以都输出到/dev/null</p>
 <p>后者先将错误输出重定向到标准输出也就是输出到屏幕上,再将标准输出到/dev/null,只是把原来的标准输出输出到/de/null中,错误输出重定向到标准输出会显示在屏幕上;</p>
 <p>标准输出与错误输出同时输出:command  2&gt;file 1&gt;file 会因抢占file文件的管道二出现乱码/确实/覆盖等现象(即两个输出流操作一个文件的写入),所以要用2&gt;&amp;1 进行重定向到一个输出流才可以全部输出到一个文件</p>

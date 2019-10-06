@@ -649,6 +649,40 @@ delete from user_info where user_level=221;</code></pre><p>在update中，如果
 <li>使用update和delete之前要使用select语句，保证他过滤的是正确的记录<h3 id="8-14-表的创建和操作"><a href="#8-14-表的创建和操作" class="headerlink" title="8.14 表的创建和操作"></a>8.14 表的创建和操作</h3>使用create关键字创建表<pre><code>ALTER TABLE user_info ADD user_height CHAR(5)//为用户增加列
 ALTER TABLE user_info DROP user_height //为用户删除列</code></pre>使用DROP可以删除表，使用RENAME可以重命名表</li>
 </ol>
+<h3 id="8-15-视图"><a href="#8-15-视图" class="headerlink" title="8.15 视图"></a>8.15 视图</h3><p>视图的一些应用：</p>
+<ol>
+<li>重用SQL语句，简化下一次的查询语句</li>
+<li>使用表的组成部分而不是整个表</li>
+<li>保护数据，只给用户访问部分数据</li>
+<li>视图可以返回与底层表的标识和格式不同的数据<pre><code>create view productcustomer AS 
+  select order_id ,delivery from order_info,user_info where order_info.user_id=user_info.user_id;//创建视图
+</code></pre></li>
+</ol>
+<p>select * from productcustomer //展示视图中的数据</p>
+<pre><code>因为视图中不包含数据，所以每次使用视图时，都必须重新处理查询的语句，所以性能会下降。
+### 8.16 存储过程
+相当于一个函数</code></pre><p>create procedure producting() begin select Avg(goods_price) from goods_rough; end;//创建一个无参无返的存储过程</p>
+<p>call producting();//使用</p>
+<pre><code>使用存储过程，简单，安全，高性能
+
+### 8.17 游标
+使用简单的select语句，不能单独读取第一行，最后一行，或者前十行，或者逐个读取每一行，使用游标可以在存储过程中检索出来的行进行前进或者后退
+游标使用declare cursor for</code></pre><p>mysql&gt;  delimiter //<br>mysql&gt; create procedure processorder()<br>    -&gt; begin<br>    -&gt; declare o INT;<br>    -&gt; declare ordernum cursor<br>    -&gt; for<br>    -&gt; select order_id from order_info;<br>    -&gt; open ordernum;<br>    -&gt; fetch ordernum into o;<br>    -&gt; close ordernum;<br>    -&gt; end<br>    -&gt; //创建游标后，需要打开，然后再使用，最后是关闭</p>
+<pre><code>
+### 8.18 触发器
+触发器是在执行了某一语句后自动触发的一组操作。
+分别可以在delete，insert，update三种语句的前后进行额外的操作.
+触发器使用create trigger创建</code></pre><p>CREATE TRIGGER newproduct AFTER INSERT ON user_login for each row select ‘user added’ into @ee;<br>//这里创建触发器，在插入数据到user_login中就会触发，@ee中就会多一条user added的数据。</p>
+<pre><code>
+### 8.19 事务
+事务：逻辑上的一组操作，组成这个操作的各个单元，要么全部成功，要么全部失败。
+事务用start transaction;开启</code></pre><p>start transaction;<br>rollback; //回滚</p>
+<pre><code>
+一半的sql语句在;号就可以执行，是因为隐含提交，而是用commit就是显式提交。
+更复杂的事务会用到保留点。
+
+### 8.20 数据的权限管理
+不同用户对数据库的权限应该是不同的</code></pre><p>use mysql;<br>select user from user; //查看数据库的用户<br>```<br>是用grant可以赋予用户权限，revoke撤销用户的权限。</p>
 
             </div>
             <hr/>

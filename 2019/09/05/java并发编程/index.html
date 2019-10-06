@@ -427,13 +427,32 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="1-0-锁的种类"><a href="#1-0-锁的种类" class="headerlink" title="1.0 锁的种类"></a>1.0 锁的种类</h2><p>jvm的锁大致分为重量级锁，自选锁，轻量级锁，偏向锁<br>锁的使用方式为：先提供偏向锁，如果不满足时，使用轻量级锁，在不瞒足，升级为重量级锁。自旋锁是一种过渡状态，不是实际的锁。锁只能升级。</p>
-<h2 id="1-2-什么是线程安全性"><a href="#1-2-什么是线程安全性" class="headerlink" title="1.2 什么是线程安全性"></a>1.2 什么是线程安全性</h2><p>在线程安全性的定义中，最核心的就是正确性：多个线程访问某个类时，这个类始终能表现出正确的行为，那么就称这个类为线程安全的。<br>除正确性外：线程安全表现在原子性，加锁机制上。</p>
+<h2 id="1-2-什么是线程安全性"><a href="#1-2-什么是线程安全性" class="headerlink" title="1.2 什么是线程安全性"></a>1.2 什么是线程安全性</h2><p>在线程安全性的定义中，最核心的就是正确性：多个线程访问某个类时，这个类始终能表现出正确的行为，那么就称这个类为线程安全的。<br>除正确性外：线程安全表现在原子性，可见性，有序性上。</p>
+<p>原子性：一组操作要么全部执行完，要么全部不执行。</p>
 <p>Q: 当多个线程访问同一变量出现错误时，如何去修复：<br>A: </p>
 <ol>
 <li>不在线程中共享这个变量（可以理解为为每个线程保存共享变量独立的副本，threadlocal）</li>
 <li>将变量定义为不可变，final</li>
 <li>在访问变量时使用同步，synchronized</li>
 </ol>
+<h2 id="1-3-volatile"><a href="#1-3-volatile" class="headerlink" title="1.3 volatile"></a>1.3 volatile</h2><p>两个特性</p>
+<ol>
+<li>可见性：一个线程改变了某个值，对于其他线程是立即可见的</li>
+<li>禁止指令重排</li>
+</ol>
+<p>volatile不能保证原子性，只有符合下面两个条件的，volatile才是安全的</p>
+<ol>
+<li>运算结果不依赖变量的当前值</li>
+<li>变量不与其他变量参与不变性约束</li>
+</ol>
+<h3 id="1-3-1-volatile保证可见性的原理"><a href="#1-3-1-volatile保证可见性的原理" class="headerlink" title="1.3.1 volatile保证可见性的原理"></a>1.3.1 volatile保证可见性的原理</h3><p>当变量被声明为volatile时，会在编译成指令时，前面会有一个lock指令</p>
+<blockquote>
+<p>0x00bbacde: lock add1 $0x0,(%esp);<br>然后会利用缓存一致性协议来保证其他处理器中缓存数据的一致性：</p>
+<ol>
+<li>当察觉到该变量的值改变，该内存地址又在自己的处理器中，处理器使自己对该变量的缓存无效</li>
+<li>去主内存中访问该变量</li>
+</ol>
+</blockquote>
 <h2 id="2-0-Synchronized原理"><a href="#2-0-Synchronized原理" class="headerlink" title="2.0 Synchronized原理"></a>2.0 Synchronized原理</h2><p>synchronized又被称为内置锁<br>每个对象都有一个监视器锁（monitor），当monitor被占用时就会处于锁定状态，线程执行monitorenter指令尝试获得monitor的所有权，过程如下：</p>
 <ol>
 <li>当monitor的进入数为0，代表空闲，则该线程可以进入，然后将进入数设置为1</li>
@@ -449,13 +468,60 @@
 <li>添加了公平锁：当一个线程释放锁，其他被阻塞的线程按序进行获取。</li>
 <li>可添加多个条件，synchronized要么唤醒全部线程，要么唤醒一个线程</li>
 <li>可中断的锁等待，让在等待的线程可以去做别的事情。</li>
-<li>它是一种定时的锁等待（trylock），睡眠时间包括固定和随机部分，从而降低了活锁的可能性。</li>
+<li>可定时的锁等待（trylock），睡眠时间包括固定和随机部分，从而降低了活锁的可能性。</li>
 <li>非块结构的加锁，比如在遍历散列链时，需要获得下一个节点的锁才能去释放该节点的锁，reentrantlock提供了连锁式加锁或者称为锁耦合。</li>
 </ol>
 <p>Q: 为什么有了ReentrantLock还要内置锁<br>A: 因为内置锁在这些方面优于ReentrantLock</p>
 <ol>
-<li>内置锁是自动释放锁的，reetrantlock需要再finally中释放锁，</li>
-<li>JDK1.5 之前，线程转储上给出的信息只是内置锁的信息，能够检测和识别发生死锁的线程。<h3 id="4-1-AQS"><a href="#4-1-AQS" class="headerlink" title="4.1 AQS"></a>4.1 AQS</h3>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，在ReentrantLock用于表示线程重入锁的次数，在信号量表示剩余的许可数量，在futureTask中用于表示任务的状态。用CAS操作实现线程获得锁的过程</li>
+<li>内置锁更为简洁紧凑。</li>
+<li>内置锁更安全，是自动释放锁的，reetrantlock需要再finally中释放锁，</li>
+<li>JDK1.5 之前，线程转储上给出的信息只是内置锁的信息，能够检测和识别发生死锁的线程。<h3 id="4-1-AQS"><a href="#4-1-AQS" class="headerlink" title="4.1 AQS"></a>4.1 AQS</h3>参考博客<a href="https://www.cnblogs.com/waterystone/p/4920797.html" target="_blank" rel="noopener">https://www.cnblogs.com/waterystone/p/4920797.html</a></li>
+</ol>
+<p>AbstractQueuedSynchronized简称AQS，用于构建锁和同步容器的框架，concurrent包里大多都是基于AQS构建，<br>AQS使用FIFO队列表示排队的线程，每个线程维护一个watistatus表示等待状态，AQS中还有一个表示状态的字段state，在ReentrantLock用于表示线程重入锁的次数，在信号量表示剩余的许可数量，在futureTask中用于表示任务的状态。用CAS操作实现线程获得锁的过程.</p>
+<p>AQS有两种资源共享方式：独占（Exclusive）以及共享（share）<br>Reetrantlock是独占方式，而Semaphore是共享</p>
+<p>在实现自定义同步器框架时，只需要重写以下几种方法</p>
+<ul>
+<li><p>isHeldExclusively()：该线程是否正在独占资源。只有用到condition才需要去实现它。</p>
+</li>
+<li><p>tryAcquire(int)：独占方式。尝试获取资源，成功则返回true，失败则返回false。</p>
+</li>
+<li><p>tryRelease(int)：独占方式。尝试释放资源，成功则返回true，失败则返回false。</p>
+</li>
+<li><p>tryAcquireShared(int)：共享方式。尝试获取资源。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。</p>
+</li>
+<li><p>tryReleaseShared(int)：共享方式。尝试释放资源，如果释放后允许唤醒后续等待结点返回true，否则返回false。</p>
+<h4 id="waitStatus"><a href="#waitStatus" class="headerlink" title="waitStatus"></a>waitStatus</h4><p>有五种状态，大于0表示任务被取消，小于0表示等待状态，进入队列默认为0</p>
+</li>
+<li><p>CANCELLED(1)：表示当前结点已取消调度。当timeout或被中断（响应中断的情况下），会触发变更为此状态，进入该状态后的结点将不会再变化。</p>
+</li>
+<li><p>SIGNAL(-1)：表示后继结点在等待当前结点唤醒。后继结点入队时，会将前继结点的状态更新为SIGNAL。</p>
+</li>
+<li><p>CONDITION(-2)：表示结点等待在Condition上，当其他线程调用了Condition的signal()方法后，CONDITION状态的结点将从等待队列转移到同步队列中，等待获取同步锁。</p>
+</li>
+<li><p>PROPAGATE(-3)：共享模式下，前继结点不仅会唤醒其后继结点，同时也可能会唤醒后继的后继结点。</p>
+</li>
+<li><p>0：新结点入队时的默认状态。</p>
+<h4 id="独占模式获取资源流程"><a href="#独占模式获取资源流程" class="headerlink" title="独占模式获取资源流程"></a>独占模式获取资源流程</h4><img src="/2019/09/05/java并发编程/3.png"></li>
+</ul>
+<ol>
+<li>tryAquire（）尝试获取资源，如果成功直接返回</li>
+<li>为成功，addWaiter（）将线程入队，如果队列为空，会用一种CAS自旋volatile变量的方式使节点入队。<pre><code>private Node enq(final Node node) {//node是对线程的一种封装，包含线程本身，还有线程的等待状态。
+ //CAS&quot;自旋&quot;，直到成功加入队尾
+ for (;;) {
+     Node t = tail;
+     if (t == null) { // 队列为空，创建一个空的标志结点作为head结点，并将tail也指向它。
+         if (compareAndSetHead(new Node()))
+             tail = head;
+     } else {//正常流程，放入队尾
+         node.prev = t;
+         if (compareAndSetTail(t, node)) {
+             t.next = node;
+             return t;
+         }
+     }
+ }
+}</code></pre></li>
+<li>acquireQueued（）使线程休息，轮到自己时（unpark（）），会去尝试获取资源，获取资源后返回，整个过程不响应中断，只在获取资源后再进行selfinterrupt（）。<h4 id="独占模式释放资源流程"><a href="#独占模式释放资源流程" class="headerlink" title="独占模式释放资源流程"></a>独占模式释放资源流程</h4>线程独占资源的个数为state，当state=0时代表线程已经使用完了，下一个线程可以来获取<br>release()是独占模式释放资源的顶层入口，他会释放指定量的资源，当state=0时，就会调用unpark（）唤醒下一个未放弃的线程。</li>
 </ol>
 <h2 id="5-0-实现线程的三种方式"><a href="#5-0-实现线程的三种方式" class="headerlink" title="5.0 实现线程的三种方式"></a>5.0 实现线程的三种方式</h2><ol>
 <li><p>继承Thread类：Thread类本身就实现了Runnable接口，</p>
@@ -531,6 +597,13 @@ wait()：阻塞线程，并让出锁。wait(long timeout)可以设置阻塞时�
 2、new FixedThreadPool(int n)——创建一个固定大小的线程池
 3、new CachedThreadPool()——创建一个可缓存的线程池
 4、new ScheduledThreadPool()——创建一个固定长度的线程池，而且以延迟或定时的方式执行任务。
+
+### 线程池的生命周期
+1. 运行：初始化后就处于运行状态
+2. 关闭（shutdown)：不在接收新的任务，等待已经提交的任务完成
+shotdownNow:强行关闭，关闭当前正在执行的任务。
+3. 终止
+
 ### 7.1 excute与submit区别
 1. 接收参数不一样，excute()接收runnable类型参数，而submit接收callable类型参数
 2. excute方法没有返回值，submit方法会放回Future&lt;T&gt;类型返回值
@@ -571,10 +644,13 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
 关于excute()方法，它的执行实际上分了三步：
 1、当少量的线程在运行，线程的数量还没有达到corePoolSize，那么启用新的线程来执行新任务。
 2、如果线程数量已经达到了corePoolSize，那么尝试把任务缓存起来，然后再次检查线程池的状态，看这个时候是否能添加一个额外的线程，来执行这个任务。如果这个检查到线程池关闭了，就拒绝任务。
-3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务。
+3、如果我们没法缓存这个任务，那么我们就尝试去添加线程去执行这个任务，如果失败，可能任务已被取消或者任务队列已经饱和，就拒绝掉这个任务，如果是discard策略，那么就会丢弃最旧的任务，然后尝试重新提交新的任务。
+### 7.7 CompletionService
+CompletionService将Executor与BlockingQueue的功能结合在一起，你可以向他提交callable任务，然后用类似于队列操作的take和poll方法来获取已完成的结果。
+blockqueue中任务的顺序只与线程的执行时间有关，与放入顺序无关，take是阻塞等待，poll是非阻塞等待，并且poll可以传入限制时间，到达限制时间不再等待
 ## 8.0 并发容器类
 节选自《java并发编程实战》第五章
-* ReadAndWrite：读-写锁，普通的锁可以避免“读/写”，“写/写”的冲突，但也避免了“读/读”冲突，降低了性能，而读写锁加锁策略中，允许“读/读”的情况发生，可以选择公平还是非公平的读写锁
+* ReetrantReadWriteLock：读-写锁，读写锁里面有两个lock对象，分别用于读和写，普通的锁可以避免“读/写”，“写/写”的冲突，但也避免了“读/读”冲突，降低了性能，而读写锁加锁策略中，允许“读/读”的情况发生，可以选择公平还是非公平的读写锁
 * ConcurrentHashMap:分段锁（segment），他与其他并发容器一起增强了同步容器类：他们提供的迭代器不会抛出ConcurrentModificationException，取而代之的是在改变时new新的数据从而不影响原有的数据 ，iterator完成后再将头指针替换为新的数据，因此不需要再同步过程中对容器加锁，并且具有弱一致性，可以在迭代时容忍并发的修改。Segment继承了ReentrantLock，是一种个可重入锁。
 &gt; 快速失败策略：util包中。比如list，实现的是fast-failed迭代器，一旦在迭代时另一个线程对集合进行修改，就会抛出上面的异常
 * CopyOnwriteArraylist:用于替代同步list，它的线程安全性在于每次修改时，都会创建一个新的容器副本，从而实现可变性。
@@ -596,9 +672,11 @@ ThreadPoolExcutor.DiscardPolicy()——不处理，直接丢掉
 
 针对对象之间协作造成的死锁最好的解决方法是使用开放调用：如果在调用某个方法时，不需要锁，那么这种调用就称为开放调用。
 ### 10.1 死锁的避免和诊断
-考虑获取锁的顺序
-* 使用定时的锁trylock，当获取锁的时间超过了某个阈值，就返回失败
-* 通过线程转储信息来分析死锁：线程转储信息包括了各个运行中的线程的栈追踪信息，加锁信息。
+死锁的避免：
+1. 加锁顺序
+2. 加锁时限：使用定时的锁Reetrantlock.trylock，当获取锁的时间超过了某个阈值，就返回失败
+3. 死锁检测:通过线程转储信息来分析死锁：线程转储信息包括了各个运行中的线程的栈追踪信息，加锁信息.检测到死锁信息后，可以考虑将释放所有的锁，回退，并等待一段时间重试
+
 ### 10.2 其他活跃性危险
 除了死锁，还有以下几点活跃性危险
 1. 饥饿：死锁和饥饿都是竞争资源引起的，但死锁时同步的，饥饿是异步的，饥饿涉及到的线程只有一个，而死锁有多个。线程优先级调度中低优先级的线程容易发生饥饿
