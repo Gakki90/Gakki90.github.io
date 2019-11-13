@@ -694,6 +694,11 @@ ThreadLocal有四个方法</code></pre><p>void set(Object value)设置当前线�
 <pre><code>JDK5.0以后就从Object改成了泛型，简化了ThreadLocal的使用
 ### 11.2 ThreadLocal&lt;T&gt;的具体实现
 用map的保存线程与变量副本的对应关系</code></pre><p> public void set(T value) {<br>       Thread t = Thread.currentThread();<br>       ThreadLocalMap map = getMap(t);<br>       if (map != null)<br>           map.set(this, value);<br>       else<br>           createMap(t, value);<br>   }<br>```<br>Spring 中session会话也是基于THreadlocal实现的<br>hreadLocal内部的ThreadLocalMap键为弱引用，会有内存泄漏的 风险。适用于无状态，副本变量独立后不影响业务逻辑的高并发场景。如果 如果业务逻辑强依赖于副本变量，则不适合用ThreadLocal解决，需要另寻解决方法。在很多情况下，ThreadLocal比直接使用synchronized同步机制解决线程安全问题更简单，更方便，且结果程序拥有更高的并发性。</p>
+<h3 id="11-3-ThreadLocal存在的两个问题"><a href="#11-3-ThreadLocal存在的两个问题" class="headerlink" title="11.3 ThreadLocal存在的两个问题"></a>11.3 ThreadLocal存在的两个问题</h3><ol>
+<li>脏数据：由于线程池会重用thread对象，那么与thread绑定的静态属性threadlocal变量也会被重用，如果在线程的run（）方法里不显式调用remove（）清理，那么下一个线程可能会get（）到上一个线程的信息。</li>
+<li>内存泄漏：threadlocal对象失去引用后，触发弱引用机制回收ENTRY的value，但如果用static修饰threadlocal，那么就不会被回收，有内存泄漏的风险</li>
+</ol>
+<p>两种问题都可以在run方法中显示调用remove（）来解决。</p>
 
             </div>
             <hr/>
