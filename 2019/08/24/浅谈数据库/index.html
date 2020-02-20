@@ -633,9 +633,13 @@ FROM user_info INNER JOIN order_info
 <li><p>左外联结与右外联结，同时返回另一个表中不匹配的项</p>
 </li>
 <li><p>自联结，对同一个表使用自联结</p>
-<pre><code>SELECT p1.id,p1.name FROM products AS p1,products AS p2 WHERE P1.id=p2.id AND p1.level=19;</code></pre><h3 id="8-10-组合查询"><a href="#8-10-组合查询" class="headerlink" title="8.10 组合查询"></a>8.10 组合查询</h3><p>当要从一个或多个表中返回数据时，可以用union将返回值结构相同的查询组合起来</p>
+<pre><code>SELECT p1.id,p1.name FROM products AS p1,products AS p2 WHERE P1.id=p2.id AND p1.level=19;</code></pre></li>
+<li><p>UNION 操作符用于合并两个或多个 SELECT 语句的结果集。</p>
 </li>
 </ol>
+<p>请注意，UNION 内部的每个 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 SELECT 语句中的列的顺序必须相同。</p>
+<p> union只是将两条select语句的查询结果组合在一起，而join是将两个表建立起关联后再查询 </p>
+<h3 id="8-10-组合查询"><a href="#8-10-组合查询" class="headerlink" title="8.10 组合查询"></a>8.10 组合查询</h3><p>当要从一个或多个表中返回数据时，可以用union将返回值结构相同的查询组合起来</p>
 <h3 id="8-11-全文本搜索"><a href="#8-11-全文本搜索" class="headerlink" title="8.11 全文本搜索"></a>8.11 全文本搜索</h3><p>Myisam可以使用全文本搜索，使用两个函数Match()指定被搜索的列，Against指定要搜索的搜索表示式，</p>
 <h3 id="8-12-数据的插入"><a href="#8-12-数据的插入" class="headerlink" title="8.12 数据的插入"></a>8.12 数据的插入</h3><p>一般我们使用较为安全的插入语法</p>
 <pre><code>INSERT INTO user_login(user_id,user_name,user_password) VALUES(12113,&quot;SB&quot;,1233);</code></pre><p>若是省略列，那么这个列要么是允许为null，要么就是有默认值</p>
@@ -683,6 +687,16 @@ ALTER TABLE user_info DROP user_height //为用户删除列</code></pre>使用DR
 
 ### 8.20 数据的权限管理
 不同用户对数据库的权限应该是不同的</code></pre><p>use mysql;<br>select user from user; //查看数据库的用户<br>```<br>是用grant可以赋予用户权限，revoke撤销用户的权限。</p>
+<h2 id="9-0-范式"><a href="#9-0-范式" class="headerlink" title="9.0 范式"></a>9.0 范式</h2><h3 id="9-1-函数依赖"><a href="#9-1-函数依赖" class="headerlink" title="9.1 函数依赖"></a>9.1 函数依赖</h3><ol>
+<li>完全函数依赖：（学号，课程）可以推出分数，但学号推不出分数，课程也推不出分数，那么分数完全依赖于（学号，课程）</li>
+<li>部分函数依赖： （A,B)可以推出C ，但A，B两者中的某一个也能推出C，则C部分依赖于(A,B)</li>
+<li>传递函数依赖： A可以推出B，B可以推出C，但C推不出A，则C传递依赖于A。</li>
+</ol>
+<h3 id="9-2-三大范式"><a href="#9-2-三大范式" class="headerlink" title="9.2 三大范式"></a>9.2 三大范式</h3><ol>
+<li>第一范式：属性不可切割，表中的数据都要求是原子数据，也就说订单表中不存在五台电脑这样的一个数据项，而是电脑和数量要拆开，关系型数据库中，数据表都是符合1NF的</li>
+<li>第二范式：不能存在部分函数依赖</li>
+<li>第三范式：不存在传递函数依赖</li>
+</ol>
 
             </div>
             <hr/>

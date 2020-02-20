@@ -456,19 +456,162 @@ spring框架的四大原则：
 <li>@JointPoint ：被拦截处称为连接点</li>
 </ol>
 <p>## </p>
-<h3 id="1-3-Bean的scope"><a href="#1-3-Bean的scope" class="headerlink" title="1.3 Bean的scope"></a>1.3 Bean的scope</h3><ol>
-<li><p>Sington： 默认为单例模式</p>
+<h3 id="1-3-常用注解"><a href="#1-3-常用注解" class="headerlink" title="1.3 常用注解"></a>1.3 常用注解</h3><h3 id="Bean-：给容器添加组件"><a href="#Bean-：给容器添加组件" class="headerlink" title="@Bean ：给容器添加组件"></a>@Bean ：给容器添加组件</h3><p>​    Bean的scope</p>
+<ol>
+<li>Sington： 默认为单例模式，容器创建时就会添加到容器中</li>
+<li>Prototype：每次调用创建一个新的，容器创建时不会添加到容器中，而是在获取的时候创建</li>
+<li>Request：为每一个http request创建一个新的bean</li>
+<li>Session：为每一个http session 创建一个新的bean</li>
+<li>GolbalSession：。。。</li>
+</ol>
+<p>针对于bean的单例模式，可以使用@Lazy实现懒加载，在获取的时候才添加bean到容器的中。</p>
+<h3 id="Condional：-条件注解"><a href="#Condional：-条件注解" class="headerlink" title="@Condional： 条件注解"></a>@Condional： 条件注解</h3><p>@Condional 可用于方法和类上，传入条件类，满足条件才执行下面的类或方法。</p>
+<p>条件类的编写：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Condition</span> <span class="token keyword">implements</span> <span class="token class-name">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Condition</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">matches</span><span class="token punctuation">(</span>ConditionContext conditionContext<span class="token punctuation">,</span> AnnotatedTypeMetadata annotatedTypeMetadata<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>conditionContext<span class="token punctuation">.</span><span class="token function">getEnvironment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"os.name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"Linux"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="Import-给容器中快速注入组件"><a href="#Import-给容器中快速注入组件" class="headerlink" title="@Import 给容器中快速注入组件"></a>@Import 给容器中快速注入组件</h3><p>给容器中注入组建的四种方式</p>
+<ol>
+<li><p>使用常规注解（@Service/@Contoller/@Repository/@Component)</p>
 </li>
-<li><p>Prototype：每次调用创建一个新的</p>
+<li><p>使用@Bean</p>
 </li>
-<li><p>Request：为每一个http request创建一个新的bean</p>
+<li><p>使用@Import（）快速导入组件，可以传入的值有以下</p>
+<ol>
+<li>全类名</li>
+<li>实现了ImportSelector接口的类</li>
+<li>实现了importBeanDefinitionRegistry的类</li>
+</ol>
 </li>
-<li><p>Session：为每一个http session 创建一个新的bean</p>
+<li><p>使用FactoryBean</p>
+<ol>
+<li><p>首先实现FactoryBean接口</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PersonFactoryBean</span> <span class="token keyword">implements</span> <span class="token class-name">FactoryBean</span><span class="token operator">&lt;</span>Person<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Person <span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token string">"ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">getObjectType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> Person<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isSingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
 </li>
-<li><p>GolbalSession：。。。</p>
-<p>##</p>
+<li><p>然后注入到ioc容器中</p>
+<pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Beanpublic</span> FactoryBean<span class="token operator">&lt;</span>Person<span class="token operator">></span> <span class="token function">factoryBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">PersonFactoryBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span></code></pre>
+</li>
+<li><p>获取</p>
+<pre class=" language-java"><code class="language-java">Object obj <span class="token operator">=</span> applicationContext<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span><span class="token string">"factoryBean"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>这里获取到的class是Person而不是PersonFactoryBean，若想获取PersonFactoryBean，可以把getBean传入的值编程&amp;factoryBean</p>
 </li>
 </ol>
+</li>
+</ol>
+<h3 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="@Bean的生命周期"></a>@Bean的生命周期</h3><ol>
+<li>实例化bean</li>
+<li>设置对象属性（setter等</li>
+<li>如果bean实现了BeanNameAware接口，工厂调用bean的setBeanName（）方法传入bean的ID</li>
+<li>如果bean实现了BeanFactoryAware接口，工厂调用setBeanFactory（）传入工厂自身</li>
+<li>将bean实例传递给bean的前置处理器的 postProcessBeforeInitialization(Object bean, String beanname)方法 </li>
+<li>调用bean的初始化方法，init（）</li>
+<li>将bean传给bean的后置处理器 postProcessAfterInitialization(Object bean, String beanname)方法 </li>
+<li>使用bean</li>
+<li>容器关闭前，调用bean的销毁方法</li>
+</ol>
+<p>源码分析：</p>
+<p>Bean的初始化就是在initializeBean方法中：initializeBean方法前面是populateBean：属性的赋值</p>
+<ol>
+<li><p>先判断bean是否实现了aware接口,aware接口用于bean直接对ioc容器进行操作，有许多中接口，例如bean实现了ApplicationContextAware可以传入applicationContext容器</p>
+</li>
+<li><p>然后执行applyBeanPostProcessorsBeforeInitialization，前置处理器</p>
+</li>
+<li><p>然后执行invokeInitMethods，这是如果Bean实现了InitializingBean的接口，在这里就会处理其中的afterPropertiesSet方法，这个方法就是Bean的初始化方法，如果bean还指定了initMethod那么也会执行这个initMethod,最后完成Bean的初始化</p>
+</li>
+<li><p>最后执行applyBeanPostProcessorsAfterInitialization，后置处理器</p>
+</li>
+</ol>
+<pre class=" language-java"><code class="language-java">
+<span class="token keyword">protected</span> Object <span class="token function">initializeBean</span><span class="token punctuation">(</span>String beanName<span class="token punctuation">,</span> Object bean<span class="token punctuation">,</span> <span class="token annotation punctuation">@Nullable</span> RootBeanDefinition mbd<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">getSecurityManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            AccessController<span class="token punctuation">.</span><span class="token function">doPrivileged</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">invokeAwareMethods</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> bean<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getAccessControlContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">invokeAwareMethods</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> bean<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Object wrappedBean <span class="token operator">=</span> bean<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>mbd <span class="token operator">==</span> null <span class="token operator">||</span> <span class="token operator">!</span>mbd<span class="token punctuation">.</span><span class="token function">isSynthetic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            wrappedBean <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">applyBeanPostProcessorsBeforeInitialization</span><span class="token punctuation">(</span>bean<span class="token punctuation">,</span> beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">invokeInitMethods</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> wrappedBean<span class="token punctuation">,</span> mbd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> var6<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BeanCreationException</span><span class="token punctuation">(</span>mbd <span class="token operator">!=</span> null <span class="token operator">?</span> mbd<span class="token punctuation">.</span><span class="token function">getResourceDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> null<span class="token punctuation">,</span> beanName<span class="token punctuation">,</span> <span class="token string">"Invocation of init method failed"</span><span class="token punctuation">,</span> var6<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>mbd <span class="token operator">==</span> null <span class="token operator">||</span> <span class="token operator">!</span>mbd<span class="token punctuation">.</span><span class="token function">isSynthetic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            wrappedBean <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">applyBeanPostProcessorsAfterInitialization</span><span class="token punctuation">(</span>wrappedBean<span class="token punctuation">,</span> beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> wrappedBean<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<h3 id="Bean的初始化和销毁方法"><a href="#Bean的初始化和销毁方法" class="headerlink" title="@Bean的初始化和销毁方法"></a>@Bean的初始化和销毁方法</h3><ol>
+<li>我们可以在@Bean注解上指定bean的初始化方法和销毁方法，注意，如果bean是单实例的，那么再容器创建时，bean就会被初始化，容器关闭时就会执行销毁方法，如果bean的多实例的，在使用时才会bean才会被初始化，容器关闭时不会执行销毁方法。</li>
+<li>让bean实现 InitailizingBean接口以及DisposableBean接口，重写里面的方法，就等同于执行初始化方法和销毁方法</li>
+<li>在bean中的方法上标注@PostConstruct就相当于指定了初始化方法，标注@PreDestory就相当于指定了销毁方法</li>
+</ol>
+<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>获取配置文件中的某个属性的值</p>
+<h3 id="PropertySource"><a href="#PropertySource" class="headerlink" title="@PropertySource"></a>@PropertySource</h3><p>导入配置文件 如：application.yml</p>
+<h3 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h3><p>自动装配：</p>
+<ol>
+<li>默认先安装类型去容器中寻找组件，如果找到多个，那么再按照你定义的变量的名称去容器中查找</li>
+<li>@Qualifier（“xxx”）可以与@Autowired同时使用，指定你要找的组件的id</li>
+<li>@Autowired默认如果找不到会报错，使用@Autowired（requied=false）找不到不会报错</li>
+<li>@Primary使用在bean上，指定多个同类型的bean，优先使用有@Primary，但他的优先级低于@Qualifier</li>
+</ol>
+<p>@Autowired可以装配到属性，方法，构造器，参数上</p>
+<ol>
+<li>标注在方法上，那么方法的参数会从容器中获取，@Bean修饰的方法的方法参数就算不标注@Autowired也是自动从容器中获取</li>
+<li>标注在构造器上，如果组件只有一个有参构造器，这个有参构造器的@Autowired可以省略。</li>
+</ol>
+<h3 id="1-4-AOP"><a href="#1-4-AOP" class="headerlink" title="1.4 AOP"></a>1.4 AOP</h3><h4 id="1-4-1-AOP中的核心类"><a href="#1-4-1-AOP中的核心类" class="headerlink" title="1.4.1 AOP中的核心类"></a>1.4.1 AOP中的核心类</h4><ul>
+<li><strong>AnnotationAwareAspectJAutoProxyCreator</strong> ：继承了Spring ioc的扩展接口BeanPostProcessor（bean初始化前后的动作），主要用于获取advisor</li>
+<li><strong>DefaultPointcutAdvisor</strong> ：默认切面顾问，将切面增强设计（advice）与关注点（pointcut）结合起来的对象</li>
+<li><strong>Advice</strong>：通知，也就是AOP中增强的方法</li>
+</ul>
+<h4 id="1-4-2-流程："><a href="#1-4-2-流程：" class="headerlink" title="1.4.2 流程："></a>1.4.2 流程：</h4><p>大致分为三个步骤：</p>
+<ol>
+<li><p>创建  <strong><code>AnnotationAwareAspectJAutoProxyCreator</code></strong>  对象</p>
+</li>
+<li><p>扫描容器中的切面，创建 <strong><code>PointcutAdvisor</code></strong> 对象</p>
+</li>
+<li><p>创建代理类，代理类的生成是在BeanPostProcessor接口的 postProcessAfterInitialization 方法中，默认是用CGLIB代理</p>
+</li>
+</ol>
+<h3 id="1-5-声明式事务"><a href="#1-5-声明式事务" class="headerlink" title="1.5 声明式事务"></a>1.5 声明式事务</h3><p>​    声明式事务需要在配置类中添加@EnableTransactionManagement注解</p>
+<p>​    该注解为容器添加两个类。AutoProxyRegistrar.class，ProxyTransactionManagementConfiguration.class</p>
+<ul>
+<li>AutoProxyRegistrar: 为容器添加一个InfrastructureAdvisorAutoProxyCreator组件，这个组件在对象创建后，包装对象，生成对象的代理类，</li>
+<li>ProxyTransactionManagementConfiguration：给容器添加事务增强器</li>
+</ul>
+<h3 id="1-6-部分接口原理"><a href="#1-6-部分接口原理" class="headerlink" title="1.6 部分接口原理"></a>1.6 部分接口原理</h3><h4 id="BeanFactoryPostProcessor："><a href="#BeanFactoryPostProcessor：" class="headerlink" title="BeanFactoryPostProcessor："></a>BeanFactoryPostProcessor：</h4><p>他只有一个postProcessBeanFactory方法，是BeanFactory的后置处理器，beanFactory初始化后，用于修改，定制工厂的内容，他的执行时机是在beanDefiniton已经加载完成，还没实例化bean之前</p>
 <h2 id="2-Spring-MVC基础"><a href="#2-Spring-MVC基础" class="headerlink" title="2 Spring MVC基础"></a>2 Spring MVC基础</h2><h3 id="MVC-与三层架构的区别"><a href="#MVC-与三层架构的区别" class="headerlink" title="MVC 与三层架构的区别"></a>MVC 与三层架构的区别</h3><ul>
 <li>三层架构是针对于应用程序整体架构而言的，控制层，业务逻辑层，持久层</li>
 <li>MVC是针对与应用程序的视图层划分出来的几个模块，把展现数据html页面尽量与业务代码分离，view表示展示界面，contollers层表示展示界面的业务逻辑，而Models代表views与controllers之间传递数据的一个个封装了数据的对象</li>
@@ -506,6 +649,8 @@ spring框架的四大原则：
 <li><p><strong>@Cacheing</strong>组合注解，用于复杂缓存策略。</p>
 </li>
 </ol>
+<p>缓存穿透：大量的请求缓存中不存在的数据，数据库压力就增加，从而导致数据库连接异常</p>
+<p>缓存雪崩：缓存有过期时间，存在同一时间大面积的缓存失效，这时候大量的请求直接访问数据库。</p>
 <h4 id="3-2-1-Redis"><a href="#3-2-1-Redis" class="headerlink" title="3.2.1 Redis"></a>3.2.1 Redis</h4><ol>
 <li>下载redis镜像 redis</li>
 <li>创建redis容器： docker run -d -p 6379:6379  –name=”myredis” redis  //-d后台运行，-p端口映射，</li>
@@ -539,6 +684,17 @@ spring框架的四大原则：
         <span class="token keyword">return</span> redisCacheManager<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
+<h4 id="三个缓存注解"><a href="#三个缓存注解" class="headerlink" title="三个缓存注解"></a>三个缓存注解</h4><ol>
+<li><p>@Cacheable：用于查询，当缓存中没有时才去数据库查，并将结果缓存</p>
+</li>
+<li><p>@Cacheput：用于更新和增加，无论缓存是否有，都去数据库差，并将结果缓存</p>
+</li>
+<li><p>@CacheEvict：用于删除，按照key删除缓存，并执行方法。</p>
+</li>
+</ol>
+<h4 id="redis-的数据类型"><a href="#redis-的数据类型" class="headerlink" title="redis 的数据类型"></a>redis 的数据类型</h4><ol>
+<li>String,hash,list,set ,sorted list</li>
+</ol>
 </li>
 </ul>
 <h3 id="3-3-SpringBoot-消息队列"><a href="#3-3-SpringBoot-消息队列" class="headerlink" title="3.3 SpringBoot 消息队列"></a>3.3 SpringBoot 消息队列</h3><p>​    消息队列是消息服务中间件，用于提升系统的异步通信能力，扩展解耦能力。</p>

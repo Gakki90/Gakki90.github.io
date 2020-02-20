@@ -425,7 +425,13 @@ linux文件权限权限分为三个组：[用户][用户组][其他人]每一个
 
 <h2 id="linux文件权限"><a href="#linux文件权限" class="headerlink" title="linux文件权限"></a>linux文件权限</h2><p>权限分为三个组：[用户][用户组][其他人]<br>每一个组占三个符号</p>
 <pre><code>-rwxr-xr-x 1 root root   207 9月  23 16:44 sh04.sh*
-//rwx代表用户可以读，写，执行，r-x代表用户组可以读，执行，r-x代表其他人可以读，执行，如果第一个字符为d那么表明他是一个目录</code></pre><h2 id="1-0-shell命令"><a href="#1-0-shell命令" class="headerlink" title="1.0 shell命令"></a>1.0 shell命令</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
+//rwx代表用户可以读，写，执行，r-x代表用户组可以读，执行，r-x代表其他人可以读，执行，如果第一个字符为d那么表明他是一个目录
+</code></pre><ul>
+<li>更改文件所有者： chown [-R] 用户 文件  //-R表示他下面的子目录也会被更改</li>
+<li>更改文件所在的组 ：chgrp [-R] 用户 文件</li>
+</ul>
+<h2 id="查看端口"><a href="#查看端口" class="headerlink" title="查看端口"></a>查看端口</h2><pre><code>  netstat -alnp | grep 10062 </code></pre><p> kill -9 10062</p>
+<h2 id="1-0-shell命令"><a href="#1-0-shell命令" class="headerlink" title="1.0 shell命令"></a>1.0 shell命令</h2><p>shell：鸡蛋外壳，因为shell命令位于最外层，提供用户操作系统的接口。它有不同的版本，在/bin目录上，一般使用的/bin/bash，</p>
 <ul>
 <li>tab<br>[tab]用于补全，用于最后字母后面，则为命令补全，用与最后一个字母加个空格再按tab就为文件补全。</li>
 </ul>
