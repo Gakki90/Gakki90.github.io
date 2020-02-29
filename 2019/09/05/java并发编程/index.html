@@ -561,18 +561,16 @@ FutureTask&lt;V&gt; oneTask = new FutureTask&lt;V&gt;(oneCallable);
 Thread oneThread = new Thread(oneTask);   
 oneThread.start();   
 //至此，一个线程就创建完成了。</code></pre></li>
-<li><p>使用ExecutorSerivice，Callable，Future实现有返回结果的线程<br>这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，<br>```<br>import java.util.concurrent.<em>;<br>import java.util.Date;<br>import java.util.List;<br>import java.util.ArrayList;<br>/*</em> </p>
-</li>
+<li><p>使用ExecutorSerivice，Callable，Future实现有返回结果的线程<br>这三个接口都属于Executor框架，ExecutorSerivice用于创建线程池，Future接受返回值，再用get方法即可得到目的值，get方法是阻塞的，得不到结果就会一直等待，</p>
+<pre><code>import java.util.concurrent.*;  
+import java.util.Date;  
+import java.util.List;  
+import java.util.ArrayList;  
+</code></pre></li>
 </ol>
-<ul>
-<li><p>有返回值的线程 </p>
-</li>
-<li><p>/<br>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>   InterruptedException {<br>  System.out.println(“—-程序开始运行—-“);<br>  Date date1 = new Date();<br>  int taskSize = 5;<br>  // 创建一个线程池<br>  ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>  // 创建多个有返回值的任务<br>  List<future> list = new ArrayList<future>();<br>  for (int i = 0; i &lt; taskSize; i++) {<br>   Callable c = new MyCallable(i + “ “);<br>   // 执行任务并获取Future对象<br>   Future f = pool.submit(c);<br>   // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   list.add(f);<br>  }<br>  // 关闭线程池<br>  pool.shutdown();  </future></future></p>
-<p>  // 获取所有并发任务的运行结果<br>  for (Future f : list) {<br>   // 从Future对象上获取任务的返回值，并输出到控制台<br>   System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>  }  </p>
-<p>  Date date2 = new Date();<br>  System.out.println(“—-程序结束运行—-，程序运行时间【”  </p>
-<pre><code>+ (date2.getTime() - date1.getTime()) + &quot;毫秒】&quot;);</code></pre><p>}<br>}  </p>
-</li>
-</ul>
+<p>@SuppressWarnings(“unchecked”)<br>public class Test {<br>public static void main(String[] args) throws ExecutionException,<br>    InterruptedException {<br>   System.out.println(“—-程序开始运行—-“);<br>   Date date1 = new Date();<br>   int taskSize = 5;<br>   // 创建一个线程池<br>   ExecutorService pool = Executors.newFixedThreadPool(taskSize);<br>   // 创建多个有返回值的任务<br>   List<future> list = new ArrayList<future>();<br>   for (int i = 0; i &lt; taskSize; i++) {<br>    Callable c = new MyCallable(i + “ “);<br>    // 执行任务并获取Future对象<br>    Future f = pool.submit(c);<br>    // System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>    list.add(f);<br>   }<br>   // 关闭线程池<br>   pool.shutdown();  </future></future></p>
+<p>   // 获取所有并发任务的运行结果<br>   for (Future f : list) {<br>    // 从Future对象上获取任务的返回值，并输出到控制台<br>    System.out.println(“&gt;&gt;&gt;” + f.get().toString());<br>   }  </p>
+<p>   Date date2 = new Date();<br>   System.out.println(“—-程序结束运行—-，程序运行时间【”<br>     + (date2.getTime() - date1.getTime()) + “毫秒】”);<br>}<br>}  </p>
 <p>class MyCallable implements Callable<object> {<br>private String taskNum;<br>MyCallable(String taskNum) {<br>   this.taskNum = taskNum;<br>}<br>public Object call() throws Exception {<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务启动”);<br>   Date dateTmp1 = new Date();<br>   Thread.sleep(1000);<br>   Date dateTmp2 = new Date();<br>   long time = dateTmp2.getTime() - dateTmp1.getTime();<br>   System.out.println(“&gt;&gt;&gt;” + taskNum + “任务终止”);<br>   return taskNum + “任务返回运行结果,当前任务时间【” + time + “毫秒】”;<br>}<br>}</object></p>
 <pre><code>Q: 为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法？
 A: 因为我们在调用start后，线程就处于就绪状态，之后就等待分配时间片来运行，如果只是调用run方法，那么还是在原来的主线程运行这个方法。
