@@ -521,8 +521,11 @@
 </ul>
 <p>成绩表中的学号不是成绩表的主键，而在学生表中是主键，就称成绩表中的学号为学生表的外键。同理 成绩表中的课程号是课程表的外键 </p>
 <h2 id="5-0-聚集索引与非聚集索引"><a href="#5-0-聚集索引与非聚集索引" class="headerlink" title="5.0 聚集索引与非聚集索引"></a>5.0 聚集索引与非聚集索引</h2><ul>
-<li>聚集索引：键值的逻辑顺序就决定了表中相应行的物理顺序，　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 {% asset_img 1.jpg %}</li>
-<li>非聚集索引：该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。聚集索引的叶子节点就是数据节点，然而非聚集索引的叶子节点任然是索引节点，只不过有一个指针指向对应的数据块。{% asset_img 2.jpg %}
+<li><p>聚集索引：键值的逻辑顺序就决定了表中相应行的物理顺序，　聚集索引确定表中数据的物理顺序。聚集索引类似于电话簿，后者按姓氏排列数据。由于聚集索引规定数据在表中的物理存储顺序，因此一个表只能包含一个聚集索引。但该索引可以包含多个列（组合索引），就像电话簿按姓氏和名字进行组织一样。 </p>
+{% asset_img 7.png %}
+</li>
+<li><p>非聚集索引：该索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同。聚集索引的叶子节点就是数据节点，然而非聚集索引的叶子节点任然是索引节点，只不过有一个指针指向对应的数据块。</p>
+{% asset_img 8.png %}
 
 </li>
 </ul>
@@ -535,11 +538,15 @@
 <p>摘抄自博客<a href="https://www.cnblogs.com/aspnethot/articles/1504082.html" target="_blank" rel="noopener">https://www.cnblogs.com/aspnethot/articles/1504082.html</a></p>
 <h3 id="5-2-数据库表的连接"><a href="#5-2-数据库表的连接" class="headerlink" title="5.2 数据库表的连接"></a>5.2 数据库表的连接</h3><p>分为外连接和内连接和交叉连接，</p>
 <ul>
-<li>外连接又分左外连接，右外连接，全外连接{% asset_img 1.png %}
+<li><p>外连接又分左外连接，右外连接，全外连接</p>
+{% asset_img 1.png %}
+
 {% asset_img 2.png %}
 {% asset_img 3.png %}
-{% asset_img 4.png %}</li>
-<li>交叉连接指的是笛卡尔积</li>
+{% asset_img 4.png %}
+</li>
+<li><p>交叉连接指的是笛卡尔积</p>
+</li>
 </ul>
 <p>具体可以参考博客<a href="https://www.cnblogs.com/thomasguan/p/4252410.html" target="_blank" rel="noopener">https://www.cnblogs.com/thomasguan/p/4252410.html</a></p>
 <h2 id="6-0-事务"><a href="#6-0-事务" class="headerlink" title="6.0 事务"></a>6.0 事务</h2><p>事务是数据库单独执行的一个单元。逻辑上的一组操作，组成这组操作的各个单元要么全部成功，要么全部失败。<br>四大特性（ACID）</p>
@@ -609,9 +616,15 @@ SELECT order_id FROM order_info where Date(order_date)=&#39;2019-07-10&#39;;//�
 COUNT(*) AS count FROM order_info GROUP BY user_id;</code></pre></li>
 </ol>
 <p>使用HAVING关键字可以过滤分组，同时HAVING关键字也可以替换前面所有的WHERE使用的地方，WHERE，HAVING,GROUP BY使用的顺序如下</p>
-<pre><code>SELECT vend_id,COUNT(*) FROM products WHERE prod_price&gt;=10 GROUP BY VEND_ID HAVING COUNT(*)&gt;2
+<pre class=" language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> vend_id<span class="token punctuation">,</span><span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> products <span class="token keyword">WHERE</span> prod_price<span class="token operator">>=</span><span class="token number">10</span> <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> VEND_ID <span class="token keyword">HAVING</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token number">2</span>
 
-SELECT&gt;FROM&gt;WHERE&gt;GROUP BY&gt;HAVING&gt;ORDER BY&gt;LIMIT</code></pre><h3 id="8-8-子查询"><a href="#8-8-子查询" class="headerlink" title="8.8 子查询"></a>8.8 子查询</h3><p>最常见的子查询就是使用where 。。in（），括号中添加另一个查询语句，当然也有作为计算字段作为子查询</p>
+
+<span class="token keyword">SELECT</span><span class="token operator">></span><span class="token keyword">FROM</span><span class="token operator">></span><span class="token keyword">WHERE</span><span class="token operator">></span><span class="token keyword">GROUP</span> <span class="token keyword">BY</span><span class="token operator">></span><span class="token keyword">HAVING</span><span class="token operator">></span><span class="token keyword">ORDER</span> <span class="token keyword">BY</span><span class="token operator">></span><span class="token keyword">LIMIT</span>
+</code></pre>
+<p><strong>having与where的区别</strong></p>
+<p>having的原理是先select，然后从select的结果中进行筛选，而where是先筛选然后select</p>
+<p> <a href="https://www.cnblogs.com/ljf-Sky/p/9024683.html" target="_blank" rel="noopener">https://www.cnblogs.com/ljf-Sky/p/9024683.html</a> </p>
+<h3 id="8-8-子查询"><a href="#8-8-子查询" class="headerlink" title="8.8 子查询"></a>8.8 子查询</h3><p>最常见的子查询就是使用where 。。in（），括号中添加另一个查询语句，当然也有作为计算字段作为子查询</p>
 <pre><code>SELECT user_id, user_level ,
         (SELECT COUNT(*) FROM order_info WHERE                  
         order_info.user_id =user_info.user_id) AS count 
